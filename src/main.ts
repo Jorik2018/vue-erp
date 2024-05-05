@@ -1,0 +1,21 @@
+import './assets/main.css'
+import 'vue3-ui/dist/theme.css'
+import '@ionic/core/css/ionic.bundle.css';
+import "@fortawesome/fontawesome-free/css/all.css";
+import "@fortawesome/fontawesome-free/js/all.js";
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import { IonicVue } from '@ionic/vue';
+import App from './App.vue'
+import router from './router'
+import { IsobitUI} from 'vue3-ui'
+
+const app = createApp(App)
+app.config.ignoredElements = [/^ion-/,/^v-/];
+app.config.productionTip = false;
+IsobitUI.init(app)
+app.use(createPinia())
+app.use(router)
+app.use(IsobitUI)
+app.use(IonicVue)
+app.mount('#app')
