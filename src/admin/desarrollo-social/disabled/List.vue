@@ -5,7 +5,7 @@
   </template> 
   <template v-slot:default="{row,index}"> 
    <td class="center" header="#" width="28">  {{pad(index+1,3)}} </td> 
-   <td width="80" class="center" v-bind:class="{'yellow':0>row.id}" header="ID">  {{row.id&gt;0?pad(row.id,6):'?'}} </td> 
+   <td width="80" class="center" v-bind:class="{'yellow':0>row.id}" header="ID">  {{row.id>0?pad(row.id,6):'?'}} </td> 
    <td width="80" class="center" header="DNI">  {{row.code}} </td> 
    <td width="200" header="Nombres">  {{row.names}} </td> 
    <td width="200" header="Apellidos">  {{row.surnames}} </td> 
@@ -37,7 +37,7 @@
    <td width="80" header="Necesidades Basicas">  {{row.basicNeeds}} </td> 
    <td width="200" header="Descripcion Necesidades">  {{row.descriptionNeeds}} </td> 
    <td width="80" class="center" header="Fecha Fallecimiento">  {{row.deathDate|date}} </td> 
-   <td width="90" class="center" header="Coordenadas">  {{0&gt;row.lat&amp;&amp;0&gt;row.lon?'SI':'NO'}} </td> 
+   <td width="90" class="center" header="Coordenadas">  {{0>row.lat&&0>row.lon?'SI':'NO'}} </td> 
    <td width="80" class="center" header="Usuario">  {{row.user}} </td> 
    <td width="80" class="center" header="Fecha Actualizaci&oacute;n">  {{row.updateDate|date}} </td> 
   </template> 

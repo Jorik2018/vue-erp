@@ -2,19 +2,10 @@
   <v-form header="VACUNAS COVID" action="/admin/desarrollo-social/covid">
     <div>
       <v-fieldset legend="BUSQUEDA POR DOCUMENTO IDENTIDAD" class="v-form">
-        <v-autocomplete
-          placeholder="Ingrese mas de 5 caracteres y presione ENTER"
-          ref="peopleAutocomplete"
-          v-bind:show-selection="true"
-          inputClass="center"
-          v-on:input="inputPeople"
-          v-bind:params="{ distinct: 1 }"
-          minQueryLength="5"
-          required="required"
-          v-model="o"
-          v-on:complete="peopleComplete"
-          src="/api/desarrollo-social/covid/vaccine-covid"
-        >
+        <v-autocomplete placeholder="Ingrese mas de 5 caracteres y presione ENTER" ref="peopleAutocomplete"
+          v-bind:show-selection="true" inputClass="center" v-on:input="inputPeople" v-bind:params="{ distinct: 1 }"
+          minQueryLength="5" required="required" v-model="o" v-on:complete="peopleComplete"
+          src="/api/desarrollo-social/covid/vaccine-covid">
           <template v-slot:label="{ selected }">
             <template v-if="selected">
               {{ selected.numDoc }}: {{ selected.paciente }}
@@ -26,26 +17,17 @@
           </template>
         </v-autocomplete>
         <div v-if="!o" class="right" style="margin-top: 10px">
-          <v-button
-            title="Refrescar"
-            icon="fa-sync"
-            class="on"
-            v-on:click.prevent="$refs.peopleAutocomplete.search()"
-          ></v-button>
+          <v-button title="Refrescar" icon="fa-sync" class="on"
+            v-on:click.prevent="$refs.peopleAutocomplete.search()"></v-button>
         </div>
       </v-fieldset>
       <v-fieldset v-if="o" legend="Resultados">
-        <div
-          v-for="(o, j) in l"
-          v-bind:key="j"
-          class="v-item"
-          style="
+        <div v-for="(o, j) in l" v-bind:key="j" class="v-item" style="
             padding: 5px;
             background-color: black;
             color: white;
             line-break: anywhere;
-          "
-        >
+          ">
           <label>DOSIS APLICADA</label>
           <div>{{ o.dosisAplicada }} {{ row.fabricanteAbrev }}</div>
           <label>FECHA VACUNACION</label>
@@ -58,9 +40,9 @@
   </v-form>
 </template>
 <script>
-import Vue from "vue";
+import { ui } from 'vue3-ui'
 //            var axios=window.axios;
-export default window.ui({
+export default ui({
   data() {
     return { people: null, o: null, l: [] };
   },
@@ -69,16 +51,16 @@ export default window.ui({
   },
   computed: {},
   mounted() {
-    var me = this;
+    const me = this;
     setTimeout(function () {
       me.app.title = me.$children[0].header;
     }, 200);
   },
   methods: {
     dateDiff(f) {
-      var r = "";
+      let r = "";
       if (f) {
-        var r2 = Vue.dateDiff(new Date(f), new Date());
+        const r2 = Vue.dateDiff(new Date(f), new Date());
         if (r2.ans) r += r2.ans + " AÑOS ";
         if (r2.meses) r += r2.meses + " MESES ";
         if (r2.dias) r += r2.dias + " DIAS ";
@@ -93,7 +75,7 @@ export default window.ui({
       }
     },
     inputPeople() {
-      var me = this;
+      const me = this;
       me.l = [me.o];
     },
   },
@@ -103,10 +85,12 @@ export default window.ui({
 .v-item {
   margin-bottom: 10px;
 }
+
 .v-item:last-child {
   margin-bottom: 0px;
 }
-.v-fieldset > div {
+
+.v-fieldset>div {
   width: auto;
 }
 </style>

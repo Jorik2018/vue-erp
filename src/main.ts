@@ -8,10 +8,10 @@ import { createPinia } from 'pinia'
 import { IonicVue } from '@ionic/vue';
 import App from './App.vue'
 import router from './router'
-import { IsobitUI} from 'vue3-ui'
+import { IsobitUI } from 'vue3-ui'
 
-const app = createApp(App)
-app.config.ignoredElements = [/^ion-/,/^v-/];
+const app = createApp(App) as any;
+app.config.ignoredElements = [/^ion-/, /^v-/];
 app.config.productionTip = false;
 app.use(createPinia())
 app.use(router)

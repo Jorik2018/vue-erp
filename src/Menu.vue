@@ -20,7 +20,8 @@
                         border-radius: 50%;
                       ">
                     <img v-bind:key="'men-' + app.ki" style="width: 100%;object-fit: cover;height: 100%;"
-                      v-bind:src="baseURL + '/fs/profile/' + app.profileImg" v-on:error="$event.target.src = imgError">
+                      v-bind:src="baseURL + '/fs/profile/' + app.profileImg"
+                      v-on:error="($event.target as any).src = imgError">
                   </div>
                 </td>
                 <td style="text-align: left; padding-left: 10px">
@@ -110,7 +111,7 @@ export default defineComponent(
   },*/
     created() {
       var me = this;
-      import("@/cdn/images/smile.png").then((image) => {
+      import("./cdn/images/smile.png").then((image) => {
         this.imgError = image;
       });
       if (me.session?.people) me.app.profile = me.session.people.urlPerfil;

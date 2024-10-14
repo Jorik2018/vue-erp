@@ -78,7 +78,7 @@ export default ui({
   methods: {
 
     connect() {
-      const me = this, session = me.session;
+      const me = this as any, session = me.session;
       if (session != null) {
         var ws = new WebSocket("wss://web.regionancash.gob.pe/ws/S" + session.uid);
         ws.onopen = function () {
@@ -96,7 +96,7 @@ export default ui({
             me.connect();
           }, 5000);
         };
-        ws.onerror = function (err) {
+        ws.onerror = function (err: any) {
           console.error('Socket encountered error: ', err.message, 'Closing socket');
           ws.close();
         };

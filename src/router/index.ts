@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import axios from "axios";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -259,12 +260,12 @@ const router = createRouter({
 	]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
 	let session = localStorage.getItem('session');
 	//console.log(session);
 	if (to.path == '/logout') {
 		if (session) {
-			window.axios.config = {};
+			axios.config = {};
 			localStorage.removeItem('session');
 		}
 		next('/');
