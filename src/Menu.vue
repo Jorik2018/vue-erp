@@ -74,7 +74,7 @@
       <ion-item v-if="perms?.EMED_READ" href="/admin/desarrollo-social/emed">
         <i class="fa fa-table"></i>EMED
       </ion-item>
-      <ion-item v-if="perms?.EMED_READ" href="/admin/desarrollo-social/vea">
+      <ion-item v-if="perms?.EMED_READ" href="/admin/desarrollo-social/vea-materno">
         <i class="fa fa-table"></i>VEA Materno
       </ion-item>
       <ion-item v-if="perms?.CANCER_READ" href="/admin/desarrollo-social/cancer">
@@ -82,6 +82,11 @@
       </ion-item>
       <ion-item v-if="perms?.PREGNANT_READ" href="/admin/desarrollo-social/pregnant">
         <i class="fa fa-person-pregnant"></i>Gestantes
+      </ion-item>
+
+      <hr style="background: #d5d5d5;margin-top: 10px;margin-bottom: 10px;">
+      <ion-item href="/logout" class="_" v-on:click.prevent="app.logout">
+        <i class="fa fa-sign-out-alt"></i>Cerrar Sessión
       </ion-item>
     </ion-content>
   </ion-menu>

@@ -10,13 +10,12 @@
     margin: 10px;" href="/admin/desarrollo-social/covid/vaccine"><i class="fa fa-virus"></i>Consulta Vacunas COVID</a>
     </div>
 </template>
-<script>
-var { _, ui } = window;
+<script lang="ts">
+import { ui, app } from "vue3-ui";
 export default ui({
     mounted() {
-        var app = _.app;
-        app.title = 'Administracion';
-        app.bindLinks(this.$el);
+        //app.title = 'Administracion';
+        //app.bindLinks(this.$el);
     },
     methods: {
         can(v) {

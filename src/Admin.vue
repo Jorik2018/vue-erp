@@ -67,7 +67,7 @@ export default ui({
 			//Vue.resize();
 			var me = this;
 			me.resultVisible = false;
-			me.mask = window._.unmask(me.mask);
+			//me.mask = window._.unmask(me.mask);
 		}
 	},
 	mounted() {

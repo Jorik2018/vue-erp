@@ -5,7 +5,7 @@
       : o.tmpId
         ? 'green'
         : ''
-    " store="vea-materno">
+      " store="vea-materno">
     <div class="v-form">
       <label>ID:</label>
       <div>{{ pad(o.id || 0, 4) }}</div>
@@ -78,10 +78,11 @@ import { Geolocation } from "@capacitor/geolocation";
 import "ol/ol.css";
 import Feature from "ol/Feature";
 import Icon from "ol/style/Icon";
+import { ui } from 'vue3-ui'
 var { _, axios, ol } = window;
-ol.style.Icon = Icon;
-ol.style.Feature = Feature;
-export default _.ui({
+//ol.style.Icon = Icon;
+//ol.style.Feature = Feature;
+export default ui({
   props: ["id"],
   data() {
     return {
@@ -121,7 +122,7 @@ export default _.ui({
   },
   created() {
     var me = this;
-    me.$on("sync", (o) => {
+    /*me.$on("sync", (o) => {
       me.getStoredList("vea-materno").then((items) => {
         items.forEach((e) => {
           if (e.tmpId == Math.abs(o.tmpId)) {
@@ -143,7 +144,7 @@ export default _.ui({
           }
         });
       });
-    });
+    });*/
   },
   mounted() {
     var me = this;

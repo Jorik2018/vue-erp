@@ -1,13 +1,13 @@
 <template>
   <div style="background-color: white; height: 100%; overflow: auto">
     <img src="@/cdn/images/fondo-login.svg" width="100%"
-      style="position: absolute; object-fit: cover; height: 600px; bottom: 0px" />
+      style="position: absolute; object-fit: cover; height: 700px; bottom: 0px" />
     <div id="logoiniciosesion" class="center">
       <!--img height="120" class="ui-banner-login" src="@/fs/images/logo-final.svg" /-->
     </div>
     <form id="LoginForm">
       <div style="margin-top: 20px; padding: 30px; padding-top: 80px" class="LoginForm v-form">
-        <div class="v-input-label" style="margin-bottom: 10px">
+        <div class="v-input-label" style="margin-bottom: 25px">
           <label position="floating" v-on:click="focus"
             style="color: white; border: 0px; font-weight: unset !important">Usuario</label>
           <input class="input-login" v-on:focus="$event.target.parentNode.classList.add('v-focus')"
@@ -31,7 +31,7 @@
               background: #fbe501;
               border-radius: 15px;
               border-width: 0px;
-            " @click.prevent="login" value="INGRESAR" />
+            " @click.prevent="login" value="INGRESAR" :disabled="!isValid" />
         </div>
         <a @click="$router.push('/register')" style="margin-bottom: 10px">Registrate</a>
         <a @click="$router.push('/password')">&iquest;Olvidaste tu Contrase&ntilde;a?</a>
@@ -47,6 +47,7 @@
 //70896448
 import { ui } from 'vue3-ui'
 import axios from 'axios'
+import { toastController } from '@ionic/vue';
 
 export default ui({
   data() {
@@ -54,39 +55,46 @@ export default ui({
       type: "password",
       o: { name: "", pass: "" },
       data: [],
+      isValid: false
     };
   },
-  update() {
+  updated() {
+    console.log('update');
+    this.isValid = this.validate(0);
     //_.app.bindLinks(this.$el);
   },
   created() {
-    console.log(this.app)
+    //console.log(this.app)
     //this.o.name = _.app.usuario;
   },
   methods: {
     focus(e) {
-      console.log(e.target.nextSibling.focus());
+      //console.log(e.target.nextSibling.focus());
     },
     focusout(e) {
       if (!e.target.value) {
         e.target.parentNode.classList.remove("v-focus");
       }
     },
-    success(d) {
-      var me = this;
-      if (d.token) {
+    initSession(session) {
+      const me = this;
+      me.session = session;
+      me.app.connect();
+      me.$router.push("/");
+    },
+    success({ token, perms, user_nicename }) {
+      const me = this;
+      if (token) {
         axios.defaults.headers.common = {
-          Authorization: `Bearer ` + d.token,
+          Authorization: `Bearer ` + token,
         };
-        setTimeout(async () => {
-          await axios.get("/api/user").then(function (r) {
-            d = { token: d.token, people: { display_name: r.data.data.display_name }, perms: r.data.allcaps };
+        if (perms) {
+          me.initSession({ token, people: { display_name: user_nicename }, perms });
+        } else {
+          axios.get("/api/user").then(({ data }) => {
+            me.initSession({ token, people: { display_name: data.data.display_name }, perms: data.allcaps });
           });
-          me.session = d;
-          me.app.connect();
-          me.app.increment();
-          me.$router.push("/");
-        });
+        }
       } else {
         this.openToast();
         //_.MsgBox('El usuario o la contrase&ntilde;a no son reconocidas por el servidor.');
@@ -94,102 +102,24 @@ export default ui({
     },
     login() {
       var me = this;
-      me.o.name = me.o.name == undefined ? "" : me.o.name;
-      me.o.pass = me.o.pass == undefined ? "" : me.o.pass;
-      if (me.validate(this.$el)) {
+      if (me.validate(me.$el)) {
         axios.config = {};
         axios.defaults.headers.common = {};
-        alert('login')
-        axios.post("/jwt-auth/v1/token", {
+        axios.post(import.meta.env.VITE_LOGIN_PATH, {
           username: this.o.name,
           password: this.o.pass,
-        })
-          .then((response) => {
-            me.success(response.data);
-          });
-        /*fetch(me.app.baseURL+'/jwt-auth/v1/token', {
-            method: 'post',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({username:this.o.name,password:this.o.pass})
-          }).then(res => res.json()).then(res => me.success(res));	*/
+        }).then((response) => {
+          me.success(response.data);
+        });
       }
     },
     async openToast() {
-      const toast = await this.$ionic.toastController.create({
+      const toast = await toastController.create({
         message: "El correo o contraseña es incorrecto",
         duration: 4000,
       });
       await toast.present();
-    },
-    validate() {
-      var me = this;
-      var ok = true;
-      var input = me.$el.querySelectorAll(
-        "input,select,textarea,div[required=required]"
-      );
-      var radio = {};
-      for (i = 0; input.length > i; i++) {
-        var e = input[i];
-        if (e.type === "radio") {
-          var oo = radio[e.name];
-          if (!oo) radio[e.name] = oo = [];
-          oo.push(e);
-          continue;
-        }
-        var previousSibling = e.previousSibling;
-        if (
-          previousSibling &&
-          previousSibling.classList &&
-          previousSibling.classList.contains("v-error")
-        ) {
-          previousSibling.parentNode.removeChild(previousSibling);
-        }
-        if (
-          !(e.disabled || e.getAttribute("disabled")) &&
-          (e.required || e.tagName === "DIV")
-        ) {
-          if (e.value == 0 || (e.tagName === "DIV" && !e.attributes.value)) {
-            previousSibling = e.previousSibling;
-            while (previousSibling && previousSibling.nodeType != 1) {
-              previousSibling = previousSibling.previousSibling;
-            }
-            if (!previousSibling) {
-              previousSibling = e.parentElement.previousSibling;
-              while (previousSibling && previousSibling.nodeType != 1) {
-                previousSibling = previousSibling.previousSibling;
-              }
-            }
-          }
-        }
-      }
-      for (var r in radio) {
-        if (Object.prototype.hasOwnProperty.call(radio, r)) {
-          var op = radio[r];
-          var checked = false;
-          var required = false;
-          for (var i = 0; i < op.length; i++) {
-            if (op[i].required && !op[i].disabled) required = true;
-            if (op[i].checked) checked = true;
-          }
-          e = op[0].parentNode.parentNode;
-          previousSibling = e.previousSibling;
-          if (
-            previousSibling &&
-            previousSibling.classList &&
-            previousSibling.classList.contains("v-error")
-          ) {
-            previousSibling.parentNode.removeChild(previousSibling);
-          }
-          if (required && !checked) {
-            me.showerror(e);
-            ok = false;
-          }
-        }
-      }
-      return ok;
-    },
+    }
   },
 });
 </script>

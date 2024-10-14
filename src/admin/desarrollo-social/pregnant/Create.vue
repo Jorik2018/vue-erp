@@ -1,149 +1,70 @@
 <template>
-  <v-form
-    action="/api/desarrollo-social/pregnant"
-    :header="(o.id ? 'Editar' : 'Crear') + ' Gestante'"
-    :class="
-      o.id < 0 || (o.tmpId && !o.synchronized)
-        ? 'yellow'
-        : o.tmpId
-        ? 'green'
-        : ''
-    "
-    store="pregnant"
-  >
+  <v-form action="/api/desarrollo-social/pregnant" :header="(o.id ? 'Editar' : 'Crear') + ' Gestante'" :class="o.id < 0 || (o.tmpId && !o.synchronized)
+    ? 'yellow'
+    : o.tmpId
+      ? 'green'
+      : ''
+    " store="pregnant">
     <div class="v-form">
       <label>ID:</label>
       <div>{{ pad(o.id ? o.id : 0, 4) }}</div>
       <label>DIRESA:</label>
       <div>ANCASH</div>
       <label>Red:</label>
-      <v-select
-        v-model="o.red"
-        ref="red"
-        v-on:input="$refs.microredSelect.load({ Codigo_Red: o.red })"
-        :required="true"
-      >
+      <v-select v-model="o.red" ref="red" v-on:input="$refs.microredSelect.load({ Codigo_Red: o.red })"
+        :required="true">
         <option>Select One...</option>
         <v-options store="red" display-field="name" value-field="code" />
       </v-select>
       <label>Microred:</label>
-      <v-select
-        autoload="false"
-        :disabled="!o.red"
-        store="microred"
-        ref="microredSelect"
-        v-model="o.microred"
-        :required="true"
-        @input="$refs.establishment.load({ microredCode:'02'+o.microred})"
-      >
+      <v-select autoload="false" :disabled="!o.red" store="microred" ref="microredSelect" v-model="o.microred"
+        :required="true" @input="$refs.establishment.load({ microredCode: '02' + o.microred })">
         <option>Select One...</option>
         <v-options store="microred" display-field="name" value-field="code" />
       </v-select>
       <label>Establecimiento:</label>
-      <v-select
-        ref="establishment"
-        @input="inputEstablishment"
-        v-model="o.codigoEESS"
-        :autoload="false"
-        :disabled="!o.microred"
-        :required="true"
-      >
+      <v-select ref="establishment" @input="inputEstablishment" v-model="o.codigoEESS" :autoload="false"
+        :disabled="!o.microred" :required="true">
         <option>Select One...</option>
-        <v-options
-          store="establishment"
-          display-field="name"
-          value-field="code"
-        />
+        <v-options store="establishment" display-field="name" value-field="code" />
       </v-select>
 
       <label>Provincia:</label>
       <div v-if="!o.region" class="alert">No hay una región por defecto</div>
-      <v-select
-        ref="province"
-        :disabled="!o.region"
-        storage="province_selected"
-        v-model="o.province"
-        :required="true"
-        @input="$refs.district.load({ code: o.province })"
-      >
+      <v-select ref="province" :disabled="!o.region" storage="province_selected" v-model="o.province" :required="true"
+        @input="$refs.district.load({ code: o.province })">
         <option>Select One...</option>
         <v-options store="province" display-field="name" value-field="code" />
       </v-select>
       <label>Distrito:</label>
-      <v-select
-        ref="district"
-        :autoload="false"
-        store="district_selected"
-        :disabled="!o.province"
-        v-model="o.district"
-        name="district"
-        required="true"
-        @input="$refs.cpSelect.load({ id: o.district })"
-      >
+      <v-select ref="district" :autoload="false" store="district_selected" :disabled="!o.province" v-model="o.district"
+        name="district" required="true" @input="$refs.cpSelect.load({ id: o.district })">
         <option value="">Select One...</option>
         <v-options store="district" value-field="code" display-field="name" />
       </v-select>
 
       <label>Centro Poblado:</label>
-      <v-select
-        :autoload="false"
-        :label="o.districtName ? o.districtName : '---'"
-        :disabled="!o.district"
-        required="required"
-        ref="cpSelect"
-        v-model="o.codigoCCPP"
-        @input="inputCCPP"
-      >
+      <v-select :autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.district"
+        required="required" ref="cpSelect" v-model="o.codigoCCPP" @input="inputCCPP">
         <option value="">Seleccionar Opción</option>
         <v-options store="town" display-field="name" value-field="id" />
       </v-select>
       <label>Sector:</label>
-      <input
-        type="text"
-        v-model="o.sector"
-        required="required"
-      />
+      <input type="text" v-model="o.sector" required="required" />
       <label>Dirección:</label>
-      <input
-        type="text"
-        v-model="o.address"
-        required="required"
-        title="Direccion"
-      />
+      <input type="text" v-model="o.address" required="required" title="Direccion" />
       <v-fieldset legend="DATOS PERSONALES">
         <label>DNI:</label>
-        <input
-          type="text"
-          v-model="o.numeroDNI"
-          required="required"
-          title="Numero DNI"
-        />
+        <input type="text" v-model="o.numeroDNI" required="required" title="Numero DNI" />
         <label>Apellidos:</label>
-        <input
-          type="text"
-          v-model="o.apellidoPaterno"
-          required="required"
-        />
+        <input type="text" v-model="o.apellidoPaterno" required="required" />
         <label>Nombres:</label>
-        <input
-          type="text"
-          v-model="o.nombres"
-          required="required"
-        />
-       
+        <input type="text" v-model="o.nombres" required="required" />
+
         <label>Fecha Nacimiento:</label>
-        <v-calendar
-          v-model="o.fechaNacimiento"
-          required="required"
-          title="Fecha Nacimiento"
-          :max="today"
-        />
+        <v-calendar v-model="o.fechaNacimiento" required="required" title="Fecha Nacimiento" :max="today" />
         <label>Estado Civil:</label>
-        <v-select
-          v-model="o.estadoCivil"
-          required="required"
-          title="Estado Civil"
-        >
+        <v-select v-model="o.estadoCivil" required="required" title="Estado Civil">
           <option value="">Select One...</option>
           <option value="SOLTERO">SOLTERO (A)</option>
           <option value="CASADO">CASADO (A)</option>
@@ -169,225 +90,116 @@
           <option value="NO ESTUDIO">NO ESTUDIO</option>
         </v-select>
         <label>Gestante Numero Celular:</label>
-        <input
-          type="tel"
-          v-model="o.gestanteNumeroCelular"
-          required="required"
-          title="Gestante Numero Celular"
-        />
+        <input type="tel" v-model="o.gestanteNumeroCelular" required="required" title="Gestante Numero Celular" />
         <label>Gestante Familia Celular:</label>
-        <input
-          type="tel"
-          v-model="o.gestanteFamiliaCelular"
-          required="required"
-          title="Gestante Familia Celular"
-        />
+        <input type="tel" v-model="o.gestanteFamiliaCelular" required="required" title="Gestante Familia Celular" />
       </v-fieldset>
 
       <v-fieldset legend="DATOS OBSTETRICOS">
         <label>Gestante:</label>
-        <v-number
-          v-model="o.gestanteNumero"
-          required="required"
-          title="Gestante Numero"
-        />
+        <v-number v-model="o.gestanteNumero" required="required" title="Gestante Numero" />
         <label>Paridad:</label>
-        <v-number
-          v-model="o.gestanteParidad"
-          required="required"
-          title="Gestante Paridad"
-        />
+        <v-number v-model="o.gestanteParidad" required="required" title="Gestante Paridad" />
         <label>FUR:</label>
-        <v-calendar
-          v-model="o.gestanteFUR"
-          required="required"
-          title="Gestante FUR" :max="today"
-          @invalid="invalidDate"
-          @input="onInputFUR"
-        />
+        <v-calendar v-model="o.gestanteFUR" required="required" title="Gestante FUR" :max="today" @invalid="invalidDate"
+          @input="onInputFUR" />
         <label>FPP:</label>
-        <div
-          style="padding: 5px; border: 1px solid lightgrey; border-radius: 8px"
-        >
+        <div style="padding: 5px; border: 1px solid lightgrey; border-radius: 8px">
           {{ o.gestanteFPP || "yyyy-MM-dd" }}
         </div>
         <label>EG. En Semanas:</label>
-        <v-number
-          v-model="o.gestanteEdadGestacionalSemanas"
-          required="required"
-          title="Gestante Edad Gestacional Semanas"
-        />
+        <v-number v-model="o.gestanteEdadGestacionalSemanas" required="required"
+          title="Gestante Edad Gestacional Semanas" />
         <label>Riesgo Obstetrico:</label>
         <v-select v-model="o.gestanteRiesgoObstetrico" v-bind:required="true">
           <option>Select One...</option>
           <v-options store="cie" display-field="name" value-field="code" />
         </v-select>
       </v-fieldset>
-      <v-fieldset
-        legend="EMERGENCIA Y/O HOSPITALIZACION"
-        closable="true"
-        class="v-form"
-      >
+      <v-fieldset legend="EMERGENCIA Y/O HOSPITALIZACION" closable="true" class="v-form">
         <label>Red:</label>
-        <v-select
-          v-model="o.emergencyRed"
-          autoload="false"
-          ref="emergencyRed"
-          v-on:input="
-            $refs.emer_microred.load({ code: o.emergencyRed })
-          "
-        >
+        <v-select v-model="o.emergencyRed" autoload="false" ref="emergencyRed" v-on:input="
+          $refs.emer_microred.load({ code: o.emergencyRed })
+          ">
           <option>Select One...</option>
           <v-options store="red" display-field="name" value-field="code" />
         </v-select>
         <label>Microred:</label>
-      <v-select
-        autoload="false"
-        :disabled="!o.emergencyRed"
-        store="microred"
-        ref="emer_microred"
-        v-model="o.emergencyMicrored"
-        :required="true"
-        @input="$refs.emer_establishment.load({ microredCode:'02'+ o.emergencyMicrored,type:1  })"
-      >
-        <option>Select One...</option>
-        <v-options store="microred" display-field="name" value-field="code" />
-      </v-select>
-        <label>IPRESS:</label>
-        <v-select
-          ref="emer_establishment"
-          v-model="o.lugarIPRESS"
-          :autoload="true"
-          :disabled="!o.emergencyMicrored"
-        >
-          <option>Select One...</option>
-          <v-options
-            store="establishment"
-            display-field="name"
-            value-field="code"
-          />
-        </v-select>
-        <label>Diagnostico:</label>
-        <v-textarea
-          type="text"
-          v-model="o.lugarDiagnostico"
-          title="Lugar Diagnostico"
-        />
-        <label>Fecha:</label>
-        <v-calendar
-          v-model="o.lugarFechaEmergencia"
-          title="Lugar Fecha Emergencia"
-        />
-        <label>Referencia:</label>
-        <v-calendar v-model="o.lugarFechaReferida" />
-      </v-fieldset>
-      <v-fieldset
-        legend="MIGRACIÓN"
-        class="v-form"
-        closable="true"
-        v-model="o.migration"
-      >
-        <label>Red:</label>
-        <v-select
-          v-model="o.migra_red"
-          autoload="false"
-          ref="migra_red"
-          v-on:input="
-            $refs.migra_microredSelect.load({ Codigo_Red: o.migra_red })
-          "
-        >
-          <option>Select One...</option>
-          <v-options store="red" display-field="name" value-field="code" />
-        </v-select>
-        <label>Microred:</label>
-        <v-select
-          autoload="false"
-          :disabled="!o.migra_red"
-          store="microred"
-          ref="migra_microredSelect"
-          v-model="o.migra_microred"
-          :required="true"
-          @input="
-            $refs.migra_establishment.load({
-              microredCode:'02'+o.migra_microred,
-            })
-          "
-        >
+        <v-select autoload="false" :disabled="!o.emergencyRed" store="microred" ref="emer_microred"
+          v-model="o.emergencyMicrored" :required="true"
+          @input="$refs.emer_establishment.load({ microredCode: '02' + o.emergencyMicrored, type: 1 })">
           <option>Select One...</option>
           <v-options store="microred" display-field="name" value-field="code" />
         </v-select>
         <label>IPRESS:</label>
-        <v-select
-          ref="migra_establishment"
-          v-model="o.migracionIPRESS"
-          :autoload="false"
-          :disabled="!o.migra_microred"
-          :required="true"
-        >
+        <v-select ref="emer_establishment" v-model="o.lugarIPRESS" :autoload="true" :disabled="!o.emergencyMicrored">
           <option>Select One...</option>
-          <v-options
-            store="establishment"
-            display-field="name"
-            value-field="code"
-          />
+          <v-options store="establishment" display-field="name" value-field="code" />
+        </v-select>
+        <label>Diagnostico:</label>
+        <v-textarea type="text" v-model="o.lugarDiagnostico" title="Lugar Diagnostico" />
+        <label>Fecha:</label>
+        <v-calendar v-model="o.lugarFechaEmergencia" title="Lugar Fecha Emergencia" />
+        <label>Referencia:</label>
+        <v-calendar v-model="o.lugarFechaReferida" />
+      </v-fieldset>
+      <v-fieldset legend="MIGRACIÓN" class="v-form" closable="true" v-model="o.migration">
+        <label>Red:</label>
+        <v-select v-model="o.migra_red" autoload="false" ref="migra_red" v-on:input="
+          $refs.migra_microredSelect.load({ Codigo_Red: o.migra_red })
+          ">
+          <option>Select One...</option>
+          <v-options store="red" display-field="name" value-field="code" />
+        </v-select>
+        <label>Microred:</label>
+        <v-select autoload="false" :disabled="!o.migra_red" store="microred" ref="migra_microredSelect"
+          v-model="o.migra_microred" :required="true" @input="
+            $refs.migra_establishment.load({
+              microredCode: '02' + o.migra_microred,
+            })
+            ">
+          <option>Select One...</option>
+          <v-options store="microred" display-field="name" value-field="code" />
+        </v-select>
+        <label>IPRESS:</label>
+        <v-select ref="migra_establishment" v-model="o.migracionIPRESS" :autoload="false" :disabled="!o.migra_microred"
+          :required="true">
+          <option>Select One...</option>
+          <v-options store="establishment" display-field="name" value-field="code" />
         </v-select>
 
         <label>Observacion:</label>
-        <v-textarea
-          v-model="o.migracionObservacion"
-          title="Migracion Observacion"
-        />
+        <v-textarea v-model="o.migracionObservacion" title="Migracion Observacion" />
       </v-fieldset>
       <v-fieldset legend="Coordenadas" style="width: auto">
         <div class="right">
-          <v-button
-            icon="fa-compass"
-            value="Obtener Geolocalización"
-            v-on:click="printCurrentPosition"
-          />
+          <v-button icon="fa-compass" value="Obtener Geolocalización" v-on:click="printCurrentPosition" />
         </div>
-        <div
-          class="center"
-          v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0) || trayLocation"
-          style="
+        <div class="center" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0) || trayLocation" style="
             margin-top: 10px;
             border: 1px solid #ffcf00;
             background-color: #ffff80;
             padding: 10px;
-          "
-        >
+          ">
           ({{ o.lat }},{{ o.lon }})
         </div>
       </v-fieldset>
       <label>Estado:</label>
-        <v-select v-model="o.migracionEstado" required="required">
-          <option value="">Select One...</option>
+      <v-select v-model="o.migracionEstado" required="required">
+        <option value="">Select One...</option>
 
-          <option :value="item" :key="item"
-          v-for="item in ['GESTANTE','GESTANTE CAPTADA','PUERPERA','MER']">
-            {{ item }}
-          </option>
-        </v-select>
+        <option :value="item" :key="item" v-for="item in ['GESTANTE', 'GESTANTE CAPTADA', 'PUERPERA', 'MER']">
+          {{ item }}
+        </option>
+      </v-select>
     </div>
     <center>
-      <v-button
-        value="Grabar"
-        icon="fa-save"
-        class="blue"
-        @click.prevent="save"
-      ></v-button>
-      <v-button
-        style="margin-left: 10px"
-        value="Ver"
-        :disabled="!o.id"
-        icon="fa-eye"
-        class="blue"
-        @click.prevent="
-          $router.replace(
-            '/admin/desarrollo-social/pregnant/' + (o.tmpId ? -o.tmpId : o.id)
-          )
-        "
-      ></v-button>
+      <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
+      <v-button style="margin-left: 10px" value="Ver" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
+        $router.replace(
+          '/admin/desarrollo-social/pregnant/' + (o.tmpId ? -o.tmpId : o.id)
+        )
+        "></v-button>
     </center>
   </v-form>
 </template>
@@ -397,13 +209,14 @@ import { Camera, CameraResultType } from "@capacitor/camera";
 import { Filesystem, Directory } from "@capacitor/filesystem";
 import { Geolocation } from "@capacitor/geolocation";
 import "ol/ol.css";
-var {_,axios} = window;
-export default _.ui({
+import { ui, date } from 'vue3-ui'
+var { _, axios } = window;
+export default ui({
   props: ["id"],
   data() {
     return {
       count: 0,
-      today:null,
+      today: null,
       red: [],
       risk: [
         "INVIDENTE",
@@ -446,8 +259,9 @@ export default _.ui({
   },
   created() {
     var me = this;
-    if(!me.today)me.today=_.toDate(new Date(),'date-');
-    this.$on("sync", (o) => {
+    if (!me.today) me.today = date(new Date(), 'date-');
+
+    /*this.$on("sync", (o) => {
       me.getStoredList("pregnant").then((pregnants) => {
         pregnants.forEach((e) => {
           if (e.tmpId == Math.abs(o.tmpId)) {
@@ -478,7 +292,7 @@ export default _.ui({
           }
         });
       });
-    });
+    });*/
   },
   mounted() {
     var me = this;
@@ -492,13 +306,13 @@ export default _.ui({
         o.setMonth(o.getMonth() - 3);
         o.setDate(o.getDate() + 7);
       }
-      this.o.gestanteFPP = _.toDate(o, "date-");
+      this.o.gestanteFPP = date(o, "date-");
     },
     inputCCPP(a, b) {
-        this.o.ccpp = b&&b.object ? (b.object.name) : "";
+      this.o.ccpp = b && b.object ? (b.object.name) : "";
     },
     inputEstablishment(a, b) {
-        this.o.establecimientoSalud = b&&b.object ? b.object.name : "";
+      this.o.establecimientoSalud = b && b.object ? b.object.name : "";
     },
     process(o) {
       if (!this.trayLocation) {
@@ -507,7 +321,7 @@ export default _.ui({
       }
       return o;
     },
-    errorImg() {},
+    errorImg() { },
     changeImage(result) {
       var me = this,
         o = me.o;
@@ -657,7 +471,7 @@ export default _.ui({
         } catch (e) {
           console.log(e);
         }
-        me.$refs.province.load({ code: me.o.region||'02' });
+        me.$refs.province.load({ code: me.o.region || '02' });
       }
     },
     close(r) {
@@ -682,8 +496,8 @@ export default _.ui({
       me.o.lat = c.coords.latitude;
       me.o.lon = c.coords.longitude;
     },
-    invalidDate(e){
-      this.MsgBox('Fecha no valida '+e.value);
+    invalidDate(e) {
+      this.MsgBox('Fecha no valida ' + e.value);
     },
     getCoordinates() {
       var me = this;

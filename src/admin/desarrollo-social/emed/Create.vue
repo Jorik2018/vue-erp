@@ -1,17 +1,16 @@
 <template>
-  <v-form action="/api/desarrollo-social/emed" :header="(o.id ? 'Editar' : 'Crear') + '  Evento'" :class="
-    o.id < 0 || (o.tmpId && !o.synchronized)
+  <v-form action="/api/desarrollo-social/emed" :header="(o.id ? 'Editar' : 'Crear') + '  Evento'" :class="o.id < 0 || (o.tmpId && !o.synchronized)
       ? 'yellow'
       : o.tmpId
         ? 'green'
         : ''
-  " store="emed">
+    " store="emed">
     <div class="v-form">
       <label>ID:</label>
       <div>{{ pad(o.id || 0, 4) }}</div>
       <v-fieldset legend="Datos generales" class="v-form">
         <label>Codigo:</label>
-        <input v-model="o.code"/>
+        <input v-model="o.code" />
         <label>Fecha:</label>
         <v-calendar required v-model="o.date" />
         <label>Hora:</label>
@@ -38,7 +37,7 @@
           </option>
         </v-select>
         <label>Descripción:</label>
-        <v-textarea v-model="o.description" maxlength="500"/>
+        <v-textarea v-model="o.description" maxlength="500" />
       </v-fieldset>
 
       <v-fieldset legend="Ubicación" class="v-form">
@@ -63,7 +62,7 @@
           <option value="">Seleccionar Opción</option>
           <v-options store="town" display-field="name" value-field="id" />
         </v-select>
-        
+
         <label>Referencia:</label>
         <v-textarea v-model="o.referencia" maxlength="200" />
       </v-fieldset>
@@ -131,11 +130,12 @@
     <center>
       <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
       <v-button style="margin-left: 10px" value="Ver" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
-  $router.replace(
-    '/admin/desarrollo-social/emed/' + (o.tmpId ? -o.tmpId : o.id)
-  )
-      "></v-button>
+        $router.replace(
+          '/admin/desarrollo-social/emed/' + (o.tmpId ? -o.tmpId : o.id)
+        )
+        "></v-button>
     </center>
+
   </v-form>
 </template>
 <script>
@@ -146,11 +146,12 @@ import { Geolocation } from "@capacitor/geolocation";
 import "ol/ol.css";
 import Feature from "ol/Feature";
 import Icon from "ol/style/Icon";
+import { ui } from 'vue3-ui'
 var { _, axios, ol } = window;
 ol.style.Icon = Icon;
 ol.style.Feature = Feature;
 
-export default _.ui({
+export default ui({
   props: ["id"],
   data() {
     return {

@@ -1,24 +1,24 @@
 <template>
-  <v-form action="/api/desarrollo-social/cancer" :header="(o.id ? 'Editar' : 'Crear') + '  Registro Cancer'"
-    :class="
-      o.id < 0 || (o.tmpId && !o.synchronized)
-        ? 'yellow'
-        : o.tmpId
-          ? 'green'
-          : ''
+  <v-form action="/api/desarrollo-social/cancer" :header="(o.id ? 'Editar' : 'Crear') + '  Registro Cancer'" :class="o.id < 0 || (o.tmpId && !o.synchronized)
+    ? 'yellow'
+    : o.tmpId
+      ? 'green'
+      : ''
     " store="cancer">
     <div class="v-form">
       <label>ID:</label>
       <div>{{ pad(o.id || 0, 4) }}</div>
       <v-fieldset legend="Datos generales" class="v-form">
         <label>DNI:</label>
-        <input v-model="o.dni" class="center"/>
+        <input v-model="o.dni" class="center" />
         <label>Apellidos y Nombres:</label>
         <input v-model="o.apellidos_nombres" />
         <label>Fecha Nacimiento:</label>
-        <v-calendar v-model="o.fecha_nacimiento" @input="inputEdad"/>
+        <v-calendar v-model="o.fecha_nacimiento" @input="inputEdad" />
         <label>Edad:</label>
-        <div class="readonly">{{ ((age==o.edad?'':( age||age==0?age:'---')+' -> '))+( o.edad||o.edad==0?o.edad:'---')}}</div>
+        <div class="readonly">{{ ((age == o.edad ? '' : (age || age == 0 ? age : '---') + ' -> ')) + (o.edad || o.edad
+          == 0 ? o.edad : '---') }}
+        </div>
         <label>Sexo:</label>
         <v-radio-group required="true" v-model="o.sexo">
           <v-radio label="Masculino" value="M"></v-radio>
@@ -26,8 +26,8 @@
         </v-radio-group>
 
         <label>Red:</label>
-        <v-select v-model="o.red" ref="red"
-          v-on:input="$refs.microredSelect.load({ Codigo_Red: o.red })" :required="true">
+        <v-select v-model="o.red" ref="red" v-on:input="$refs.microredSelect.load({ Codigo_Red: o.red })"
+          :required="true">
           <option>Select One...</option>
           <v-options store="red" display-field="name" value-field="code" />
         </v-select>
@@ -51,7 +51,7 @@
             {{ item }}
           </option>
         </v-select>
-        
+
         <label>Telefono:</label>
         <input v-model="o.telefono" />
         <label>Menarquia:</label>
@@ -89,13 +89,13 @@
           <option value="">Seleccionar Opción</option>
           <v-options store="town" display-field="name" value-field="id" />
         </v-select>
-        <div>{{o.province}}/{{o.district}}/{{o.ccpp}}</div>
+        <div>{{ o.province }}/{{ o.district }}/{{ o.ccpp }}</div>
         <label>Dirección:</label>
-        <v-textarea v-model="o.direccion" maxlength="255"/>
+        <v-textarea v-model="o.direccion" maxlength="255" />
         <label>Referencia:</label>
-        <v-textarea v-model="o.referencia" maxlength="255"/>
+        <v-textarea v-model="o.referencia" maxlength="255" />
         <label>Sector:</label>
-        <v-textarea v-model="o.sector" maxlength="255"/>
+        <v-textarea v-model="o.sector" maxlength="255" />
       </v-fieldset>
 
 
@@ -107,22 +107,14 @@
       </v-map-->
       <v-fieldset legend="Coordenadas" style="width: auto">
         <div class="right">
-          <v-button
-            icon="fa-compass"
-            value="Obtener Geolocalización"
-            v-on:click="printCurrentPosition"
-          />
+          <v-button icon="fa-compass" value="Obtener Geolocalización" v-on:click="printCurrentPosition" />
         </div>
-        <div
-          class="center"
-          v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0) || trayLocation"
-          style="
+        <div class="center" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0) || trayLocation" style="
             margin-top: 10px;
             border: 1px solid #ffcf00;
             background-color: #ffff80;
             padding: 10px;
-          "
-        >
+          ">
           ({{ o.lat }},{{ o.lon }})
         </div>
       </v-fieldset>
@@ -137,25 +129,26 @@ import { Geolocation } from "@capacitor/geolocation";
 import "ol/ol.css";
 import Feature from "ol/Feature";
 import Icon from "ol/style/Icon";
+import { ui } from 'vue3-ui'
 var { _, axios, ol } = window;
-ol.style.Icon = Icon;
-ol.style.Feature = Feature;
-export default _.ui({
+//ol.style.Icon = Icon;
+//ol.style.Feature = Feature;
+export default ui({
   props: ["id"],
   data() {
     return {
       count: 0,
       red: [],
-      age:null,
-      financiador:[
-        "NINGUNA","SIS", "ESSALUD", "PRIVADA", "PNP" 
+      age: null,
+      financiador: [
+        "NINGUNA", "SIS", "ESSALUD", "PRIVADA", "PNP"
       ],
       resultadoVisita: ["EJECUTADO", "RECHAZADO", "ABANDONADO"],
       trayLocation: null,
       o: {
         id: null,
-        province_code:null,
-        district_code:null,
+        province_code: null,
+        district_code: null,
         synchronized: null,
         lat: null,
         tmpId: null,
@@ -184,7 +177,7 @@ export default _.ui({
   },
   created() {
     var me = this;
-    me.$on("sync", (o) => {
+    /*me.$on("sync", (o) => {
       me.getStoredList("cancer").then((cancers) => {
         cancers.forEach((e) => {
           if (e.tmpId == Math.abs(o.tmpId)) {
@@ -206,7 +199,7 @@ export default _.ui({
           }
         });
       });
-    });
+    });*/
   },
   mounted() {
     var me = this;
@@ -214,8 +207,8 @@ export default _.ui({
   },
 
   methods: {
-    inputEdad(){
-      this.o.edad=this.o.fecha_nacimiento?this.app.getAge(this.o.fecha_nacimiento):null;
+    inputEdad() {
+      this.o.edad = this.o.fecha_nacimiento ? this.app.getAge(this.o.fecha_nacimiento) : null;
     },
     async printCurrentPosition() {
       this.trayLocation = 1;
@@ -233,14 +226,14 @@ export default _.ui({
       }
       this.o.gestanteFPP = _.toDate(o, "date-");
     },
-    inputProvince(a,b){
-      var me=this,o=me.o;
-      o.province=(b ? b.object.name || "" : "");
+    inputProvince(a, b) {
+      var me = this, o = me.o;
+      o.province = (b ? b.object.name || "" : "");
       me.$refs.district.load({ code: o.province_code })
     },
-    inputDistrict(a,b){
-      var me=this,o=me.o;
-      o.district=b ? b.object.name || "" : "";
+    inputDistrict(a, b) {
+      var me = this, o = me.o;
+      o.district = b ? b.object.name || "" : "";
       me.$refs.ccpp.load({ id: o.district_code })
     },
     inputCCPP(a, b) {
@@ -282,8 +275,8 @@ export default _.ui({
         var c = coordinates.coords;
         me.o.lat = c.latitude;
         me.o.lon = c.longitude;
-        if(m)
-        m.addFeature({ draggable: true, lat: me.o.lat, lon: me.o.lon }, { zoom: 14 });
+        if (m)
+          m.addFeature({ draggable: true, lat: me.o.lat, lon: me.o.lon }, { zoom: 14 });
       } else
         m.map.getView().animate({
           center: m.collection.item(0).getGeometry().getCoordinates(),
@@ -293,15 +286,15 @@ export default _.ui({
     },
     async changeRoute() {
       var me = this,
-        id = me.id, m = me.$refs.map;me.age=0;
+        id = me.id, m = me.$refs.map; me.age = 0;
       me.trayLocation = 0;
       if (id < 0) {
         me.getStoredList("cancer").then((cancer) => {
           cancer.forEach((e) => {
             if (e.tmpId == Math.abs(me.id)) {
               me.o = e;
-              if(m)
-              m.addFeature({ draggable: true, lat: me.o.lat, lon: me.o.lon }, { zoom: 14 });
+              if (m)
+                m.addFeature({ draggable: true, lat: me.o.lat, lon: me.o.lon }, { zoom: 14 });
               me.$refs.province.load({ code: me.o.region || "02" });
               me.trayLocation = Number(e.lat) && e.lon;
             }
@@ -322,14 +315,14 @@ export default _.ui({
               o.province_code = me.pad(o.province_code, 4);
               o.region = o.province_code.substring(0, 2);
             }
-            if (o.district_code) o.district_code= me.pad(o.district_code, 6);
-            if (o.ccpp_code) o.ccpp_code= me.pad(o.ccpp_code, 10);
+            if (o.district_code) o.district_code = me.pad(o.district_code, 6);
+            if (o.ccpp_code) o.ccpp_code = me.pad(o.ccpp_code, 10);
             me.trayLocation = 0;
             me.o = o;
-            me.age=o.edad;
-            if(Number(o.lat)&&Number(o.lon)){
-              if(m)
-              m.addFeature({ draggable: true, lat: o.lat, lon: o.lon }, { zoom: 14 });
+            me.age = o.edad;
+            if (Number(o.lat) && Number(o.lon)) {
+              if (m)
+                m.addFeature({ draggable: true, lat: o.lat, lon: o.lon }, { zoom: 14 });
               me.trayLocation = 1;
             }
             me.$refs.province.load({ code: o && o.region || '02' });

@@ -13,7 +13,6 @@ import { IsobitUI} from 'vue3-ui'
 const app = createApp(App)
 app.config.ignoredElements = [/^ion-/,/^v-/];
 app.config.productionTip = false;
-IsobitUI.init(app)
 app.use(createPinia())
 app.use(router)
 app.use(IsobitUI)
