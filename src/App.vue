@@ -4,7 +4,6 @@
 <script lang="ts">
 import axios from "axios";
 import { ui, initDB } from "vue3-ui";
-console.log('importe app in app.vue');
 import { LocalNotifications } from "@capacitor/local-notifications";
 import { Network } from "@capacitor/network";
 import { toastController } from '@ionic/vue';
@@ -27,7 +26,7 @@ export default ui({
     } else
       me.$router.push("/");
     let networkStatusChange = (status) => {
-      me.app.networkStatus = status;
+      me.app2.networkStatus = status;
     };
     Network.addListener("networkStatusChange", networkStatusChange);
     Network.getStatus().then(networkStatusChange);

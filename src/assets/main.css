@@ -12,6 +12,13 @@
 }
 #app > .ui-panel{
     flex: 1;
+}
+#app{
+    display: flex;
+    flex-direction: column;
+    height: -webkit-fill-available;
+}
+#app > .ui-panel{
     height: 0px;
 }
 #app > .ui-panel > .v-dialog-content{
@@ -24,5 +31,8 @@
     .v-datatable-header button:not(.x-bmenu) {
         visibility: unset !important; 
         -display: unset !important; 
+    }
+    .v-button{
+        font-size: 1rem;
     }
 }

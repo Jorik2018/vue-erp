@@ -22,7 +22,7 @@
         </v-select>
         <label>Microred:</label>
         <v-select autoload="false" :disabled="!o.red" store="microred" ref="microredSelect" v-model="o.microred"
-          :required="true" @input="$refs.establishment.load({ microredCode: '02' + o.microred })">
+          :required="true" @input="$refs.establishment.load({ microredCode: o.microred })">
           <option>Select One...</option>
           <v-options store="microred" display-field="name" value-field="code" />
         </v-select>
@@ -74,14 +74,11 @@
   </v-form>
 </template>
 <script>
-import { Geolocation } from "@capacitor/geolocation";
 import "ol/ol.css";
-import Feature from "ol/Feature";
-import Icon from "ol/style/Icon";
+import { Geolocation } from "@capacitor/geolocation";
+import axios from 'axios';
 import { ui } from 'vue3-ui'
-var { _, axios, ol } = window;
-//ol.style.Icon = Icon;
-//ol.style.Feature = Feature;
+
 export default ui({
   props: ["id"],
   data() {
@@ -121,8 +118,18 @@ export default ui({
     },
   },
   created() {
-    var me = this;
+    const me = this;
     /*me.$on("sync", (o) => {
+      me.sync(o)
+    });*/
+  },
+  mounted() {
+    const me = this;
+    me.changeRoute();
+  },
+
+  methods: {
+    sync(o) {
       me.getStoredList("vea-materno").then((items) => {
         items.forEach((e) => {
           if (e.tmpId == Math.abs(o.tmpId)) {
@@ -144,21 +151,14 @@ export default ui({
           }
         });
       });
-    });*/
-  },
-  mounted() {
-    var me = this;
-    me.changeRoute();
-  },
-
-  methods: {
+    },
     inputEdad() {
       this.o.edad = this.o.fecha_nacimiento ? this.app.getAge(this.o.fecha_nacimiento) : null;
     },
     async printCurrentPosition() {
       this.trayLocation = 1;
       const coordinates = await Geolocation.getCurrentPosition();
-      var c = coordinates.coords;
+      const c = coordinates.coords;
       this.o.lat = c.latitude;
       this.o.lon = c.longitude;
     },
@@ -172,12 +172,12 @@ export default ui({
       this.o.gestanteFPP = _.toDate(o, "date-");
     },
     inputProvince(a, b) {
-      var me = this, o = me.o;
+      const me = this, o = me.o;
       o.province = (b ? b.object.name || "" : "");
       me.$refs.district.load({ code: o.province_code })
     },
     inputDistrict(a, b) {
-      var me = this, o = me.o;
+      const me = this, o = me.o;
       o.district = b ? b.object.name || "" : "";
       me.$refs.ccpp.load({ id: o.district_code })
     },
@@ -185,13 +185,14 @@ export default ui({
       this.o.ccpp = b ? b.object.name || "" : "";
     },
     inputEstablishment(a, b) {
-      this.o.establecimiento = b ? b.object.name : "";
+      //this.o.establecimiento = b ? b.object.name : "";
+
     },
     process(o) {
       return o;
     },
     mapBuild() {
-      var o = this.o;
+      const o = this.o;
       if (0 > o.lon) {
         this.$refs.map.addFeature(
           {
@@ -207,13 +208,13 @@ export default ui({
       this.o.lon = o.lon;
     },
     async addMarker() {
-      //var o = this.o;
-      var me = this,
+      //let o = this.o;
+      const me = this,
         m = me.$refs.map;
       if (!m.collection.getLength()) {
         me.trayLocation = 1;
         const coordinates = await Geolocation.getCurrentPosition();
-        var c = coordinates.coords;
+        const c = coordinates.coords;
         me.o.lat = c.latitude;
         me.o.lon = c.longitude;
         if (m)
@@ -226,7 +227,7 @@ export default ui({
         });
     },
     async changeRoute() {
-      var me = this,
+      const me = this,
         id = me.id, m = me.$refs.map; me.age = 0;
       me.trayLocation = 0;
       if (id < 0) {
@@ -245,7 +246,7 @@ export default ui({
         axios
           .get("/api/desarrollo-social/vea-materno/" + id)
           .then((response) => {
-            var o = response.data;
+            const o = response.data;
             if (o.red) {
               o.red = me.pad(o.red, 2);
             }
@@ -259,6 +260,7 @@ export default ui({
             if (o.district_code) o.district_code = me.pad(o.district_code, 6);
             if (o.ccpp_code) o.ccpp_code = me.pad(o.ccpp_code, 10);
             me.trayLocation = 0;
+            console.log(o);
             me.o = o;
             me.age = o.edad;
             if (Number(o.lat) && Number(o.lon)) {
@@ -266,28 +268,29 @@ export default ui({
                 m.addFeature({ draggable: true, lat: o.lat, lon: o.lon }, { zoom: 14 });
               me.trayLocation = 1;
             }
-            me.$refs.province.load({ code: o && o.region || '02' });
+            //me.$refs.province.load({ code: o && o.region || '02' });
           });
       } else {
         try {
-          var s = localStorage.getItem("setting");
+          let s = localStorage.getItem("setting");
           if (s) {
             s = JSON.parse(s);
-            var o = this.o;
-            if (s.region) o.region = s.region.code;
+            const o = this.o;
+            if (s.red) o.red = s.red;
+            o.microred = s.microred;
+            /*if (s.region) o.region = s.region.code;
             if (s.province) o.province_code = s.province.code;
             if (s.district) o.district_code = s.district.code;
-            if (s.town) o.ccpp_code = s.town.id;
+            if (s.town) o.ccpp_code = s.town.id;*}7
             /*o.town = s.town;*/
           }
         } catch (e) {
           console.log(e);
         }
-        me.$refs.province.load({ code: me.o && me.o.region || '02' });
       }
     },
     close(r) {
-      var me = this, o = me.o;
+      const me = this, o = me.o;
       if (r.success === true) {
         me.o.id = r.data.id;
         me.o.tmpId = r.data.tmpId;
@@ -295,19 +298,20 @@ export default ui({
           delete o.tempFile;
         }
       }
-      var nid = o.tmpId ? -o.tmpId : o.id;
-      if (me.id != nid)
+      const nid = o.tmpId ? -o.tmpId : o.id;
+      if (me.id != nid) {
         me.$router.replace("/admin/desarrollo-social/vea-materno/" + nid);
+      }
     },
     async getCurrentPosition() {
-      var me = this;
+      const me = this;
       //const {Geolocation} = Plugins;
       const c = await Geolocation.getCurrentPosition();
       me.o.lat = c.coords.latitude;
       me.o.lon = c.coords.longitude;
     },
     getCoordinates() {
-      var me = this;
+      const me = this;
       if (me.getCurrentPosition) {
         me.getCurrentPosition();
       } else

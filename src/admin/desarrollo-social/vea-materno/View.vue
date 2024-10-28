@@ -1,12 +1,11 @@
 <template>
   <v-form action="/api/desarrollo-social/vea-materno" :title="o.synchronized" header="VEA Materno" @resize="onResize"
-    store="vea-materno" :class="
-      o.id < 0 || (o.tmpId && !o.synchronized)
-        ? 'yellow'
-        : o.tmpId
-          ? 'green'
-          : ''
-    ">
+    store="vea-materno" :class="o.id < 0 || (o.tmpId && !o.synchronized)
+      ? 'yellow'
+      : o.tmpId
+        ? 'green'
+        : ''
+      ">
     <div class="v-form">
       <label>ID:</label>
       <div>
@@ -24,25 +23,24 @@
         <div>{{ o.equipo_tecnico || '---' }}</div>
       </v-fieldset>
 
-      <v-fieldset legend="Coordenadas" style="width: auto">
-        <div class="center coordinates" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0)">
-          <a :href="
-            'https://www.google.com/maps/search/?api=1&query=' +
+      <v-fieldset legend="Coordenadas" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0)" style="width: auto">
+        <div class="center coordinates">
+          <a :href="'https://www.google.com/maps/search/?api=1&query=' +
             o.lat +
             ',' +
             o.lon
-          " target="_blank">({{ o.lat ? o.lat : "---" }},{{ o.lon }})</a>
+            " target="_blank">({{ o.lat ? o.lat : "---" }},{{ o.lon }})</a>
         </div>
       </v-fieldset>
     </div>
     <center style="margin-bottom: 10px">
-      <v-button style="margin-left: 10px" value="Editar" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
-  $router.replace(
-    '/admin/desarrollo-social/vea-materno/' +
-    (o.tmpId ? -o.tmpId : o.id) +
-    '/edit'
-  )
-      "></v-button>
+      <v-button value="Editar" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
+        $router.replace(
+          '/admin/desarrollo-social/vea-materno/' +
+          (o.tmpId ? -o.tmpId : o.id) +
+          '/edit'
+        )
+        "></v-button>
     </center>
   </v-form>
 </template>
@@ -50,14 +48,20 @@
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Camera, CameraResultType } from '@capacitor/camera';
+import { ui, db, getStoredList } from 'vue3-ui'
+import axios from 'axios';
 
-var { _, axios } = window;
-export default _.ui({
+export default ui({
+
   props: ["id"],
+  emits: {
+    sync() {
+      alert('sync')
+    }
+  },
   created() {
-    var me = this;
-    me.getStoredList("vea-materno").then((emeds) => {
-
+    const me = this;
+    getStoredList("vea-materno").then((emeds) => {
       me.$on("destroyed", (e, storeName) => {
         e.forEach((o) => {
           emeds.forEach((e) => {
@@ -66,26 +70,25 @@ export default _.ui({
               e.id == o.emedId
             ) {
               console.log(storeName);
-              var sn = storeName.replace("emed_", "");
+              const sn = storeName.replace("emed_", "");
               console.log(e);
               console.log(sn);
               me.setStoredList(storeName,
                 e[sn] = e[sn].filter(r => r.tmpId != o.tmpId)
                 || []);
-              _.db
+              db()
                 .transaction(["vea-materno"], "readwrite")
                 .objectStore("vea-materno")
                 .put(e);
             }
           });
-
-
-
         });
       });
     });
+    console.log(me);
+    /*
     this.$on("sync", (o) => {
-      me.getStoredList("vea-materno").then((emeds) => {
+      getStoredList("vea-materno").then((emeds) => {
         emeds.forEach((e) => {
           if (e.tmpId == Math.abs(o.tmpId)) {
             e.visits.forEach((visit) => {
@@ -98,14 +101,14 @@ export default _.ui({
                 });
               visit.emedId = o.id;
             });
-            _.db
+            db()
               .transaction(["vea-materno"], "readwrite")
               .objectStore("vea-materno")
               .put(e);
           }
         });
       });
-    });
+    });*/
   },
   data() {
     return {
@@ -124,9 +127,9 @@ export default _.ui({
   methods: {
 
     getScrollBarWidth() {
-      var w = this.w;
+      let w = this.w;
       if (!w) {
-        let el = document.createElement("div");
+        const el = document.createElement("div");
         el.style.cssText = "overflow:scroll; visibility:hidden; position:absolute;";
         document.body.appendChild(el);
         this.w = w = el.offsetWidth - el.clientWidth;
@@ -135,7 +138,7 @@ export default _.ui({
       return w;
     },
     onResize(e) {
-      var w = e.$target.$el.offsetWidth - 44 - this.getScrollBarWidth();
+      const w = e.$target.$el.offsetWidth - 44 - this.getScrollBarWidth();
 
       Array.prototype.forEach.call(
         this.$el.querySelectorAll(".v-datatable"),
@@ -153,20 +156,18 @@ export default _.ui({
       );
     },
     loadTables() {
-      var refs = this.$refs;
-      for (var e in refs) {
+      const refs = this.$refs;
+      for (const e in refs) {
         if (refs[e] && refs[e].load) refs[e].load();
       }
     },
     changeRoute() {
-      var me = this,
-        id = me.id;
-
+      const me = this, id = me.id;
       if (id < 0) {
-        me.getStoredList("vea-materno").then((items) => {
+        getStoredList("vea-materno").then((items) => {
           items.forEach((e) => {
             if (e.tmpId == Math.abs(me.id)) {
-              var o = e;
+              const o = e;
               o.files = o.files || [];
               me.setStoredList("emed_action", o.action || []);
               me.setStoredList("emed_damage_ipress", o.damage_ipress || []);
@@ -178,11 +179,11 @@ export default _.ui({
           });
         });
       } else if (Number(id)) {
-        var loaded = 0;
-        me.getStoredList("vea-materno").then((items) => {
+        let loaded = 0;
+        getStoredList("vea-materno").then((items) => {
           items.forEach((e) => {
             if (e.id == me.id) {
-              var o = e;
+              const o = e;
               me.setStoredList("emed_action", o.action || []);
               me.setStoredList("emed_damage_ipress", o.damage_ipress || []);
               me.setStoredList("emed_damage_salud", o.damage_salud || []);
@@ -196,7 +197,7 @@ export default _.ui({
         axios
           .get("/api/desarrollo-social/vea-materno/" + id)
           .then((response) => {
-            var o = response.data;
+            const o = response.data;
             o.files = o.files || [];
             me.o = o;
             if (!loaded) me.loadTables();
@@ -205,7 +206,7 @@ export default _.ui({
     },
     syncImagen(file) {
 
-      var me = this;
+      const me = this;
       me.clicks++
       if (me.clicks === 1) {
         this.timer = setTimeout(function () {
@@ -231,13 +232,13 @@ export default _.ui({
 
     },
     async deleteFile(file) {
-      var me = this, o = me.o;
+      const me = this, o = me.o;
       if (me.online && file.id > 0) {
         await axios.delete('/api/desarrollo-social/vea-materno/file/' + file.id);
       }
       o.files = o.files.filter((e) => e.id != file.id);
       if (!me.online) {
-        _.db
+        db()
           .transaction(["vea-materno"], "readwrite")
           .objectStore("vea-materno")
           .put(o);
@@ -247,7 +248,7 @@ export default _.ui({
       window.open(item.src || item.localSrc, "_blank");
     },
     changeImage(result) {
-      var me = this, o = me.o;
+      const me = this, o = me.o;
       me.count = 0;
       if (!result.src && result.tempFile)
         result.src = me.baseURL.replace('/wp-json', '') + "/uploads/" + result.tempFile;
@@ -268,11 +269,11 @@ export default _.ui({
           .objectStore("vea-materno")
           .put(o);
       } else {
-        axios.post("/api/desarrollo-social/vea-materno/file",{src:result.src,emedId:result.emedId})
+        axios.post("/api/desarrollo-social/vea-materno/file", { src: result.src, emedId: result.emedId })
       }
     },
     uploaderClick(u) {
-      var me = this;
+      const me = this;
       me.count++;
       console.log(me.count);
       Camera.getPhoto({
@@ -285,11 +286,11 @@ export default _.ui({
         if (me.count == 0) {
 
           if (result.path) {
-            var fs = Filesystem;
+            const fs = Filesystem;
             fs.readFile({
               path: result.path,
             }).then(function (r) {
-              var fn = new Date().getTime() + ".jpeg";
+              const fn = new Date().getTime() + ".jpeg";
 
               fs.writeFile({
                 data: r.data,
@@ -300,7 +301,7 @@ export default _.ui({
                   path: fn,
                   directory: Directory.Data,
                 }).then(function (s) {
-                  var src = Capacitor.convertFileSrc(s.uri);
+                  const src = Capacitor.convertFileSrc(s.uri);
                   fetch(src)
                     .then((r) => r.blob())
                     .then((b) => {
@@ -331,8 +332,8 @@ export default _.ui({
     }
   },
   mounted() {
-    var me = this;
-    if (this.$children[0]) me.app.title = this.$children[0].header;
+    const me = this;
+    //if (this.$children[0]) me.app.title = this.$children[0].header;
     me.changeRoute();
   },
 });

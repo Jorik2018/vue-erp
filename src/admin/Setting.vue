@@ -65,6 +65,7 @@ import axios from 'axios';
 
 export default ui({
   props: ["id"],
+
   data() {
     return {
       o: {
@@ -82,10 +83,10 @@ export default ui({
   },
   created() {
     try {
-      var s = localStorage.getItem("setting");
+      let s = localStorage.getItem("setting");
       if (s) {
         s = JSON.parse(s);
-        var o = this.o;
+        const o = this.o;
         o.red = s.red;
         o.microred = s.microred;
         o.region = s.region;
@@ -101,12 +102,12 @@ export default ui({
   },
   methods: {
     load() {
-      let me = this, o = me.o;
+      const me = this, o = me.o;
       let timer;
-      let reset = function () {
+      const reset = function () {
         me.k++;
       };
-      let postAdd = () => {
+      const postAdd = () => {
         clearTimeout(timer);
         timer = setTimeout(reset, 500);
       };
@@ -115,16 +116,16 @@ export default ui({
         "red",
         "microred", "cie", "establishment", "district", "region", "province", "sample"
       ].forEach((store) => {
-        let e = _.stores.filter(e => e[0] == store)[0];
+        const e = _.stores.filter(e => e[0] == store)[0];
         if (!e[2]) return;
         axios.get(e[2] + (o.district && e[0] == 'town' ? ('?district=' + o.district.code) : '')).then((data) => {
-          let objectStore = db()
+          const objectStore = db()
             .transaction([e[0]], "readwrite")
             .objectStore(e[0]);
           data = data.data;
           try {
             objectStore.clear().onsuccess = () => {
-              for (var i in data) {
+              for (const i in data) {
                 try {
                   postAdd(objectStore.add(data[i]));
                 } catch (exception) {

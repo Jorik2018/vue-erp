@@ -3,14 +3,12 @@
 	<AppMenu></AppMenu>
 	<ion-router-outlet id="main" style="display:none"></ion-router-outlet>
 	<ion-header>
-		<div class="primary center" v-bind:class="{ 'v-red': !app.connected }"
-			style="padding-top: 3px;padding-bottom: 7px;z-index:20;border-bottom: 1px solid #a9acb1;">
+		<div class="primary center v-header" v-bind:class="{ 'v-red': !app2.connected }">
 			<a v-show="app.connected" style="position: absolute;right: 0px;padding: 10px;
     display: inline-block;font-size: 20px;" href="/search">
 				<i class="fa fa-search" v-bind:class="icono"></i>
 			</a>
-			<span v-on:click="open"
-				style="position: absolute;left: 0px;padding: 5px 13px;display: inline-block; margin-top: 8px;font-size: 18px;">
+			<span v-on:click="open">
 				<i class="fa fa-bars"></i>
 			</span>
 			<!--span v-show="!app.networkStatus.connected" href="/shami/notification" style="position: absolute;left: 50px;padding: 5px 13px;display: inline-block; margin-top: 8px;font-size: 18px;">

@@ -59,3 +59,27 @@ npm run test:e2e
 ```sh
 npm run lint
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sudo chmod -R 755 /Users/ealarcop/Projects/nodejs/vue/vue-erp/node_modules/@capacitor/android/capacitor/
+mkdir -p /Users/ealarcop/Projects/nodejs/vue/vue-erp/node_modules/@capacitor/android/capacitor/build/intermediates/aar_metadata/debug
+
+sudo chmod -R 775 /Users/ealarcop/Projects/nodejs/vue/vue-erp/
+sudo chown -R $(whoami) /Users/ealarcop/Projects/nodejs/vue/vue-erp/
+npx cap copy
+cd android && ./gradlew assembleDebug
