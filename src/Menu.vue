@@ -81,6 +81,9 @@
       <ion-item v-if="perms?.CANCER_READ" href="/admin/desarrollo-social/cancer">
         <i class="fa fa-table"></i>Cancer
       </ion-item>
+      <ion-item v-if="perms?.CANCER_READ" href="/admin/payroll/chd">
+        <i class="fa fa-table"></i>CONSTANCIA DE PAGO DE HABERES Y DESCUENTOS
+      </ion-item>
       <ion-item v-if="perms?.PREGNANT_READ" href="/admin/desarrollo-social/pregnant">
         <i class="fa fa-person-pregnant"></i>Gestantes
       </ion-item>

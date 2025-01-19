@@ -5,9 +5,31 @@ const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
 		{
+			path: '/verify',
+			component: () => import('../document/VerifyPanel.vue')
+		},
+		{
+			path: '/login',
+			component: () => import('../Login.vue')
+		},
+		{
+			path: '/password',
+			component: () => import('../Password.vue')
+		}, {
+			path: '/search', props: true,
+			component: () => import('../Search.vue')
+		}, {
+			path: '/search', props: true,
+			component: () => import('../Search.vue')
+		}, {
 			path: '/admin',
 			component: () => import('../Admin.vue'),
 			children: [
+
+				{
+					path: 'payroll/chd',
+					component: () => import('../admin/payroll/chd.vue')
+				},
 				{
 					path: '',
 					component: () => import('../Blank.vue')
@@ -245,17 +267,6 @@ const router = createRouter({
 					component: () => import('../admin/desarrollo-social/cancer/Create.vue')
 				},
 			]
-		},
-		{
-			path: '/login',
-			component: () => import('../Login.vue')
-		},
-		{
-			path: '/password',
-			component: () => import('../Password.vue')
-		}, {
-			path: '/search', props: true,
-			component: () => import('../Search.vue')
 		}
 	]
 })
@@ -263,7 +274,7 @@ const router = createRouter({
 router.beforeEach((to, _from, next) => {
 	let session = localStorage.getItem('session');
 	//console.log(session);
-	if (to.path == '/logout') {
+	/*if (to.path == '/logout') {
 		if (session) {
 			axios.config = {};
 			localStorage.removeItem('session');
@@ -275,9 +286,7 @@ router.beforeEach((to, _from, next) => {
 	if (to.path == '/login' && session) {
 		next('/admin');
 	} else if (to.path !== '/login' && !session) {
-
 		if (to.path == '/register' || to.path == '/password') {
-
 			next();
 		} else {
 			next('/login');
@@ -287,6 +296,44 @@ router.beforeEach((to, _from, next) => {
 	} else {
 		console.log('to.path=' + to.path);
 		next();
+	}*/
+
+	// If the path starts with '/admin'
+	if (to.path.startsWith('/admin')) {
+		if (!session) {
+			next('/login'); // Redirect to login if no session
+			return;
+		}
+		// Allow access if there's a session
 	}
+	if (to.path == '/logout') {
+		if (session) {
+			localStorage.removeItem('session'); // Clear session
+		}
+		next('/'); // Redirect to homepage after logout
+		return;
+	}
+
+	// Parse session if it exists
+	if (session) {
+		session = JSON.parse(session);
+	}
+
+	// Redirect logic for login and others
+	if (to.path == '/login' && session) {
+		next('/admin'); // Redirect to admin if logged in
+	} /*else if (to.path !== '/login' && !session) {
+		if (to.path == '/register' || to.path == '/password') {
+			next(); // Allow access to register and password without session
+		} else {
+			next('/login'); // Redirect to login if trying to access other paths
+		}
+	} else if (to.path == '/') {
+		next('/admin'); // Redirect root to admin
+	} else {
+		next(); // Allow other paths
+	}
+	console.log('----', to)*/
+	next();
 });
 export default router

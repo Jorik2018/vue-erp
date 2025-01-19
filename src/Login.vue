@@ -36,9 +36,10 @@
         <a @click="$router.push('/register')" style="margin-bottom: 10px">Registrate</a>
         <a @click="$router.push('/password')">&iquest;Olvidaste tu Contrase&ntilde;a?</a>
         <div class="center" style="
-   
+   font-size: 10px;
     margin-top: 20px;
-    color: white;">BUILT ON: {{ app.BUILT_ON }}</div>
+    color: white;">BUILT ON: {{ app.BUILT_ON }}<br />{{ VITE_LOGIN_PATH }}</div>
+
       </div>
     </form>
   </div>
@@ -55,7 +56,8 @@ export default ui({
       type: "password",
       o: { name: "", pass: "" },
       data: [],
-      isValid: false
+      isValid: false,
+      VITE_LOGIN_PATH: `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_LOGIN_PATH}`
     };
   },
   updated() {
@@ -101,7 +103,7 @@ export default ui({
       }
     },
     login() {
-      var me = this;
+      const me = this;
       if (me.validate(me.$el)) {
         axios.config = {};
         axios.defaults.headers.common = {};

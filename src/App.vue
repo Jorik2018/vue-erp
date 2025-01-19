@@ -16,16 +16,19 @@ export default ui({
   },
   created() {
     const me = this;
-    let session = me.session;
+    const session = me.session;
     if (session.token) {
       axios.defaults.headers.common = {
         Authorization:
           `Bearer ` + (session.token ? session.token : session.uid),
       };
       me.profileImg = session.people ? session.people.urlPerfil : null;
-    } else
+    } else if (me.$router.currentRoute.value.fullPath.startsWith('/admin')) {
+      //console.log('me.$router', me.$router.currentRoute.value.fullPath)
       me.$router.push("/");
-    let networkStatusChange = (status) => {
+    }
+
+    const networkStatusChange = (status) => {
       me.app2.networkStatus = status;
     };
     Network.addListener("networkStatusChange", networkStatusChange);
@@ -79,7 +82,7 @@ export default ui({
     connect() {
       const me = this as any, session = me.session;
       if (session != null) {
-        var ws = new WebSocket("wss://web.regionancash.gob.pe/ws/S" + session.uid);
+        const ws = new WebSocket("wss://web.regionancash.gob.pe/ws/S" + session.uid);
         ws.onopen = function () {
           // subscribe to some channels
           //ws.send(JSON.stringify({
