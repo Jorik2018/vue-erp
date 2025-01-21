@@ -70,12 +70,12 @@ export default ui({
 	},
 	mounted() {
 		const app = this.app;
-		app.bindLinks(this.$el, this.hide);
+		this.bindLinks(this.$el, this.hide);
 		setTimeout(resize, 600);
 	},
 	updated() {
-		this.app.bindLinks(this.$el, this.hide);
-		this.app.bindLinks(this.$el);
+		this.bindLinks(this.$el, this.hide);
+		this.bindLinks(this.$el);
 		resize();
 		//this.$refs.dataview.load(true); 
 		//this.categoria = this.app.idcategoria;

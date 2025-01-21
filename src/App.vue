@@ -23,9 +23,13 @@ export default ui({
           `Bearer ` + (session.token ? session.token : session.uid),
       };
       me.profileImg = session.people ? session.people.urlPerfil : null;
+      if (me.$router.currentRoute.value.fullPath == '/') {
+        me.$router.push("/admin");
+      }
+      console.log('me.$router.currentRoute.value.fullPath', me.$router.currentRoute.value.fullPath);
     } else if (me.$router.currentRoute.value.fullPath.startsWith('/admin')) {
       //console.log('me.$router', me.$router.currentRoute.value.fullPath)
-      me.$router.push("/");
+      me.$router.push("/login");
     }
 
     const networkStatusChange = (status) => {

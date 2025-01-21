@@ -1,8 +1,8 @@
 <template>
     <v-form header="Cancer" action="/admin/desarrollo-social/cancer">
         <v-table :selectable="true" row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" store="cancer"
-            @loaded="ll" :scrollable="true" rowKey="id" :pagination="20" @updated="app.bindLinks($el)"
-            :filters="filters" src="/api/desarrollo-social/cancer">
+            @loaded="ll" :scrollable="true" rowKey="id" :pagination="20" @updated="bindLinks($el)" :filters="filters"
+            src="/api/desarrollo-social/cancer">
             <template v-slot:header>
 
                 <v-button value="Enviar" v-if="app.connected" icon="fa-save" :disabled="!rowSelectedCount"
@@ -118,7 +118,7 @@ export default ui({
         return { rowSelectedCount2: 0, page: 0, data: [], mode: 0, query: null }
     },
     created() {
-        var me = this;
+        const me = this;
         me.filters.uid = null;//me.user.uid;
         /*
         me.$on('sync', function (dr, dl) {//data remote -> data local
@@ -142,7 +142,7 @@ export default ui({
         });*/
     },
     updated() {
-        this.app.bindLinks(this.$el);
+        this.bindLinks(this.$el);
     },
     methods: {
         ll(e) { console.log(e) },
@@ -151,7 +151,7 @@ export default ui({
             this.rowSelectedCount2 = e ? e.length : 0;
         },
         can(o) {
-            var m = this, u = m.user;
+            const m = this, u = m.user;
             return o || u.uid == 1;
             /*return u.uid == 1 || p.REGISTER_DESARROLLO_SOCIAL_SIVICO &&
             !o || o.user == u.id;*/

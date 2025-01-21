@@ -1,7 +1,7 @@
 <template>
   <v-form header="Gestantes" action="/admin/desarrollo-social/pregnant">
     <v-table :selectable="true" row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" store="pregnant"
-      @loaded="ll" :scrollable="true" rowKey="id" :pagination="20" @updated="app.bindLinks($el)" :filters="filters"
+      @loaded="ll" :scrollable="true" rowKey="id" :pagination="20" @updated="bindLinks($el)" :filters="filters"
       src="/api/desarrollo-social/pregnant">
       <template v-slot:header>
         <v-button value="Enviar" v-if="app.connected" icon="fa-save" :disabled="!rowSelectedCount"
@@ -166,7 +166,7 @@ export default ui({
   }); */
   },
   updated() {
-    this.app.bindLinks(this.$el);
+    this.bindLinks(this.$el);
   },
   methods: {
     ll(e) {

@@ -193,7 +193,7 @@ export default ui({
         //me.changeRoute();
     },
     updated() {
-        //window.app.bindLinks(this.$el);
+        //window.bindLinks(this.$el);
     },
     methods: {
         async changeRoute() {

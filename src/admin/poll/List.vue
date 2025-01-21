@@ -2,7 +2,7 @@
   <v-form header="Cuestionario de Condiciones de Vida" style="position: relative" action="/admin/poll/1">
 
     <v-table store="poll" v-on:row-select="rss" row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')"
-      src="/api/poll/1" pagination="50" scrollable="true" :filters="filters" @updated="app.bindLinks($el)">
+      src="/api/poll/1" pagination="50" scrollable="true" :filters="filters" @updated="bindLinks($el)">
       <template v-slot:header>
         <v-button value="Crear" icon="fa-plus" class="on" v-on:click.prevent="create"></v-button>
         <v-button value="Grabar" icon="fa-save" v-show="app.connected" class="on"
@@ -61,7 +61,7 @@ export default ui({
     return { rowSelectedCount2: 0, page: 0, data: [], mode: 0, query: null };
   },
   updated() {
-    window.app.bindLinks(this.$el);
+    window.bindLinks(this.$el);
   },
   mounted() {
     var me = this;

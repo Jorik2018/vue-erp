@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import axios from "axios";
 
 const router = createRouter({
-	history: createWebHistory(import.meta.env.BASE_URL),
+	history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH || '/'),
 	routes: [
 		{
 			path: '/verify',
@@ -287,38 +287,11 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
 	let session = localStorage.getItem('session');
-	//console.log(session);
-	/*if (to.path == '/logout') {
-		if (session) {
-			axios.config = {};
-			localStorage.removeItem('session');
-		}
-		next('/');
-		return;
-	}
-	if (session) session = JSON.parse(session);
-	if (to.path == '/login' && session) {
-		next('/admin');
-	} else if (to.path !== '/login' && !session) {
-		if (to.path == '/register' || to.path == '/password') {
-			next();
-		} else {
-			next('/login');
-		}
-	} else if (to.path == '/') {
-		next('/admin');
-	} else {
-		console.log('to.path=' + to.path);
-		next();
-	}*/
-
-	// If the path starts with '/admin'
 	if (to.path.startsWith('/admin')) {
 		if (!session) {
 			next('/login'); // Redirect to login if no session
 			return;
 		}
-		// Allow access if there's a session
 	}
 	if (to.path == '/logout') {
 		if (session) {
@@ -327,27 +300,13 @@ router.beforeEach((to, _from, next) => {
 		next('/'); // Redirect to homepage after logout
 		return;
 	}
-
-	// Parse session if it exists
 	if (session) {
 		session = JSON.parse(session);
 	}
-
 	// Redirect logic for login and others
 	if (to.path == '/login' && session) {
 		next('/admin'); // Redirect to admin if logged in
-	} /*else if (to.path !== '/login' && !session) {
-		if (to.path == '/register' || to.path == '/password') {
-			next(); // Allow access to register and password without session
-		} else {
-			next('/login'); // Redirect to login if trying to access other paths
-		}
-	} else if (to.path == '/') {
-		next('/admin'); // Redirect root to admin
-	} else {
-		next(); // Allow other paths
 	}
-	console.log('----', to)*/
 	next();
 });
 export default router

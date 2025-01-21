@@ -63,7 +63,7 @@ export default ui({
   updated() {
     console.log('update');
     this.isValid = this.validate(0);
-    //_.app.bindLinks(this.$el);
+    //_.bindLinks(this.$el);
   },
   created() {
     //console.log(this.app)
@@ -82,7 +82,7 @@ export default ui({
       const me = this;
       me.session = session;
       me.app.connect();
-      me.$router.push("/");
+      me.$router.push("/admin");
     },
     success({ token, perms, user_nicename }) {
       const me = this;

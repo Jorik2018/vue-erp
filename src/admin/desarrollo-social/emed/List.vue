@@ -1,8 +1,8 @@
 <template>
     <v-form header="Eventos" action="/admin/desarrollo-social/emed">
         <v-table :selectable="true" row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" store="emed"
-            @loaded="ll" :scrollable="true" rowKey="id" :pagination="20" @updated="app.bindLinks($el)"
-            :filters="filters" src="/api/desarrollo-social/emed">
+            @loaded="ll" :scrollable="true" rowKey="id" :pagination="20" @updated="bindLinks($el)" :filters="filters"
+            src="/api/desarrollo-social/emed">
             <template v-slot:header>
                 <v-button value="Enviar" v-if="app.connected" icon="fa-save" :disabled="!rowSelectedCount"
                     @click.prevent="sync"></v-button>
@@ -158,7 +158,7 @@ export default ui({
         });*/
     },
     updated() {
-        this.app.bindLinks(this.$el);
+        this.bindLinks(this.$el);
     },
     methods: {
         rewrite(url) {

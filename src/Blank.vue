@@ -15,7 +15,7 @@ import { ui, app } from "isobit-ui";
 export default ui({
     mounted() {
         //app.title = 'Administracion';
-        //app.bindLinks(this.$el);
+        //bindLinks(this.$el);
     },
     methods: {
         can(v) {

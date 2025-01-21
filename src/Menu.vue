@@ -81,8 +81,11 @@
       <ion-item v-if="perms?.CANCER_READ" href="/admin/desarrollo-social/cancer">
         <i class="fa fa-table"></i>Cancer
       </ion-item>
-      <ion-item v-if="perms?.CANCER_READ" href="/admin/payroll/chd">
-        <i class="fa fa-table"></i>CONSTANCIA DE PAGO DE HABERES Y DESCUENTOS
+      <ion-item v-if="perms?.PAYROLL_READ" href="/admin/hr/employee">
+        <i class="fa fa-table"></i>Empleados
+      </ion-item>
+      <ion-item v-if="perms?.HR_READ" href="/admin/payroll/chd">
+        <i class="fa fa-table"></i>Constancia de Pago de Haberes y Descuentos
       </ion-item>
       <ion-item v-if="perms?.PREGNANT_READ" href="/admin/desarrollo-social/pregnant">
         <i class="fa fa-person-pregnant"></i>Gestantes
@@ -100,41 +103,41 @@
 
 import { useCounterStore } from "./stores/counter";
 import { storeToRefs } from "pinia";
-import { defineComponent } from "vue";
+import { useRouter } from 'vue-router';
 import { ui } from 'isobit-ui'
+import { menuController } from '@ionic/vue';
 
-export default defineComponent(
+export default
   ui({
     setup() {
       const { count } = storeToRefs(useCounterStore());
-      return { count, imgError: null };
+      const router = useRouter()
+      return { count, imgError: null, router };
     },
     /*data() {
     return { imgError: null };
   },*/
     created() {
-      var me = this;
+      const me = this;
       import("./cdn/images/smile.png").then((image) => {
         this.imgError = image;
       });
       if (me.session?.people) me.app.profile = me.session.people.urlPerfil;
     },
     mounted() {
-      //console.log(this.app)
-      //this.app.bindLinks(this.$el, this.hide);
+      this.bindLinks(document.querySelector('[content-id="main-content"]'), this.hide);
     },
     update() {
-
-      //this.app.bindLinks(this.$el, this.hide);
+      //this.bindLinks(this.$el, this.hide);
     },
 
     methods: {
       hide() {
-        //this.$ionic.menuController.close("menuprincipal");
+        menuController.close();
       }
     },
   })
-);
+  ;
 </script>
 <style scope>
 a {

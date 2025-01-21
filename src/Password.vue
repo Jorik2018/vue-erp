@@ -38,7 +38,7 @@ export default ui({
 		return { o: { name: null } };
 	},
 	update() {
-		//window.app.bindLinks(this.$el);
+		//window.bindLinks(this.$el);
 	},
 	methods: {
 		focusout(e) {
