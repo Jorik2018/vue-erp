@@ -14,8 +14,8 @@ export default () => {
   const hours = String(currentDate.getHours()).padStart(2, '0');
   const minutes = String(currentDate.getMinutes()).padStart(2, '0');
   const period = currentDate.getHours() >= 12 ? 'PM' : 'AM';
-
   process.env.VITE_APP_BUILT_ON = `${year}-${month}-${day} ${hours}:${minutes} ${period}`;
+  const publicPath = process.env.VITE_PUBLIC_PATH || '/';
   return defineConfig({
     plugins: [
       vue(),
@@ -26,6 +26,7 @@ export default () => {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
       }
-    }
+    },
+    base: publicPath
   });
 }
