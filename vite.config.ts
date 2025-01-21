@@ -17,9 +17,10 @@ export default () => {
   process.env.VITE_APP_BUILT_ON = `${year}-${month}-${day} ${hours}:${minutes} ${period}`;
   //console.log('process.env.VITE_PUBLIC_PATH ', process.env.VITE_PUBLIC_PATH);
   console.log(process.env);
-  //if (process.env.WORKSPACE) {
-  process.env.VITE_PUBLIC_PATH = '/erp'
-  //}
+  if (process.env.WORKSPACE) {
+    process.env.VITE_PUBLIC_PATH = '/erp'
+    process.env.VITE_LOGIN_PATH = '/jwt-auth/v1/token'
+  }
   const publicPath = process.env.VITE_PUBLIC_PATH || '/';
   return defineConfig({
     plugins: [
