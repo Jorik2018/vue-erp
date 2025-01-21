@@ -39,10 +39,12 @@ export default ui({
     Network.getStatus().then(networkStatusChange);
     me.app.connect = this.connect;
     me.app.logout = () => {
+
       me.session = null;
       localStorage.removeItem('session');
       //this.$router.push('/login');
       me.$router.push('/admin');
+      location.reload()
     };
     me.app.toast = (msg) => {
       toastController.create({

@@ -6,24 +6,27 @@
       <!--img height="120" class="ui-banner-login" src="@/fs/images/logo-final.svg" /-->
     </div>
     <form id="LoginForm">
-      <div style="margin-top: 20px; padding: 30px; padding-top: 80px;" class="LoginForm v-form">
-        <div class="v-input-label" style="margin-bottom: 25px">
-          <label position="floating" v-on:click="focus"
-            style="color: white; border: 0px; font-weight: unset !important">Usuario</label>
-          <input class="input-login" v-on:focus="$event.target.parentNode.classList.add('v-focus')"
-            v-on:focusout="focusout" type="text" v-model="o.name" required />
-        </div>
-        <div class="v-input-label" style="margin-bottom: 40px">
-          <label position="floating" v-on:click="focus"
-            style="color: white; border: 0px; font-weight: unset !important">Contraseña</label>
-          <input class="input-login" v-on:focus="$event.target.parentNode.classList.add('v-focus')"
-            v-on:focusout="focusout" v-bind:type="type" v-model="o.pass" minlength="6" required />
-          <span v-if="o.pass" style="color: white; position: absolute; bottom: 5px; right: 5px"
-            v-on:click="type = type == 'text' ? 'password' : 'text'" v-bind:class="type == 'text' ? 'key' : 'eye'"><i
-              class="fa" v-bind:class="type == 'text' ? 'fa-key' : 'fa-eye'"></i></span>
-        </div>
-        <div class="center">
-          <v-button expand="block" style="
+      <div
+        style="margin-top: 20px; padding: 30px; padding-top: 80px;display: flex;flex-direction: column;align-items: center;"
+        class="LoginForm v-form">
+        <div style="max-width: 400px;flex:1;width: -webkit-fill-available;">
+          <div class="v-input-label" style="margin-bottom: 25px">
+            <label position="floating" v-on:click="focus"
+              style="color: white; border: 0px; font-weight: unset !important">Usuario</label>
+            <input class="input-login" v-on:focus="$event.target.parentNode.classList.add('v-focus')"
+              v-on:focusout="focusout" type="text" v-model="o.name" required />
+          </div>
+          <div class="v-input-label" style="margin-bottom: 40px">
+            <label position="floating" v-on:click="focus"
+              style="color: white; border: 0px; font-weight: unset !important">Contraseña</label>
+            <input class="input-login" v-on:focus="$event.target.parentNode.classList.add('v-focus')"
+              v-on:focusout="focusout" v-bind:type="type" v-model="o.pass" minlength="6" required />
+            <span v-if="o.pass" style="color: white; position: absolute; bottom: 5px; right: 5px"
+              v-on:click="type = type == 'text' ? 'password' : 'text'" v-bind:class="type == 'text' ? 'key' : 'eye'"><i
+                class="fa" v-bind:class="type == 'text' ? 'fa-key' : 'fa-eye'"></i></span>
+          </div>
+          <div class="center">
+            <v-button expand="block" style="
               font-size: 20px !important;
               margin-bottom: 30px;
               padding: 10px 15px;
@@ -32,19 +35,20 @@
               border-radius: 15px;
               border-width: 0px;
             " @click.prevent="login" value="INGRESAR" :disabled="!isValid" />
-        </div>
-        <a @click="$router.push('/register')" style="margin-bottom: 10px">Registrate</a>
-        <a @click="$router.push('/password')">&iquest;Olvidaste tu Contrase&ntilde;a?</a>
-        <div class="center" style="
+          </div>
+          <a @click="$router.push('/register')" style="margin-bottom: 10px">Registrate</a>
+          <a @click="$router.push('/password')">&iquest;Olvidaste tu Contrase&ntilde;a?</a>
+          <div class="center" style="
    font-size: 10px;
     margin-top: 20px;
     color: white;">BUILT ON: {{ app.BUILT_ON }}<br />{{ VITE_LOGIN_PATH }}</div>
 
+        </div>
       </div>
     </form>
   </div>
 </template>
-<script>
+<script lang="ts">
 //70896448
 import { ui } from 'isobit-ui'
 import axios from 'axios'
@@ -145,19 +149,6 @@ a {
 
 .v-primary-dark i {
   margin-right: 10px;
-}
-
-html {
-  height: 100%;
-}
-
-body {
-  padding: 20px;
-  background-image: linear-gradient(#007bff, #000000);
-  min-height: calc(100% - 40px);
-  margin: 0;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
 }
 
 a {
