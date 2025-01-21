@@ -22,6 +22,9 @@ const router = createRouter({
 			path: '/search', props: true,
 			component: () => import('../Search.vue')
 		}, {
+			path: '/file',
+			component: () => import('../admin/file/List.vue')
+		}, {
 			path: '/admin',
 			component: () => import('../Admin.vue'),
 			children: [
