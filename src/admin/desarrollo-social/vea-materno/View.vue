@@ -48,7 +48,7 @@
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Camera, CameraResultType } from '@capacitor/camera';
-import { ui, db, getStoredList } from 'vue3-ui'
+import { ui, db, getStoredList } from 'isobit-ui'
 import axios from 'axios';
 
 export default ui({

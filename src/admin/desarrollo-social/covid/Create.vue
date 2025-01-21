@@ -47,7 +47,7 @@
 	</v-form>
 </template>
 <script>
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 export default ui({
 	data() {
 		return { people: null, o: null, l: [] };

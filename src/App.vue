@@ -3,7 +3,7 @@
 </template>
 <script lang="ts">
 import axios from "axios";
-import { ui, initDB } from "vue3-ui";
+import { ui, initDB } from "isobit-ui";
 import { LocalNotifications } from "@capacitor/local-notifications";
 import { Network } from "@capacitor/network";
 import { toastController } from '@ionic/vue';

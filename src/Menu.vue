@@ -101,7 +101,7 @@
 import { useCounterStore } from "./stores/counter";
 import { storeToRefs } from "pinia";
 import { defineComponent } from "vue";
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 
 export default defineComponent(
   ui({

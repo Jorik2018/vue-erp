@@ -56,20 +56,20 @@
 <script>
 import AppMenu from './Menu.vue';
 import { menuController } from '@ionic/vue';
-import { ui, resize } from 'vue3-ui'
+import { ui, resize } from 'isobit-ui'
 export default ui({
 	components: { AppMenu },
 	watch: {
 		$route() {
 			//console.log("ENTRO A ROUTE")
 			//Vue.resize();
-			var me = this;
+			const me = this;
 			me.resultVisible = false;
 			//me.mask = window._.unmask(me.mask);
 		}
 	},
 	mounted() {
-		var app = this.app;
+		const app = this.app;
 		app.bindLinks(this.$el, this.hide);
 		setTimeout(resize, 600);
 	},
@@ -86,7 +86,7 @@ export default ui({
 		},
 		find(ev) {
 			console.log(ev)
-			var valor = ev.target.value;
+			const valor = ev.target.value;
 			this.query = valor;
 			console.log(valor);
 			this.$refs.dataview.load(true);

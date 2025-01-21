@@ -46,7 +46,7 @@
 </template>
 <script>
 //70896448
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 import axios from 'axios'
 import { toastController } from '@ionic/vue';
 

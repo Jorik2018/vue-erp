@@ -83,15 +83,17 @@
                 <option value="">Select One...</option>
                 <option v-for="(degreeInstruction, key) in options.degreeInstruction" v-bind:key="key"
                     v-bind:value="degreeInstruction">{{ degreeInstruction }}</option>
-            </v-select> <v-textarea v-if="o.degreeInstruction == 'Observaciones'" required="true" style="margin-top: 6px"
-                maxlength="100" v-model="o.otherDegreeInstruction"></v-textarea> <label>Ocupaci&oacute;n:</label>
+            </v-select> <v-textarea v-if="o.degreeInstruction == 'Observaciones'" required="true"
+                style="margin-top: 6px" maxlength="100" v-model="o.otherDegreeInstruction"></v-textarea>
+            <label>Ocupaci&oacute;n:</label>
             <v-select v-model="o.occupation" required="required">
                 <option value="">Select One...</option>
                 <option v-for="(occupation, key) in options.occupation" v-bind:key="key" v-bind:value="key + 1">
                     {{ occupation }}</option>
             </v-select> <label>Idioma:</label> <v-select v-model="o.language" required="required">
                 <option value="">Select One...</option>
-                <option v-for="(language, key) in options.language" v-bind:key="key" v-bind:value="key + 1">{{ language }}
+                <option v-for="(language, key) in options.language" v-bind:key="key" v-bind:value="key + 1">{{ language
+                    }}
                 </option>
             </v-select> <label>Seguro:</label> <v-select v-model="o.assured" required="required">
                 <option value="">Select One...</option>
@@ -100,7 +102,8 @@
             </v-select> <label>Vulnerabilidad:</label>
             <template v-if="o.sex == 'F'"> <v-checkbox v-model="o.pregnant"
                     v-on:input="o.puerpera = o.pregnant ? 0 : o.puerpera" label="Embarazada"></v-checkbox> <v-checkbox
-                    v-model="o.puerpera" v-on:input="o.pregnant = o.puerpera ? 0 : o.pregnant" label="Puerpera"></v-checkbox>
+                    v-model="o.puerpera" v-on:input="o.pregnant = o.puerpera ? 0 : o.pregnant"
+                    label="Puerpera"></v-checkbox>
             </template> <v-checkbox v-model="o.diabetes" label="Diabetes"></v-checkbox> <v-checkbox v-model="o.obesity"
                 label="Obesidad"></v-checkbox> <v-checkbox v-model="o.disability" label="Discapacitado"></v-checkbox>
             <v-checkbox v-model="o.hypertensive" label="Hipertenso"></v-checkbox> <label>Intervenci&oacute;n
@@ -165,7 +168,7 @@
 import { Plugins } from '@capacitor/core'
 import 'ol/ol.css';
 const axios = window.axios;
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 const _ = window._;
 export default ui({
     props: ['id', 'action'],

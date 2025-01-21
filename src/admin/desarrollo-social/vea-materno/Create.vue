@@ -77,7 +77,7 @@
 import "ol/ol.css";
 import { Geolocation } from "@capacitor/geolocation";
 import axios from 'axios';
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 
 export default ui({
   props: ["id"],

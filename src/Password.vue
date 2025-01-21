@@ -30,7 +30,7 @@
 	</div>
 </template>
 <script>
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 import axios from 'axios'
 
 export default ui({

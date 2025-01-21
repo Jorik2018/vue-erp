@@ -137,7 +137,7 @@
   FilesystemDirectory,
 } from "@capacitor/core";*/
 const { _, axios } = window;
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 export default ui({
   computed: {
     dateDiff() {

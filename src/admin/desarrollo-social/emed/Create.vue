@@ -1,9 +1,9 @@
 <template>
   <v-form action="/api/desarrollo-social/emed" :header="(o.id ? 'Editar' : 'Crear') + '  Evento'" :class="o.id < 0 || (o.tmpId && !o.synchronized)
-      ? 'yellow'
-      : o.tmpId
-        ? 'green'
-        : ''
+    ? 'yellow'
+    : o.tmpId
+      ? 'green'
+      : ''
     " store="emed">
     <div class="v-form">
       <label>ID:</label>
@@ -146,7 +146,7 @@ import { Geolocation } from "@capacitor/geolocation";
 import "ol/ol.css";
 import Feature from "ol/Feature";
 import Icon from "ol/style/Icon";
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 var { _, axios, ol } = window;
 ol.style.Icon = Icon;
 ol.style.Feature = Feature;

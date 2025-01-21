@@ -25,7 +25,18 @@ const router = createRouter({
 			path: '/admin',
 			component: () => import('../Admin.vue'),
 			children: [
-
+				{
+					path: 'file',
+					component: () => import('../admin/file/List.vue')
+				},
+				{
+					path: 'hr/employee',
+					component: () => import('../admin/hr/employee/List.vue')
+				},
+				{
+					path: 'hr/employee/create',
+					component: () => import('../admin/hr/employee/Create.vue')
+				},
 				{
 					path: 'payroll/chd',
 					component: () => import('../admin/payroll/chd.vue')

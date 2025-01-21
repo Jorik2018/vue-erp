@@ -27,11 +27,11 @@
     "@capacitor/network": "^6.0.2",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@ionic/vue": "^8.3.2",
+    "isobit-ui": "^0.3.1",
     "ol": "^10.2.1",
     "pinia": "^2.2.4",
     "vue": "^3.5.11",
-    "vue-router": "^4.4.5",
-    "vue3-ui": "^1.0.0"
+    "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",

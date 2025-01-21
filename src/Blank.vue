@@ -11,7 +11,7 @@
     </div>
 </template>
 <script lang="ts">
-import { ui, app } from "vue3-ui";
+import { ui, app } from "isobit-ui";
 export default ui({
     mounted() {
         //app.title = 'Administracion';

@@ -1,22 +1,31 @@
 <template>
-
     <v-form class="v-form" header="CONSTANCIA DE PAGO DE HABERES Y DESCUENTOS" store="setting">
-     
         <div class="v-form">
-        <v-button value="hola" v-on:click="send"/>
-        {{o}}
+            <label>Empleado:</label>
+            <v-autocomplete placeholder="Ingrese mas de 2 letras y presione ENTER" src="api/hr/employee"
+                v-model="o.employee">
+                <template v-slot:label="{ selected }">
+                    {{ selected.code }}: {{ selected.fullname }}
+                </template>
+                <template v-slot="{ row }">
+                    <a v-bind:href="'/admin/directorio/' + row.id" onclick="return false">
+                        <span>{{ row.code }}</span>:
+                        {{ row.fullname ? row.fullname.toUpperCase() : null }}
+                    </a>
+                </template>
+            </v-autocomplete>
+            <v-button style="margin-top: 10px;" icon="fa fa-download" value="Generar Constancia" v-on:click="send" />
         </div>
     </v-form>
-
 </template>
 
 <script lang="ts">
 import axios from "axios";
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 export default ui({
     data() {
         return {
-            o: { id: null},
+            o: { id: null, employee: null },
             image: 0,
             base: 'http://web.regionancash.gob.pe/cdn/web/viewer.html?v=1&file=http://web.regionancash.gob.pe/admin/uti/api/document/download/'
         }
@@ -25,7 +34,7 @@ export default ui({
         send() {
             const me = this;
             axios.post('http://localhost:8000/wp-json/api/payroll/chd', me.o).then(({ data }) => {
-                let fo = new FormData();
+                const fo = new FormData();
                 fo.append(
                     "file",
                     new Blob([JSON.stringify(data)], { type: "text/plain" }),

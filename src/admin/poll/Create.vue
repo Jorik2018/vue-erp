@@ -151,9 +151,9 @@
 import { IonContent } from "@ionic/vue";
 import { Geolocation } from "@capacitor/geolocation";
 //import M from "minimatch";
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 
-var axios = window.axios;
+const axios = window.axios;
 export default ui({
     components: { IonContent },
     props: ["id"],
@@ -188,7 +188,7 @@ export default ui({
         };
     },
     mounted() {
-        var me = this;
+        const me = this;
         //me.$on('sync', me.app.onSyncPoll);
         //me.changeRoute();
     },
@@ -197,7 +197,7 @@ export default ui({
     },
     methods: {
         async changeRoute() {
-            var me = this;
+            const me = this;
             if (me.id < 0 || me.id > 0 && !me.app.connected) {
                 me.getStoredList("poll").then((poll) => {
                     poll.forEach((e) => {
@@ -215,7 +215,7 @@ export default ui({
                     });
             } else {
                 try {
-                    var s = JSON.parse(localStorage.getItem("setting")),
+                    const s = JSON.parse(localStorage.getItem("setting")),
                         o = me.o;
                     o.region = s.region.id;
                     o.provincia = s.province.code;
@@ -228,7 +228,7 @@ export default ui({
             me.removeStored("people");
         },
         process(o) {
-            var me = this;
+            const me = this;
             o.poll = me.app.poll;
             if (!me.trayLocation) {
                 me.MsgBox("Debe tratar de obtener la geolocalización.");
@@ -237,7 +237,7 @@ export default ui({
             return o;
         },
         changeTown(v) {
-            var me = this;
+            const me = this;
             if (v) {
                 me.getStoredList('sample').then((towns) => {
                     towns.forEach((town) => {
@@ -253,12 +253,12 @@ export default ui({
             this.trayLocation = 1;
             const coordinates = await Geolocation.getCurrentPosition();
             //Debe ponerse una vntana de permiso
-            var c = coordinates.coords;
+            const c = coordinates.coords;
             this.o.lat = c.latitude;
             this.o.lon = c.longitude;
         },
         close(o) {
-            var me = this;
+            const me = this;
             if (o.data.id) me.o.id = o.data.id;
             if (o.data.tmpId) me.o.tmpId = o.data.tmpId;
             me.$router.replace("/admin/poll/" + me.o.id);

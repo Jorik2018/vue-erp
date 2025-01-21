@@ -40,7 +40,7 @@
   </v-form>
 </template>
 <script>
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 //            var axios=window.axios;
 export default ui({
   data() {

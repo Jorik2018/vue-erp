@@ -108,7 +108,7 @@
     </v-form>
 </template>
 <script lang="ts">
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 
 export default ui({
     data() {

@@ -177,7 +177,7 @@
 </template>
 <script>
 import "ol/ol.css";
-import { ui } from 'vue3-ui'
+import { ui } from 'isobit-ui'
 var { _, axios } = window;
 var MsgBox = _.MsgBox;
 export default ui({

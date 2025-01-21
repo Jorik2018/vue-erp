@@ -184,7 +184,7 @@
           ({{ o.lat }},{{ o.lon }})
         </div>
       </v-fieldset>
-      <label>Estado:</label>
+      <label>Estado:{{ o.migracionEstado }}</label>
       <v-select v-model="o.migracionEstado" required="required">
         <option value="">Select One...</option>
 
@@ -203,14 +203,14 @@
     </center>
   </v-form>
 </template>
-<script>
+<script lang="ts">
 import { Capacitor } from "@capacitor/core";
 import { Camera, CameraResultType } from "@capacitor/camera";
 import { Filesystem, Directory } from "@capacitor/filesystem";
 import { Geolocation } from "@capacitor/geolocation";
 import "ol/ol.css";
-import { ui, date } from 'vue3-ui'
-var { _, axios } = window;
+import { ui, date } from 'isobit-ui'
+const { _, axios } = window;
 export default ui({
   props: ["id"],
   data() {
@@ -258,7 +258,7 @@ export default ui({
     };
   },
   created() {
-    var me = this;
+    const me = this;
     if (!me.today) me.today = date(new Date(), 'date-');
 
     /*this.$on("sync", (o) => {
@@ -295,7 +295,7 @@ export default ui({
     });*/
   },
   mounted() {
-    var me = this;
+    const me = this;
     me.changeRoute();
   },
   methods: {
@@ -323,7 +323,7 @@ export default ui({
     },
     errorImg() { },
     changeImage(result) {
-      var me = this,
+      const me = this,
         o = me.o;
       o.tempFile = result.tempFile;
       if (o.id > 0) {
@@ -334,10 +334,10 @@ export default ui({
             delete o.ext.pending;
             delete o.tempFile;
             if (o.tmpId) {
-              var objectStore = window._.db
+              const objectStore = window._.db
                 .transaction(["pregnant"], "readwrite")
                 .objectStore("pregnant");
-              var item = objectStore.get(o.tmpId);
+              const item = objectStore.get(o.tmpId);
               item.onsuccess = function () {
                 objectStore.put(o);
               };
@@ -347,7 +347,7 @@ export default ui({
       }
     },
     syncImage() {
-      var me = this;
+      const me = this;
       fetch(me.o.ext.src)
         .then((r) => r.blob())
         .then(function (b) {
@@ -355,7 +355,7 @@ export default ui({
         });
     },
     uploaderClick(uploader) {
-      var me = this,
+      const me = this,
         o = me.o;
       me.count++;
       Camera.getPhoto({
@@ -364,13 +364,13 @@ export default ui({
       }).then(function (result) {
         me.count--;
         if (me.count == 0) {
-          var fs = Filesystem;
+          const fs = Filesystem;
           if (result.path) {
             o.ext.path = result.path;
             fs.readFile({
               path: result.path,
             }).then(function (r) {
-              var filename = new Date().getTime() + ".jpeg";
+              const filename = new Date().getTime() + ".jpeg";
               //Aqui se guarda una copia del archivo
               fs.writeFile({
                 data: r.data,
@@ -410,12 +410,12 @@ export default ui({
     async printCurrentPosition() {
       this.trayLocation = 1;
       const coordinates = await Geolocation.getCurrentPosition();
-      var c = coordinates.coords;
+      const c = coordinates.coords;
       this.o.lat = c.latitude;
       this.o.lon = c.longitude;
     },
     async changeRoute() {
-      var me = this,
+      const me = this,
         id = me.id;
       me.trayLocation = 0;
       me.$refs.emergencyRed.load();
@@ -437,7 +437,7 @@ export default ui({
         axios
           .get("/api/desarrollo-social/pregnant/" + id)
           .then(function (response) {
-            var o = response.data;
+            const o = response.data;
             if (o.red) o.red = me.pad(o.red, 2);
 
             if (o.province) {
@@ -453,10 +453,10 @@ export default ui({
           });
       } else {
         try {
-          var s = localStorage.getItem("setting");
+          let s = localStorage.getItem("setting");
           if (s) {
             s = JSON.parse(s);
-            var o = this.o;
+            const o = this.o;
             o.red = s.red;
             o.microred = s.microred;
             o.codigoEESS = s.establishment;
@@ -475,7 +475,7 @@ export default ui({
       }
     },
     close(r) {
-      var me = this;
+      const me = this;
       if (r.success === true) {
         me.o.id = r.data.id;
         me.o.tmpId = r.data.tmpId;
@@ -485,12 +485,12 @@ export default ui({
         }
       }
       var o = me.o;
-      var nid = o.tmpId ? -o.tmpId : o.id;
+      const nid = o.tmpId ? -o.tmpId : o.id;
       if (me.id != nid)
         me.$router.replace("/admin/desarrollo-social/pregnant/" + nid);
     },
     async getCurrentPosition() {
-      var me = this;
+      const me = this;
       //const {Geolocation} = Plugins;
       const c = await Geolocation.getCurrentPosition();
       me.o.lat = c.coords.latitude;
@@ -500,7 +500,7 @@ export default ui({
       this.MsgBox('Fecha no valida ' + e.value);
     },
     getCoordinates() {
-      var me = this;
+      const me = this;
       if (me.getCurrentPosition) {
         me.getCurrentPosition();
       } else

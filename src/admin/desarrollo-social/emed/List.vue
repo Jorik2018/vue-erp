@@ -122,7 +122,7 @@
     </v-form>
 </template>
 <script>
-import { ui, date } from 'vue3-ui'
+import { ui, date } from 'isobit-ui'
 
 export default ui({
     setup(o) {

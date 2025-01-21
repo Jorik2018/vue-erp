@@ -1,5 +1,5 @@
 import './assets/main.css'
-import 'vue3-ui/dist/theme.css'
+import 'isobit-ui/dist/theme.css'
 import '@ionic/core/css/ionic.bundle.css';
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
@@ -8,7 +8,7 @@ import { createPinia } from 'pinia'
 import { IonicVue } from '@ionic/vue';
 import App from './App.vue'
 import router from './router'
-import { IsobitUI } from 'vue3-ui'
+import { IsobitUI } from 'isobit-ui'
 
 const app = createApp(App) as any;
 app.config.ignoredElements = [/^ion-/, /^v-/];
