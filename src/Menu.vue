@@ -19,9 +19,9 @@
                         height: 140px;
                         border-radius: 50%;
                       ">
-                    <img v-bind:key="'men-' + app.ki" style="width: 100%;object-fit: cover;height: 100%;"
+                    <!--img v-bind:key="'men-' + app.ki" style="width: 100%;object-fit: cover;height: 100%;"
                       v-bind:src="baseURL + '/fs/profile/' + app.profileImg"
-                      v-on:error="($event.target as any).src = imgError">
+                      v-on:error="($event.target as any).src = imgError"-->
                   </div>
                 </td>
                 <td style="text-align: left; padding-left: 10px">
