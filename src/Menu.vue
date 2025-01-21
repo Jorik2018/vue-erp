@@ -84,7 +84,7 @@
       <ion-item v-if="perms?.PAYROLL_READ" href="/admin/hr/employee">
         <i class="fa fa-table"></i>Empleados
       </ion-item>
-      <ion-item v-if="perms?.HR_READ" href="/admin/payroll/chd">
+      <ion-item href="/admin/payroll/chd">
         <i class="fa fa-table"></i>Constancia de Pago de Haberes y Descuentos
       </ion-item>
       <ion-item v-if="perms?.PREGNANT_READ" href="/admin/desarrollo-social/pregnant">

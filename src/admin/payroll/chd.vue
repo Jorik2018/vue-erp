@@ -31,9 +31,10 @@ export default ui({
         }
     },
     methods: {
+
         send() {
             const me = this;
-            axios.post('http://localhost:8000/wp-json/api/payroll/chd', me.o).then(({ data }) => {
+            axios.post('/api/payroll/chd', me.o).then(({ data }) => {
                 const fo = new FormData();
                 fo.append(
                     "file",
@@ -42,7 +43,8 @@ export default ui({
                 );
                 fo.append("filename", "data.json");
                 fo.append("template", "hc");
-                me.saveAs("http://web.regionancash.gob.pe/api/jreport/", fo);
+                me.saveAs(import.meta.env.VITE_REMOTE_PATH + "/api/jreport/", fo);
+
             });
         }
     }

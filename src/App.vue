@@ -42,7 +42,7 @@ export default ui({
       me.session = null;
       localStorage.removeItem('session');
       //this.$router.push('/login');
-      me.$router.push('/');
+      me.$router.push('/admin');
     };
     me.app.toast = (msg) => {
       toastController.create({

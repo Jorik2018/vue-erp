@@ -6,7 +6,7 @@
       <!--img height="120" class="ui-banner-login" src="@/fs/images/logo-final.svg" /-->
     </div>
     <form id="LoginForm">
-      <div style="margin-top: 20px; padding: 30px; padding-top: 80px" class="LoginForm v-form">
+      <div style="margin-top: 20px; padding: 30px; padding-top: 80px;" class="LoginForm v-form">
         <div class="v-input-label" style="margin-bottom: 25px">
           <label position="floating" v-on:click="focus"
             style="color: white; border: 0px; font-weight: unset !important">Usuario</label>

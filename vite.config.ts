@@ -20,6 +20,7 @@ export default () => {
   if (process.env.WORKSPACE) {
     process.env.VITE_PUBLIC_PATH = '/erp'
     process.env.VITE_LOGIN_PATH = '/jwt-auth/v1/token'
+    process.env.VITE_REMOTE_PATH = 'https://web.regionancash.gob.pe'
   }
   const publicPath = process.env.VITE_PUBLIC_PATH || '/';
   return defineConfig({
