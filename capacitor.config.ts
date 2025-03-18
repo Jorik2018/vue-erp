@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'org.isobit.erp',
-  appName: 'vue-erp',
+  appId: 'io.ionic.starter',
+  appName: 'vue-erp-2',
   webDir: 'dist'
 };
 

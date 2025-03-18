@@ -41,7 +41,7 @@
 </template>
 <script>
 import { ui } from 'isobit-ui'
-//            var axios=window.axios;
+//            let axios=window.axios;
 export default ui({
   data() {
     return { people: null, o: null, l: [] };

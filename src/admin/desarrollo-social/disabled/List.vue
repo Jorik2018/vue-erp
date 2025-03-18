@@ -134,8 +134,8 @@
 </v-form>
 </template>
 <script>
-	var axios=window.axios;
-	var _=window._;
+	let axios=window.axios;
+	let _=window._;
          export default _.ui({
             data(){return{}},
             created(){
@@ -152,7 +152,7 @@
                     delete o.tmpMasterId;
                 },
                 postSync(o) {
-                    var me=this;
+                    let me=this;
                     o=o.data;
                     console.log('verificar si tiene tmpSrc '+JSON.stringify(o));
                     if(o.tmpSrc){
@@ -167,7 +167,7 @@
                     }
                 },
                 canRegister(o){
-                    var me = this, user = me.user, perms = me.perms;
+                    let me = this, user = me.user, perms = me.perms;
                     if(o){
                         return user.uid == 1||perms.DESARROLLO_SOCIAL_ADMIN_DISABLED||perms.DESARROLLO_SOCIAL_REGISTER_DISABLED &&o.user == user.id;                        
                     }else

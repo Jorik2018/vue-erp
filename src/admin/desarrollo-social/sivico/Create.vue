@@ -251,8 +251,8 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
     import { Filesystem,Directory} from '@capacitor/filesystem';
     import { Geolocation } from '@capacitor/geolocation';
         import 'ol/ol.css';
-        var axios=window.axios;
-        var _=window._;
+        let axios=window.axios;
+        let _=window._;
         export default _.ui({
             props: ['id'],
             data() {
@@ -281,7 +281,7 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                 }
             },
             created(){
-                var me=this;
+                let me=this;
                 this.$on('sync',(o)=>{
                     me.getStoredList('pool').then((pools)=>{
                         pools.forEach(e =>{
@@ -313,7 +313,7 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                 });
             },
             mounted() {
-                var me=this;
+                let me=this;
                 me.changeRoute();
             },
             methods: {
@@ -326,7 +326,7 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                 },
                 errorImg(){},
                 changeImage(result) {
-                    var me=this,o=me.o;
+                    let me=this,o=me.o;
                     o.tempFile=result.tempFile;
                     if(o.id>0){
                         result.id=o.id;
@@ -334,8 +334,8 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                             delete o.ext.pending;
                             delete o.tempFile;
                             if(o.tmpId){
-                                var objectStore =window._.db.transaction(["pool"], "readwrite").objectStore("pool");
-                                var item = objectStore.get(o.tmpId);
+                                let objectStore =window._.db.transaction(["pool"], "readwrite").objectStore("pool");
+                                let item = objectStore.get(o.tmpId);
                                 item.onsuccess = function() {objectStore.put(o);};
                             }
                             me.app.toast('Imagen adjuntada!');
@@ -343,13 +343,13 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                     }
                 },
                 syncImage(){
-                    var me=this;
+                    let me=this;
                     fetch(me.o.ext.src).then(r=>r.blob()).then(function(b){
                         me.$refs.uploader.submitFile(b,'name.jpg');
                     });
                 },
                 uploaderClick(uploader){
-                    var me = this,o=me.o;
+                    let me = this,o=me.o;
                     me.count++;
                     Camera.getPhoto({
                         quality: 100,
@@ -357,13 +357,13 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                     }).then(function (result) {
                         me.count--;
                         if (me.count == 0) {
-                            var fs = Filesystem;
+                            let fs = Filesystem;
                             if (result.path){
                                 o.ext.path=result.path;
                                 fs.readFile({
                                     path: result.path
                                 }).then(function (r) {
-                                    var filename = new Date().getTime() + '.jpeg';
+                                    let filename = new Date().getTime() + '.jpeg';
                                     //Aqui se guarda una copia del archivo
                                     fs.writeFile({
                                         data: r.data,
@@ -400,12 +400,12 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                 async printCurrentPosition(){
                     this.trayLocation=1;
                     const coordinates = await Geolocation.getCurrentPosition();
-                    var c=coordinates.coords;
+                    let c=coordinates.coords;
                     this.o.lat=c.latitude;
                     this.o.lon=c.longitude;
                 },
                 async changeRoute() {
-                    var me = this, id = me.id;
+                    let me = this, id = me.id;
                     me.trayLocation=0;
                     me.$refs.red.load();
 
@@ -427,7 +427,7 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                         });
                     }else if (Number(id)){
                         axios.get('/api/desarrollo-social/sivico/' + id).then(function (response) {
-                            var o = response.data;
+                            let o = response.data;
                             if(o.red)o.red=me.pad(o.red,2);
                             
                             if(o.province){
@@ -443,10 +443,10 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                         });
                     }else{
                         try {
-                            var s = localStorage.getItem("setting");
+                            let s = localStorage.getItem("setting");
                             if (s) {
                                 s = JSON.parse(s);
-                                var o = this.o;
+                                let o = this.o;
                                 o.red = s.red;
                                 o.microred = s.microred;
                                 o.establishment = s.establishment;
@@ -465,7 +465,7 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                     }
                 },
                 close(r){
-                    var me=this;
+                    let me=this;
                     if(r.success===true){
                         me.o.id=r.data.id;
                         me.o.tmpId=r.data.tmpId;
@@ -474,18 +474,18 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                             delete o.ext.pending;
                         }
                     }
-                    var o=me.o;
+                    let o=me.o;
                     me.$router.replace('/admin/desarrollo-social/sivico/'+(o.tmpId?(-o.tmpId):o.id))
                 },
                 async getCurrentPosition() {
-                    var me = this;
+                    let me = this;
                     //const {Geolocation} = Plugins;
                     const c = await Geolocation.getCurrentPosition();
                     me.o.lat = c.coords.latitude;
                     me.o.lon = c.coords.longitude;
                 },
                 getCoordinates() {
-                    var me = this;
+                    let me = this;
                     if(me.getCurrentPosition){me.getCurrentPosition()}else
                     _.getLocation().then(function (c) {
                         me.o.lat = c.coords.latitude;

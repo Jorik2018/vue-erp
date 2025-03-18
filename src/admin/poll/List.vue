@@ -49,7 +49,7 @@ export default ui({
   computed: {
     filter() {
       console.log(window.app.session.rol);
-      var p = {},
+      let p = {},
         me = this;
       if (me.query) {
         p.query = me.query;
@@ -64,13 +64,13 @@ export default ui({
     window.bindLinks(this.$el);
   },
   mounted() {
-    var me = this;
+    let me = this;
     me.changeRoute();
     me.filters.poll = me.app.poll;
     /*me.$on("sync", function (dr, dl) {
       if (dr.people && dl.people) {
-        for (var ki = 0; ki < dr.people.length; ki++) {
-          for (var kj = 0; kj < dl.people.length; kj++) {
+        for (let ki = 0; ki < dr.people.length; ki++) {
+          for (let kj = 0; kj < dl.people.length; kj++) {
             if (dl.people[kj].tmpId == dr.people[ki].tmpId) {
               if (dr.people[ki].id) {
                 dl.people[kj].id = dr.people[ki].id;

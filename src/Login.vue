@@ -48,7 +48,7 @@
     </form>
   </div>
 </template>
-<script lang="ts">
+<script>
 //70896448
 import { ui } from 'isobit-ui'
 import axios from 'axios'
@@ -69,10 +69,6 @@ export default ui({
     this.isValid = this.validate(0);
     //_.bindLinks(this.$el);
   },
-  created() {
-    //console.log(this.app)
-    //this.o.name = _.app.usuario;
-  },
   methods: {
     focus(e) {
       //console.log(e.target.nextSibling.focus());
@@ -84,9 +80,7 @@ export default ui({
     },
     initSession(session) {
       const me = this;
-      me.session = session;
-      me.app.connect();
-      me.$router.push("/admin");
+      me.app.connect(session);
     },
     success({ token, perms, user_nicename }) {
       const me = this;
@@ -102,6 +96,7 @@ export default ui({
           });
         }
       } else {
+        alert(8);
         this.openToast();
         //_.MsgBox('El usuario o la contrase&ntilde;a no son reconocidas por el servidor.');
       }

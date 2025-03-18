@@ -1,5 +1,5 @@
 <template>
-    <v-form header="VEA Materno" action="/admin/desarrollo-social/vea-materno">
+    <v-page header="VEA Materno" action="/admin/desarrollo-social/vea-materno">
         <v-table :selectable="true" row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')"
             store="vea-materno" @loaded="ll" :scrollable="true" rowKey="id" :pagination="20" @updated="bindLinks($el)"
             :filters="filters" src="/api/desarrollo-social/vea-materno">
@@ -105,9 +105,9 @@
                 </td>
             </template>
         </v-table>
-    </v-form>
+    </v-page>
 </template>
-<script lang="ts">
+<script>
 import { ui } from 'isobit-ui'
 
 export default ui({
@@ -115,7 +115,7 @@ export default ui({
         return { rowSelectedCount2: 0, page: 0, data: [], mode: 0, query: null }
     },
     created() {
-        var me = this;
+        let me = this;
         me.filters.uid = me.user?.uid;
         /*
                 me.$on('sync', function (dr, dl) {//data remote -> data local
@@ -149,7 +149,7 @@ export default ui({
             this.rowSelectedCount2 = e ? e.length : 0;
         },
         can(o) {
-            var m = this, u = m.user;
+            let m = this, u = m.user;
             return o || u.uid == 1;
             /*return u.uid == 1 || p.REGISTER_DESARROLLO_SOCIAL_SIVICO &&
             !o || o.user == u.id;*/

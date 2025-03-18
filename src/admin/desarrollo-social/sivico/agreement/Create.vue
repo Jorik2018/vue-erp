@@ -43,8 +43,8 @@
     </v-form>
 </template>
 <script>
-    var axios=window.axios;
-    var _=window._;
+    let axios=window.axios;
+    let _=window._;
     export default _.ui({
         props:['id','action'],
         data(){return {
@@ -58,7 +58,7 @@
         }},
         methods:{
             render(){
-                var me = this, id = me.id, action = me.action,master;
+                let me = this, id = me.id, action = me.action,master;
                 if (Number(id)){
                     if (action == 'add') {
                         me.o = {masterId: id, ext: {}};
@@ -81,7 +81,7 @@
                 }
             },
             close(r){
-                var me=this;
+                let me=this;
                 if(r.success===true){
                     me.o.id=r.data.id;
                     me.o.tmpId=r.data.tmpId;
@@ -90,7 +90,7 @@
             }
         },
         created(){
-            var me=this;
+            let me=this;
             this.$on('sync',(data,o)=>{
                 me.getStoredList('pool').then((pools)=>{
                     pools.forEach(e =>{
@@ -117,7 +117,7 @@
             });
         },
         mounted() {
-            var me=this;
+            let me=this;
             if(me.$children[0])me.app.title=me.$children[0].header;
             me.render();
         }

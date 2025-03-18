@@ -1,64 +1,30 @@
 <template style="color:red">
-
-	<AppMenu></AppMenu>
-	<ion-router-outlet id="main" style="display:none"></ion-router-outlet>
-	<ion-header>
-		<div class="primary center v-header" v-bind:class="{ 'v-red': !app2.connected }">
-			<a v-show="app.connected" style="position: absolute;right: 0px;padding: 10px;
-    display: inline-block;font-size: 20px;" href="/search">
-				<i class="fa fa-search" v-bind:class="icono"></i>
-			</a>
-			<span v-on:click="open">
-				<i class="fa fa-bars"></i>
-			</span>
-			<!--span v-show="!app.networkStatus.connected" href="/shami/notification" style="position: absolute;left: 50px;padding: 5px 13px;display: inline-block; margin-top: 8px;font-size: 18px;">
-					<i class="fa fa-exclamation-triangle"></i>
-				</span-->
-			<!--a href="/shami/notification" style="position: absolute;left: 50px;padding: 5px 13px;display: inline-block; margin-top: 8px;font-size: 18px;">
-					<i class="fa fa-bell"></i>
-					<span v-if="app.notification.length" style="color: white;
-    border-radius: 50%;
-    background-color: red;
-    position: absolute;
-    top: -2px;
-    font-size: 10px;
-    text-align: center;
-    padding-top: 2px;
-    width: 20px;
-    height: 18px;
-    right: 14px;">
-						<template v-if="app.notification.length<100">{{app.notification.length}}</template>
-<template v-if="app.notification.length>99">+99</template>
-</span>
-</a-->
-
-			<div style="height:80px;padding:10px 0px 0px 0px;max-height: 42px;max-width: 100%;"
-				src="@/fs/images/logo.svg"></div>
+	<ion-split-pane content-id="2content" when="false">
+		<AppMenu></AppMenu>
+		<div style="display: flex;flex-direction: column;width: -webkit-fill-available;background-color: #ffffff;">
+			<ion-header :translucent="true">
+				<ion-toolbar>
+					<ion-buttons slot="start">
+						<ion-menu-button color="primary"></ion-menu-button>
+					</ion-buttons>
+					<ion-title></ion-title>
+				</ion-toolbar>
+			</ion-header>
+			<ion-content style="display: flex;" id="2content">
+				<!--ion-router-outlet id="main-content"></ion-router-outlet-->
+				<div id="main-content">
+					<router-view></router-view>
+				</div>
+			</ion-content>
 		</div>
-	</ion-header>
-	<router-view></router-view>
-	<!--ion-footer style="border-top: 1px solid #d2d2d2;">
-			<ion-toolbar class="toolbar">
-				<a href="/shami"><i class="fa fa-home"></i>Inicio</a>
-				<a href="/shami/cart" style="position:relative"><i class="fa fa-shopping-cart"></i>
-					<span v-if="cart.products.length" style="color: white; border-radius: 50%; background-color: red; position: absolute; top: -5px;font-size:14px; ;text-align:center;padding-top:2px;width:28px;height:23px; right: 10px;">
-						<template v-if="cart.total<100">{{cart.total}}</template>
-						<template v-if="cart.total>99">+99</template>
-					</span>
-					Carrito
-				</a>
-				<a href="/shami/benefits"><i class="fa fa-star"></i>Beneficios</a>
-				<a href="/shami/map" ><i class="fa fa-map-marker-alt"></i>Ubicación</a>
-			</ion-toolbar>
-		</ion-footer-->
-
+	</ion-split-pane>
 </template>
-<script>
-import AppMenu from './Menu.vue';
-import { menuController } from '@ionic/vue';
+<script lang="ts">
+import AppMenu from './AppMenu.vue';
+import { menuController, IonRouterOutlet, IonSplitPane, IonHeader, IonMenuButton, IonButtons, IonTitle, IonToolbar, IonContent } from '@ionic/vue';
 import { ui, resize } from 'isobit-ui'
 export default ui({
-	components: { AppMenu },
+	components: { AppMenu, IonRouterOutlet, IonHeader, IonSplitPane, IonMenuButton, IonButtons, IonTitle, IonToolbar, IonContent },
 	watch: {
 		$route() {
 			//console.log("ENTRO A ROUTE")
@@ -69,14 +35,14 @@ export default ui({
 		}
 	},
 	mounted() {
-		const app = this.app;
+		/*const app = this.app;
 		this.bindLinks(this.$el, this.hide);
-		setTimeout(resize, 600);
+		setTimeout(resize, 600);*/
 	},
 	updated() {
-		this.bindLinks(this.$el, this.hide);
+		/*this.bindLinks(this.$el, this.hide);
 		this.bindLinks(this.$el);
-		resize();
+		resize();*/
 		//this.$refs.dataview.load(true); 
 		//this.categoria = this.app.idcategoria;
 	},
@@ -101,6 +67,82 @@ export default ui({
 });
 </script>
 <style scoped>
+ion-content::part(scroll) {
+	display: flex;
+	flex: 1;
+}
+
+#main-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+::v-deep(#main-content > div) {
+	flex: 1 !important;
+}
+
+::v-deep(#main-content > .ui-panel) {
+	height: 0px;
+}
+
+::v-deep(#main-content > .ui-panel) {
+	height: 0px;
+}
+
+::v-deep(#main-content > .ion-page) {
+	display: flex;
+	flex-direction: column;
+}
+
+::v-deep(#main-content > .ion-page > .ui-panel) {
+	height: 0px;
+	flex: 1;
+}
+
+::v-deep(#main-content > .ion-page > .ui-panel > .v-dialog-content > form > center:last-child) {
+	background-color: #0f62ac;
+	padding: 10px;
+}
+
+::v-deep(#main-content > .ion-page > .ui-panel > .v-dialog-content > form > center:last-child > *) {
+	margin: 0px;
+}
+
+::v-deep(#main-content > .ion-page > .ui-panel > .v-dialog-content) {
+	/*overflow: auto;*/
+	height: 0px;
+}
+
+::v-deep(#main-content > .ui-panel > .v-dialog-content>form) {
+	height: 0px;
+}
+
+::v-deep(#main-content > .ion-page > .ui-panel > .v-dialog-content > form > .v-form) {
+	overflow: auto;
+}
+
+::v-deep(#main-content > .ui-panel > .v-dialog-content),
+::v-deep(#main-content > .ui-panel > .v-dialog-content > form > .v-form) {
+	overflow-y: auto;
+}
+
+::v-deep(#main-content > .ion-page > .ui-panel > .v-dialog-content > form) {
+	height: 0px;
+}
+
+::v-deep(#main-content > div > div>form) {
+	display: flex;
+	flex-direction: column;
+}
+
+::v-deep(#main-content > div > div > form > .v-datatable),
+::v-deep(#main-content > .ion-page > div > div > form > .v-datatable) {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
 #main {
 	display: none;
 }

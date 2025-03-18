@@ -1,5 +1,5 @@
 <template>
-    <v-form id="DsPeopleCreateForm" action="/api/desarrollo-social/census"
+    <v-page id="DsPeopleCreateForm" action="/api/desarrollo-social/census"
         v-bind:header="(o.id ? 'Editar' : 'Crear') + ' Empadronamiento'" storage="census">
         <div class="v-form" v-if="o"> <label>Familia:</label>
             <div>
@@ -93,7 +93,7 @@
             </v-select> <label>Idioma:</label> <v-select v-model="o.language" required="required">
                 <option value="">Select One...</option>
                 <option v-for="(language, key) in options.language" v-bind:key="key" v-bind:value="key + 1">{{ language
-                    }}
+                }}
                 </option>
             </v-select> <label>Seguro:</label> <v-select v-model="o.assured" required="required">
                 <option value="">Select One...</option>
@@ -162,10 +162,10 @@
         <center> <v-button value="Grabar" icon="fa-save" v-on:click.prevent="save"></v-button> <v-button
                 value="Cancelar" icon="fa-ban" v-on:click.prevent="close"></v-button>
         </center>
-    </v-form>
+    </v-page>
 </template>
 <script>
-import { Plugins } from '@capacitor/core'
+import { Geolocation } from "@capacitor/geolocation";
 import 'ol/ol.css';
 const axios = window.axios;
 import { ui } from 'isobit-ui'
@@ -257,7 +257,6 @@ export default ui({
         },
         async getCurrentPosition() {
             const me = this;
-            const { Geolocation } = Plugins;
             const c = await Geolocation.getCurrentPosition();
             me.o.lat = c.coords.latitude;
             me.o.lon = c.coords.longitude;

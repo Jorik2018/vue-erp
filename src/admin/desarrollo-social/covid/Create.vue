@@ -59,14 +59,14 @@ export default ui({
 
 	},
 	mounted() {
-		var me = this;
+		let me = this;
 		setTimeout(function () { me.app.title = me.$children[0].header; }, 200);
 	},
 	methods: {
 		dateDiff(f) {
-			var r = '';
+			let r = '';
 			if (f) {
-				var r2 = Vue.dateDiff(new Date(f), new Date());
+				let r2 = Vue.dateDiff(new Date(f), new Date());
 				if (r2.ans)
 					r += (r2.ans + ' A�OS ');
 				if (r2.meses)
@@ -84,7 +84,7 @@ export default ui({
 			}
 		},
 		inputPeople() {
-			var me = this;
+			let me = this;
 			me.l = [me.o];
 		}
 	}

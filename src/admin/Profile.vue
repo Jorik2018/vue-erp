@@ -156,8 +156,8 @@
 </template>
   <script>
 import { Camera, CameraResultType } from '@capacitor/camera';
-var {_,axios} = window;
-export default _.ui({
+import { ui} from "isobit-ui";
+export default ui({
   data () {
     return {
       o: null,
@@ -169,11 +169,11 @@ export default _.ui({
     };
   },
   created() {
-    var me=this;
+    let me=this;
     me.app.title = "Cuenta";
     window.logo = require("@/cdn/images/No_image.svg");
     axios.get("/api/user/" + (me.session.uid || "me")).then((d) => {
-      var o = d.data;
+      let o = d.data;
       o.ext = {};
       if (!o.people) o.people = {};
       me.o = o;
@@ -181,7 +181,7 @@ export default _.ui({
   },
   methods: {
     changeImage(url) {
-      var me = this;
+      let me = this;
       axios
         .post("/api/user/image", {
           image: url
@@ -192,21 +192,21 @@ export default _.ui({
         });
     },
     saveContact() {
-      var me = this;
-      var o = JSON.clone(me.o);
+      let me = this;
+      let o = JSON.clone(me.o);
       delete o.ext;
       axios.put("/api/user/profile", o).then(function () {
         me.editContact = 0;
       });
     },
     saveAddress() {
-      var me = this;
+      let me = this;
       axios.put("/api/user/save-address", JSON.clone(me.o)).then(function () {
         me.editAddress = 0;
       });
     },
     changePassword() {
-      var me = this;
+      let me = this;
       axios
         .put("/api/user/change-password", {
           svdUsuarios: { usuario: me.session.usuario, clave: me.o.pass },
@@ -217,7 +217,7 @@ export default _.ui({
         });
     },
     test(u) {
-      var me = this;
+      let me = this;
       me.count++;
       Camera.getPhoto({
         quality: 100,

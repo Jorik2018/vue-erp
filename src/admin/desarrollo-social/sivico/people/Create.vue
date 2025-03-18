@@ -152,9 +152,9 @@
     </v-form>
 </template>
 <script>
-	var _=window._;
-    var Vue=window.Vue;
-    var axios=window.axios;
+	let _=window._;
+    let Vue=window.Vue;
+    let axios=window.axios;
     export default _.ui({
         props: ['id','action'],
         data() {
@@ -263,14 +263,14 @@
         },
         computed: {
             relationshipFiltered(){
-                var me=this;
+                let me=this;
                 return me.o.sex?me.relationship.filter(function(el) {
                     return (el.sex==me.o.sex||el.sex=='X');
                 }):[];
             },
             vif(){
-                var d=this.diff,v,r=this.relation;
-                for(var i=0;r.length>i;i++){
+                let d=this.diff,v,r=this.relation;
+                for(let i=0;r.length>i;i++){
                     v=r[i];
                     v[0]=0;
                     if(d&&d.ans>=v[2]&&v[3]>=d.ans&&
@@ -280,9 +280,9 @@
                 return r; 
             },
             currentLifeStage(){
-                var d=this.diff;
+                let d=this.diff;
                 if(d){
-                    var e=0;
+                    let e=0;
                     if(18>d.ans){
                         e=1;
                     }else if(30>d.ans){
@@ -297,7 +297,7 @@
                 return null;
             },
             diff(){
-                var d;
+                let d;
                 if (this.o.birthdate) {
                     if (this.o.birthdate.split) {
                         d = this.o.birthdate.split('-');
@@ -310,7 +310,7 @@
                 return d;
             },
             dateDiff(){
-                var s = '',d = this.diff;
+                let s = '',d = this.diff;
                 if (d) {
                     if (d.ans > 0)
                         s += 'ANIOS=' + d.ans;
@@ -324,13 +324,13 @@
         },
         methods:{
             changeRoute() {
-                var me = this, id = me.id, action = me.action;
+                let me = this, id = me.id, action = me.action;
                 if (Number(id)){
                     if (action == 'add') {
-                        var o = {masterId: id, ext: {}};
+                        let o = {masterId: id, ext: {}};
                         me.o = o;
                     } else if(id<0){
-                        var item=window._.db.transaction(["people"], "readwrite").objectStore("people").get(-id);
+                        let item=window._.db.transaction(["people"], "readwrite").objectStore("people").get(-id);
 						item.onsuccess = function() {
                             if(item.result){
 								me.o=item.result;
@@ -343,13 +343,13 @@
                 }
             },
             process(o) {
-                var user = this.user;
+                let user = this.user;
                 if (user)
                     o.user = user.id;
                 return o;
             },
             close(r){
-                var me=this;
+                let me=this;
                 
                 if(r.success===true){
                     me.o.id=r.data.id;
@@ -360,7 +360,7 @@
             }
         },
         created(){
-            var me=this;
+            let me=this;
             this.$on('sync',(data,o)=>{
                 me.getStoredList('pool').then((pools)=>{
                     pools.forEach(e =>{

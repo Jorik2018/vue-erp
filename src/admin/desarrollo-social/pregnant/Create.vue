@@ -1,5 +1,5 @@
 <template>
-  <v-form action="/api/desarrollo-social/pregnant" :header="(o.id ? 'Editar' : 'Crear') + ' Gestante'" :class="o.id < 0 || (o.tmpId && !o.synchronized)
+  <v-page action="/api/desarrollo-social/pregnant" :header="(o.id ? 'Editar' : 'Crear') + ' Gestante'" :class="o.id < 0 || (o.tmpId && !o.synchronized)
     ? 'yellow'
     : o.tmpId
       ? 'green'
@@ -11,14 +11,13 @@
       <label>DIRESA:</label>
       <div>ANCASH</div>
       <label>Red:</label>
-      <v-select v-model="o.red" ref="red" v-on:input="$refs.microredSelect.load({ Codigo_Red: o.red })"
-        :required="true">
+      <v-select v-model="o.red" ref="red" @input="$refs.microredSelect.load({ Codigo_Red: o.red })" required>
         <option>Select One...</option>
         <v-options store="red" display-field="name" value-field="code" />
       </v-select>
       <label>Microred:</label>
       <v-select autoload="false" :disabled="!o.red" store="microred" ref="microredSelect" v-model="o.microred"
-        :required="true" @input="$refs.establishment.load({ microredCode: '02' + o.microred })">
+        :required="true" @input="$refs.establishment.load({ microredCode: o.microred })">
         <option>Select One...</option>
         <v-options store="microred" display-field="name" value-field="code" />
       </v-select>
@@ -44,27 +43,27 @@
       </v-select>
 
       <label>Centro Poblado:</label>
-      <v-select :autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.district"
-        required="required" ref="cpSelect" v-model="o.codigoCCPP" @input="inputCCPP">
+      <v-select :autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.district" required
+        ref="cpSelect" v-model="o.codigoCCPP" @input="inputCCPP">
         <option value="">Seleccionar Opción</option>
         <v-options store="town" display-field="name" value-field="id" />
       </v-select>
       <label>Sector:</label>
-      <input type="text" v-model="o.sector" required="required" />
+      <input type="text" v-model="o.sector" required />
       <label>Dirección:</label>
-      <input type="text" v-model="o.address" required="required" title="Direccion" />
+      <input type="text" v-model="o.address" required title="Direccion" />
       <v-fieldset legend="DATOS PERSONALES">
         <label>DNI:</label>
-        <input type="text" v-model="o.numeroDNI" required="required" title="Numero DNI" />
+        <input type="text" v-model="o.numeroDNI" required title="Numero DNI" />
         <label>Apellidos:</label>
-        <input type="text" v-model="o.apellidoPaterno" required="required" />
+        <input type="text" v-model="o.apellidoPaterno" required />
         <label>Nombres:</label>
-        <input type="text" v-model="o.nombres" required="required" />
+        <input type="text" v-model="o.nombres" required />
 
         <label>Fecha Nacimiento:</label>
-        <v-calendar v-model="o.fechaNacimiento" required="required" title="Fecha Nacimiento" :max="today" />
+        <v-calendar v-model="o.fechaNacimiento" required title="Fecha Nacimiento" :max="today" />
         <label>Estado Civil:</label>
-        <v-select v-model="o.estadoCivil" required="required" title="Estado Civil">
+        <v-select v-model="o.estadoCivil" required title="Estado Civil">
           <option value="">Select One...</option>
           <option value="SOLTERO">SOLTERO (A)</option>
           <option value="CASADO">CASADO (A)</option>
@@ -73,7 +72,7 @@
           <option value="CONVIVIENTE">CONVIVIENTE</option>
         </v-select>
         <label>Grado Instrucción:</label>
-        <v-select v-model="o.gradoInstruccion" required="required">
+        <v-select v-model="o.gradoInstruccion" required>
           <option value="">Select One...</option>
           <option value="PRIMARIA COMPLETA">PRIMARIA COMPLETA</option>
           <option value="PRIMARIA INCOMPLETA">PRIMARIA INCOMPLETA</option>
@@ -90,35 +89,34 @@
           <option value="NO ESTUDIO">NO ESTUDIO</option>
         </v-select>
         <label>Gestante Numero Celular:</label>
-        <input type="tel" v-model="o.gestanteNumeroCelular" required="required" title="Gestante Numero Celular" />
+        <input type="tel" v-model="o.gestanteNumeroCelular" required title="Gestante Numero Celular" />
         <label>Gestante Familia Celular:</label>
-        <input type="tel" v-model="o.gestanteFamiliaCelular" required="required" title="Gestante Familia Celular" />
+        <input type="tel" v-model="o.gestanteFamiliaCelular" required title="Gestante Familia Celular" />
       </v-fieldset>
 
       <v-fieldset legend="DATOS OBSTETRICOS">
         <label>Gestante:</label>
-        <v-number v-model="o.gestanteNumero" required="required" title="Gestante Numero" />
+        <v-number v-model="o.gestanteNumero" required title="Gestante Numero" />
         <label>Paridad:</label>
-        <v-number v-model="o.gestanteParidad" required="required" title="Gestante Paridad" />
+        <v-number v-model="o.gestanteParidad" required title="Gestante Paridad" />
         <label>FUR:</label>
-        <v-calendar v-model="o.gestanteFUR" required="required" title="Gestante FUR" :max="today" @invalid="invalidDate"
-          @input="onInputFUR" />
+        <v-calendar v-model="o.gestanteFUR" required title="Gestante FUR" :max="today" @invalid="invalidDate"
+          @change="onInputFUR" />
         <label>FPP:</label>
         <div style="padding: 5px; border: 1px solid lightgrey; border-radius: 8px">
-          {{ o.gestanteFPP || "yyyy-MM-dd" }}
+          {{ o.gestanteFPP }}
         </div>
         <label>EG. En Semanas:</label>
-        <v-number v-model="o.gestanteEdadGestacionalSemanas" required="required"
-          title="Gestante Edad Gestacional Semanas" />
+        <v-number v-model="o.gestanteEdadGestacionalSemanas" required title="Gestante Edad Gestacional Semanas" />
         <label>Riesgo Obstetrico:</label>
-        <v-select v-model="o.gestanteRiesgoObstetrico" v-bind:required="true">
+        <v-select v-model="o.gestanteRiesgoObstetrico" :required="true">
           <option>Select One...</option>
           <v-options store="cie" display-field="name" value-field="code" />
         </v-select>
       </v-fieldset>
       <v-fieldset legend="EMERGENCIA Y/O HOSPITALIZACION" closable="true" class="v-form">
         <label>Red:</label>
-        <v-select v-model="o.emergencyRed" autoload="false" ref="emergencyRed" v-on:input="
+        <v-select v-model="o.emergencyRed" autoload="false" ref="emergencyRed" @input="
           $refs.emer_microred.load({ code: o.emergencyRed })
           ">
           <option>Select One...</option>
@@ -127,7 +125,7 @@
         <label>Microred:</label>
         <v-select autoload="false" :disabled="!o.emergencyRed" store="microred" ref="emer_microred"
           v-model="o.emergencyMicrored" :required="true"
-          @input="$refs.emer_establishment.load({ microredCode: '02' + o.emergencyMicrored, type: 1 })">
+          @input="$refs.emer_establishment.load({ microredCode: completeMicroredCode(o.emergencyMicrored), type: 1 })">
           <option>Select One...</option>
           <v-options store="microred" display-field="name" value-field="code" />
         </v-select>
@@ -145,7 +143,7 @@
       </v-fieldset>
       <v-fieldset legend="MIGRACIÓN" class="v-form" closable="true" v-model="o.migration">
         <label>Red:</label>
-        <v-select v-model="o.migra_red" autoload="false" ref="migra_red" v-on:input="
+        <v-select v-model="o.migra_red" autoload="false" ref="migra_red" @input="
           $refs.migra_microredSelect.load({ Codigo_Red: o.migra_red })
           ">
           <option>Select One...</option>
@@ -154,10 +152,7 @@
         <label>Microred:</label>
         <v-select autoload="false" :disabled="!o.migra_red" store="microred" ref="migra_microredSelect"
           v-model="o.migra_microred" :required="true" @input="
-            $refs.migra_establishment.load({
-              microredCode: '02' + o.migra_microred,
-            })
-            ">
+            $refs.migra_establishment.load({ microredCode: completeMicroredCode(o.migra_microred) })">
           <option>Select One...</option>
           <v-options store="microred" display-field="name" value-field="code" />
         </v-select>
@@ -173,19 +168,14 @@
       </v-fieldset>
       <v-fieldset legend="Coordenadas" style="width: auto">
         <div class="right">
-          <v-button icon="fa-compass" value="Obtener Geolocalización" v-on:click="printCurrentPosition" />
+          <v-button icon="fa-compass" value="Obtener Geolocalización" @click="printCurrentPosition" />
         </div>
-        <div class="center" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0) || trayLocation" style="
-            margin-top: 10px;
-            border: 1px solid #ffcf00;
-            background-color: #ffff80;
-            padding: 10px;
-          ">
-          ({{ o.lat }},{{ o.lon }})
+        <div class="center coordinate" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0) || tryLocation">
+          ({{ o.lat || 0 }},{{ o.lon || 0 }})
         </div>
       </v-fieldset>
-      <label>Estado:{{ o.migracionEstado }}</label>
-      <v-select v-model="o.migracionEstado" required="required">
+      <label>Estado:</label>
+      <v-select v-model="o.migracionEstado" required>
         <option value="">Select One...</option>
 
         <option :value="item" :key="item" v-for="item in ['GESTANTE', 'GESTANTE CAPTADA', 'PUERPERA', 'MER']">
@@ -201,18 +191,18 @@
         )
         "></v-button>
     </center>
-  </v-form>
+  </v-page>
 </template>
-<script lang="ts">
+<script>
 import { Capacitor } from "@capacitor/core";
 import { Camera, CameraResultType } from "@capacitor/camera";
 import { Filesystem, Directory } from "@capacitor/filesystem";
 import { Geolocation } from "@capacitor/geolocation";
-import "ol/ol.css";
 import { ui, date } from 'isobit-ui'
-const { _, axios } = window;
+import axios from 'axios'
 export default ui({
   props: ["id"],
+
   data() {
     return {
       count: 0,
@@ -241,7 +231,7 @@ export default ui({
         { id: "R", name: "RURAL" },
       ],
       resultadoVisita: ["EJECUTADO", "RECHAZADO", "ABANDONADO"],
-      trayLocation: null,
+      tryLocation: null,
       o: {
         id: null,
         synchronized: null,
@@ -299,9 +289,10 @@ export default ui({
     me.changeRoute();
   },
   methods: {
-    onInputFUR(o) {
-      if (o) {
-        o = new Date(o);
+    onInputFUR() {
+      let o = this.o;
+      if (o.gestanteFUR) {
+        o = new Date(o.gestanteFUR);
         o.setFullYear(o.getFullYear() + 1);
         o.setMonth(o.getMonth() - 3);
         o.setDate(o.getDate() + 7);
@@ -315,12 +306,13 @@ export default ui({
       this.o.establecimientoSalud = b && b.object ? b.object.name : "";
     },
     process(o) {
-      if (!this.trayLocation) {
+      if (!this.tryLocation) {
         this.MsgBox("Debe tratar de obtener la geolocalización.");
         return false;
       }
       return o;
     },
+    completeMicroredCode(v) { return /*'02'+*/ v; },
     errorImg() { },
     changeImage(result) {
       const me = this,
@@ -408,7 +400,7 @@ export default ui({
       });
     },
     async printCurrentPosition() {
-      this.trayLocation = 1;
+      this.tryLocation = 1;
       const coordinates = await Geolocation.getCurrentPosition();
       const c = coordinates.coords;
       this.o.lat = c.latitude;
@@ -417,7 +409,7 @@ export default ui({
     async changeRoute() {
       const me = this,
         id = me.id;
-      me.trayLocation = 0;
+      me.tryLocation = 0;
       me.$refs.emergencyRed.load();
       me.$refs.migra_red.load();
       if (id < 0) {
@@ -429,7 +421,7 @@ export default ui({
               me.o = e;
               console.log(e.visits);
               me.$refs.province.load({ code: me.o.region || "02" });
-              me.trayLocation = e.lat && e.lon;
+              me.tryLocation = e.lat && e.lon;
             }
           });
         });
@@ -438,6 +430,7 @@ export default ui({
           .get("/api/desarrollo-social/pregnant/" + id)
           .then(function (response) {
             const o = response.data;
+
             if (o.red) o.red = me.pad(o.red, 2);
 
             if (o.province) {
@@ -447,7 +440,7 @@ export default ui({
             if (o.district) o.district = me.pad(o.district, 6);
             o.ext.src = null;
             o.ext.tempFile = null;
-            me.trayLocation = 1;
+            me.tryLocation = 1;
             me.o = o;
             me.$refs.province.load({ code: me.o.region });
           });
@@ -456,7 +449,7 @@ export default ui({
           let s = localStorage.getItem("setting");
           if (s) {
             s = JSON.parse(s);
-            const o = this.o;
+            const o = me.o;
             o.red = s.red;
             o.microred = s.microred;
             o.codigoEESS = s.establishment;
@@ -484,7 +477,7 @@ export default ui({
           delete o.ext.pending;
         }
       }
-      var o = me.o;
+      let o = me.o;
       const nid = o.tmpId ? -o.tmpId : o.id;
       if (me.id != nid)
         me.$router.replace("/admin/desarrollo-social/pregnant/" + nid);
@@ -512,3 +505,22 @@ export default ui({
   },
 });
 </script>
+
+<style scope>
+.coordinate {
+  padding: 10px 10px 15px;
+  margin-top: 10px;
+}
+
+@media (prefers-color-scheme: light) {
+  .coordinate {
+    background-color: rgb(255, 255, 128)
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .coordinate {
+    background-color: rgb(255 255 128 / 13%);
+  }
+}
+</style>

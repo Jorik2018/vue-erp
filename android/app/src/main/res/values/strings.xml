@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">vue-erp</string>
-    <string name="title_activity_main">vue-erp</string>
-    <string name="package_name">org.isobit.erp</string>
-    <string name="custom_url_scheme">org.isobit.erp</string>
-</resources>

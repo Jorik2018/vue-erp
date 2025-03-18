@@ -164,12 +164,12 @@
 </template>
 <script>
 	import 'ol/ol.css';
-    var axios=window.axios;
-    var _=window._;
+    let axios=window.axios;
+    let _=window._;
     export default {
         watch:{
             $route(){
-                var me=this;
+                let me=this;
                 setTimeout(function(){me.render()},200);
             }
         },
@@ -184,24 +184,24 @@
         updated(){this.app.title=this.$children[0].header;},
         methods: {
             render(){
-                var me = this,id=me.id;
+                let me = this,id=me.id;
                 if(!id){
-                    var path=me.$el.parentNode.getAttribute('path');
+                    let path=me.$el.parentNode.getAttribute('path');
                     if(path){
-                        var action = path.split('/')[4].split('?')[0];
+                        let action = path.split('/')[4].split('?')[0];
                         id = action == 'create' ? 0 : action;
                     }
                 }
                 if (id){
                     axios.get('/api/desarrollo-social/sid/' + id).then(function (r) {
-                        var o=r.data;
+                        let o=r.data;
                         //o.hLavada = o.hLavada ? o.hLavada.split('|') : [];
                         //o.comoDisponenBasura = o.comoDisponenBasura ? o.comoDisponenBasura.split('|') : [];
                         me.o = o;
                     });
                 }else{
                     me.o={};
-                    var o = me.o;
+                    let o = me.o;
                     _.getLocation().then(function (c) {
                         o.lat = c.coords.latitude;
                         o.lon = c.coords.longitude;
@@ -211,8 +211,8 @@
             },
             close(r){if(r===true){this.$router.back();}},
             process(o) {
-                var me=this;
-                var join=function(v){
+                let me=this;
+                let join=function(v){
                     if(v)if(v.join)v=v.join('|');
                     return v;
                 };

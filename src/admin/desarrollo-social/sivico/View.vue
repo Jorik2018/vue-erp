@@ -90,9 +90,9 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
     </v-form>
 </template>
 <script>
-	var axios=window.axios;
-        var Vue=window.Vue;
-        var _=window._;
+	let axios=window.axios;
+        let Vue=window.Vue;
+        let _=window._;
         export default _.ui({
             props: ['id'],
             watch: {
@@ -101,7 +101,7 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                 }
             },
             created(){
-                var me=this;
+                let me=this;
                 this.$on('destroyed',(o)=>{
                     console.log(o);
                 });
@@ -352,14 +352,14 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
             },
             computed: {
                 relationshipFiltered() {
-                    var me = this;
+                    let me = this;
                     return me.o.sex ? me.relationship.filter(function (el) {
                         return (el.sex == me.o.sex || el.sex == 'X');
                     }) : [];
                 },
                 vif() {
-                    var d = this.diff, v, r = this.relation;
-                    for (var i = 0; r.length > i; i++){
+                    let d = this.diff, v, r = this.relation;
+                    for (let i = 0; r.length > i; i++){
                     v = r[i];
                             v[0] = 0;
                             if (d && d.ans >= v[2] && v[3] >= d.ans &&
@@ -369,8 +369,8 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                     return r;
                 },
                 currentLifeStage() {
-                    var d = this.diff;
-                    var e = 1;
+                    let d = this.diff;
+                    let e = 1;
                     if (d) {
                         e = 0;
                         if (18 > d.ans) {
@@ -387,7 +387,7 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                     return null;
                 },
                 diff() {
-                    var d;
+                    let d;
                     if (this.o.birthdate) {
                         if (this.o.birthdate.split) {
                             d = this.o.birthdate.split('-');
@@ -400,7 +400,7 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                     return d;
                 },
                 dateDiff() {
-                    var s = '', d = this.diff;
+                    let s = '', d = this.diff;
                     if (d) {
                         if (d.ans > 0)
                             s += 'AÑOS=' + d.ans;
@@ -422,12 +422,12 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                     this.open('/admin/desarrollo-social/sivico/'+o.id+'/add/agreement',this.$refs.agreement.load);
                 },
                 loadTables(){
-                    var refs=this.$refs;
+                    let refs=this.$refs;
                     refs.people.load();
                     refs.agreement.load();
                 },
                 render() {
-                    var me = this, id = me.id;
+                    let me = this, id = me.id;
                     
                     if(id<0){
                         me.getStoredList('pool').then((pool)=>{
@@ -450,7 +450,7 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                         });
                     }else if (Number(id)) {
                         me.filters.masterId=me.id;
-                        var loaded=0;
+                        let loaded=0;
                         me.getStoredList('pool').then((pool)=>{
                             pool.forEach(e =>{
                                 if(e.id==me.id){
@@ -470,14 +470,14 @@ style="margin-top:10px;border:1px solid #ffcf00;background-color:#ffff80;padding
                     }
                 },
                 process(o) {
-                    var user = this.user;
+                    let user = this.user;
                     if (user)
                         o.user = user.id;
                     return o;
                 }
             },
             mounted() {
-                var me=this;
+                let me=this;
                 if(me.$children[0])me.app.title=me.$children[0].header;
                 me.render();
             }

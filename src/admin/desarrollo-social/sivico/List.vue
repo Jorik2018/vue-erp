@@ -204,7 +204,7 @@
     </ion-content>
 </template>
 <script>
-var _ = window._;
+let _ = window._;
 export default _.ui({
     data() {
         return { rowSelectedCount2: 0, page: 0, data: [], mode: 0, query: null }
@@ -241,7 +241,7 @@ export default _.ui({
             this.rowSelectedCount2 = e ? e.length : 0;
         },
         can(o) {
-            var m = this, u = m.user;
+            let m = this, u = m.user;
             return o || u.uid == 1;
             /*return u.uid == 1 || p.REGISTER_DESARROLLO_SOCIAL_SIVICO &&
             !o || o.user == u.id;*/

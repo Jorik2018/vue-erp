@@ -1,12 +1,11 @@
 <template>
-  <v-form action="/api/desarrollo-social/emed" :title="o.synchronized" header="Ver EMED" @resize="onResize"
-    store="emed" :class="
-      o.id < 0 || (o.tmpId && !o.synchronized)
+  <v-page action="/api/desarrollo-social/emed" :title="o.synchronized" header="Ver EMED" @resize="onResize" store="emed"
+    :class="o.id < 0 || (o.tmpId && !o.synchronized)
         ? 'yellow'
         : o.tmpId
           ? 'green'
           : ''
-    ">
+      ">
     <div class="v-form">
       <label>ID:</label>
       <div>
@@ -14,7 +13,7 @@
       </div>
       <v-fieldset legend="Datos generales">
         <label>Fecha:</label>
-        <div>{{ o.date | date('date-') }}</div>
+        <div>{{ date(o.date, 'date-') }}</div>
         <label>Hora:</label>
         <div>{{ o.time || '---' }}</div>
         <label>Tipo:</label>
@@ -46,12 +45,11 @@
 
       <v-fieldset legend="Coordenadas" style="width: auto">
         <div class="center coordinates" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0)">
-          <a :href="
-            'https://www.google.com/maps/search/?api=1&query=' +
+          <a :href="'https://www.google.com/maps/search/?api=1&query=' +
             o.lat +
             ',' +
             o.lon
-          " target="_blank">({{ o.lat ? o.lat : "---" }},{{ o.lon }})</a>
+            " target="_blank">({{ o.lat ? o.lat : "---" }},{{ o.lon }})</a>
         </div>
       </v-fieldset>
       <v-fieldset legend="Daños a salud">
@@ -61,7 +59,7 @@
           @row-select="selections.damage_salud = $event.current">
           <template v-slot:default="{ row, index }">
             <td header="N°" class="center" width="40">
-              {{ pad(index+ 1, 2) }}
+              {{ pad(index + 1, 2) }}
             </td>
             <td header="Apellidos y nombres" class="center" width="120">
               {{ row.code }}: {{ row.nombre_completo }}
@@ -115,9 +113,9 @@
           @row-select="selections.action = $event.current">
           <template v-slot:default="{ row, index }">
             <td header="N°" class="center" width="40">
-              {{ pad(index+ 1, 2) }}
+              {{ pad(index + 1, 2) }}
             </td>
-            <td header="Fecha" class="center" width="120">{{ row.fecha | date('date-') }}</td>
+            <td header="Fecha" class="center" width="120">{{ date(row.fecha, 'date-') }}</td>
             <td header="Hora" class="center" width="120">{{ row.hora }}</td>
             <td header="Descripción" width="300">{{ row.descripcion }}</td>
           </template>
@@ -145,25 +143,25 @@
     </div>
     <center style="margin-bottom: 10px">
       <v-button style="margin-left: 10px" value="Editar" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
-  $router.replace(
-    '/admin/desarrollo-social/emed/' +
-    (o.tmpId ? -o.tmpId : o.id) +
-    '/edit'
-  )
-      "></v-button>
+        $router.replace(
+          '/admin/desarrollo-social/emed/' +
+          (o.tmpId ? -o.tmpId : o.id) +
+          '/edit'
+        )
+        "></v-button>
     </center>
-  </v-form>
+  </v-page>
 </template>
 <script>
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Camera, CameraResultType } from '@capacitor/camera';
 
-var { _, axios } = window;
+let { _, axios } = window;
 export default _.ui({
   props: ["id"],
   created() {
-    var me = this;
+    let me = this;
     me.getStoredList("emed").then((emeds) => {
 
       me.$on("destroyed", (e, storeName) => {
@@ -174,7 +172,7 @@ export default _.ui({
               e.id == o.emedId
             ) {
               console.log(storeName);
-              var sn = storeName.replace("emed_", "");
+              let sn = storeName.replace("emed_", "");
               console.log(e);
               console.log(sn);
               me.setStoredList(storeName,
@@ -232,7 +230,7 @@ export default _.ui({
   methods: {
 
     getScrollBarWidth() {
-      var w = this.w;
+      let w = this.w;
       if (!w) {
         let el = document.createElement("div");
         el.style.cssText = "overflow:scroll; visibility:hidden; position:absolute;";
@@ -243,8 +241,7 @@ export default _.ui({
       return w;
     },
     onResize(e) {
-      var w = e.$target.$el.offsetWidth - 44 - this.getScrollBarWidth();
-
+      let w = e.$target.$el.offsetWidth - 44 - this.getScrollBarWidth();
       Array.prototype.forEach.call(
         this.$el.querySelectorAll(".v-datatable"),
         (e) => {
@@ -261,20 +258,20 @@ export default _.ui({
       );
     },
     loadTables() {
-      var refs = this.$refs;
-      for (var e in refs) {
+      let refs = this.$refs;
+      for (let e in refs) {
         if (refs[e] && refs[e].load) refs[e].load();
       }
     },
     changeRoute() {
-      var me = this,
+      let me = this,
         id = me.id;
 
       if (id < 0) {
         me.getStoredList("emed").then((emed) => {
           emed.forEach((e) => {
             if (e.tmpId == Math.abs(me.id)) {
-              var o = e;
+              let o = e;
               o.files = o.files || [];
               me.setStoredList("emed_action", o.action || []);
               me.setStoredList("emed_damage_ipress", o.damage_ipress || []);
@@ -288,11 +285,11 @@ export default _.ui({
         });
       } else if (Number(id)) {
         me.filters.emed = me.id;
-        var loaded = 0;
+        let loaded = 0;
         me.getStoredList("emed").then((emed) => {
           emed.forEach((e) => {
             if (e.id == me.id) {
-              var o = e;
+              let o = e;
               me.setStoredList("emed_action", o.action || []);
               me.setStoredList("emed_damage_ipress", o.damage_ipress || []);
               me.setStoredList("emed_damage_salud", o.damage_salud || []);
@@ -307,7 +304,7 @@ export default _.ui({
         axios
           .get("/api/desarrollo-social/emed/" + id)
           .then((response) => {
-            var o = response.data;
+            let o = response.data;
             o.files = o.files || [];
             me.o = o;
             if (!loaded) me.loadTables();
@@ -316,7 +313,7 @@ export default _.ui({
     },
     syncImagen(file) {
 
-      var me = this;
+      let me = this;
       me.clicks++
       if (me.clicks === 1) {
         this.timer = setTimeout(function () {
@@ -342,7 +339,7 @@ export default _.ui({
 
     },
     async deleteFile(file) {
-      var me = this, o = me.o;
+      let me = this, o = me.o;
       if (me.online && file.id > 0) {
         await axios.delete('/api/desarrollo-social/emed/file/' + file.id);
       }
@@ -358,7 +355,7 @@ export default _.ui({
       window.open(item.src || item.localSrc, "_blank");
     },
     changeImage(result) {
-      var me = this, o = me.o;
+      let me = this, o = me.o;
       me.count = 0;
       if (!result.src && result.tempFile)
         result.src = me.baseURL.replace('/wp-json', '') + "/uploads/" + result.tempFile;
@@ -379,11 +376,11 @@ export default _.ui({
           .objectStore("emed")
           .put(o);
       } else {
-        axios.post("/api/desarrollo-social/emed/file",{src:result.src,emedId:result.emedId})
+        axios.post("/api/desarrollo-social/emed/file", { src: result.src, emedId: result.emedId })
       }
     },
     uploaderClick(u) {
-      var me = this;
+      let me = this;
       me.count++;
       console.log(me.count);
       Camera.getPhoto({
@@ -396,11 +393,11 @@ export default _.ui({
         if (me.count == 0) {
 
           if (result.path) {
-            var fs = Filesystem;
+            let fs = Filesystem;
             fs.readFile({
               path: result.path,
             }).then(function (r) {
-              var fn = new Date().getTime() + ".jpeg";
+              let fn = new Date().getTime() + ".jpeg";
 
               fs.writeFile({
                 data: r.data,
@@ -411,7 +408,7 @@ export default _.ui({
                   path: fn,
                   directory: Directory.Data,
                 }).then(function (s) {
-                  var src = Capacitor.convertFileSrc(s.uri);
+                  let src = Capacitor.convertFileSrc(s.uri);
                   fetch(src)
                     .then((r) => r.blob())
                     .then((b) => {
@@ -442,7 +439,7 @@ export default _.ui({
     }
   },
   mounted() {
-    var me = this;
+    let me = this;
     if (this.$children[0]) me.app.title = this.$children[0].header;
     me.changeRoute();
   },

@@ -57,8 +57,8 @@
 </template>
 <script>
 	import 'ol/ol.css';
-    var {_,axios}=window;
-    var MsgBox=_.MsgBox;
+    let {_,axios}=window;
+    let MsgBox=_.MsgBox;
     export default _.ui({
         created(){
             this.filters.user=this.app.session.id;
@@ -67,7 +67,7 @@
         },
         methods: {
             download(){
-                var me=this,o={format:me.option.toLowerCase(),filename:'tracing.'+me.option.toLowerCase()};
+                let me=this,o={format:me.option.toLowerCase(),filename:'tracing.'+me.option.toLowerCase()};
                 MsgBox(document.querySelector('#downloadDlg'),function(b){
                     if(b==0){
                         _.download('/api/desarrollo-social/tracing/download',o);
@@ -78,17 +78,17 @@
                 window.location.href = "/admin/desarrollo-social/census/";
             },
             canRegister(o) {
-                var me = this, user = me.user, perms = me.perms;
+                let me = this, user = me.user, perms = me.perms;
                         return user.uid == 1 || perms.ADMIN_DESARROLLO_SOCIAL || o &&
                 perms.DESARROLLO_SOCIAL_REGISTER_TRACING &&
                 o.user == user.id;
             },
             postSync(o) {
                 console.log(o);
-                var census = JSON.parse(localStorage.getItem('census'));
+                let census = JSON.parse(localStorage.getItem('census'));
                 console.log(census);
                 if (census) {
-                    for (var i = 0; census.length > i; i++) {
+                    for (let i = 0; census.length > i; i++) {
                         if (Number(census[i].masterId) == o.data.id)
                             census[i].masterId = o.result.id;
                     }
@@ -96,13 +96,13 @@
                 }
             },
             canSync(o) {
-                var me = this, user = me.user;
+                let me = this, user = me.user;
                         return o &&
                 o.user == user.id &&
                 o.tmpId;
             },
             add(o) {
-                var me = this, action = '/admin/desarrollo-social/census';
+                let me = this, action = '/admin/desarrollo-social/census';
                 if (me.app.$router)
                     me.app.$router.push(_.currentPath = action + '/' + o[0].id + '.' + (Number(o[0].dni)?o[0].dni:'') + '/add');
                 else

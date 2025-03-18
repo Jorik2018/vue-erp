@@ -1,0 +1,8 @@
+{
+  "name": "vue-erp-2",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite",
+  "id": "1a2e1a36"
+}

@@ -1,12 +1,10 @@
 <template>
-  <v-form action="/api/desarrollo-social/emed" 
-  :title="o.synchronized" header="Ver EMED" @resize="onResize"
-    store="emed" :class="
-      o.id < 0 || (o.tmpId && !o.synchronized)
-        ? 'yellow'
-        : o.tmpId
-          ? 'green'
-          : ''
+
+  <v-page action="/api/desarrollo-social/emed" :title="o.synchronized" header="Ver EMED" store="emed" :class="o.id < 0 || (o.tmpId && !o.synchronized)
+    ? 'yellow'
+    : o.tmpId
+      ? 'green'
+      : ''
     ">
     <div class="v-form">
       <label>ID:</label>
@@ -17,7 +15,7 @@
         <label>Codigo:</label>
         <div>{{ o.code || '---' }}</div>
         <label>Fecha:</label>
-        <div>{{ o.date | date('date-') }}</div>
+        <div>{{ date(o.date, 'date-') }}</div>
         <label>Hora:</label>
         <div>{{ o.time || '---' }}</div>
         <label>Tipo:</label>
@@ -33,7 +31,7 @@
         <label>Región:</label>
         <div>ANCASH</div>
         <label>Centro poblado:</label>
-        <div>{{ o.ccpp|| '---'  }}</div>
+        <div>{{ o.ccpp || '---' }}</div>
         <label>Referencia:</label>
         <div>{{ o.referencia || '---' }}</div>
       </v-fieldset>
@@ -51,33 +49,32 @@
 
       <v-fieldset legend="Coordenadas" style="width: auto">
         <div class="center coordinates" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0)">
-          <a :href="
-            'https://www.google.com/maps/search/?api=1&query=' +
+          <a :href="'https://www.google.com/maps/search/?api=1&query=' +
             o.lat +
             ',' +
             o.lon
-          " target="_blank">({{ o.lat ? o.lat : "---" }},{{ o.lon }})</a>
+            " target="_blank">({{ o.lat ? o.lat : "---" }},{{ o.lon }})</a>
         </div>
       </v-fieldset>
       <v-fieldset legend="Daños a salud">
-        <v-table autoload="false" class="visit" :scrollable="true" :width="width" :style="{ maxHeight: maxHeight }"
+        <v-table autoload="false" :scrollable="true" :style="{ maxHeight: maxHeight }"
           src="/api/desarrollo-social/emed/damage-salud/0/0" :value="o.damage_salud" store="emed_damage_salud"
           row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" ref="damage_salud" :filters="filters"
           @row-select="selections.damage_salud = $event.current">
           <template v-slot:default="{ row, index }">
             <td header="N°" class="center" width="40">
-              {{ pad(index+ 1, 2) }}
+              {{ pad(index + 1, 2) }}
             </td>
-            <td header="Apellidos y nombres" class="center" width="120">
+            <td header="Apellidos y nombres" class="center" width="160">
               {{ row.code }}: {{ row.nombre_completo }}
             </td>
-            <td header="Edad" width="80">{{ row.edad }}</td>
-            <td header="Diagnostico" width="120">{{ row.diagnostico }}</td>
-            <td header="Gravedad" width="120">{{ row.gravedad }}</td>
+            <td header="Edad" class="right" width="80">{{ row.edad }}</td>
+            <td header="Diagnostico" width="200">{{ row.diagnostico }}</td>
+            <td header="Gravedad" width="120" class="center">{{ row.gravedad }}</td>
             <td header="Situación" class="center" width="120">
               {{ row.situacion }}
             </td>
-            <td header="Observación" class="center" width="120">
+            <td header="Observación" width="300">
               {{ row.observacion }}
             </td>
           </template>
@@ -90,9 +87,9 @@
       </v-fieldset>
       <v-fieldset legend="Daños a IPRESS">
         <v-table autoload="false" class="visit" src="/api/desarrollo-social/emed/damage-ipress/0/0"
-          :style="{ maxHeight: maxHeight }" :scrollable="true" :width="width" :value="o.damagesIPRESS"
-          store="emed_damage_ipress" row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')"
-          ref="damage_ipress" :filters="filters" @row-select="selections.damage_ipress = $event.current">
+          :style="{ maxHeight: maxHeight }" :scrollable="true" :value="o.damagesIPRESS" store="emed_damage_ipress"
+          row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" ref="damage_ipress" :filters="filters"
+          @row-select="selections.damage_ipress = $event.current">
           <template v-slot:default="{ row, index }">
             <td header="N°" class="center" width="40">
               {{ pad(index + 1, 2) }}
@@ -114,15 +111,15 @@
         </div>
       </v-fieldset>
       <v-fieldset legend="Acciones realizadas en salud">
-        <v-table autoload="false" :scrollable="true" :width="width" class="visit" :style="{ maxHeight: maxHeight }"
-          src="/api/desarrollo-social/emed/action/0/0" :value="o.actions" store="emed_action" 
+        <v-table autoload="false" :scrollable="true" class="visit" :style="{ maxHeight: maxHeight }"
+          src="/api/desarrollo-social/emed/action/0/0" :value="o.actions" store="emed_action"
           row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" ref="action" :filters="filters"
           @row-select="selections.action = $event.current">
           <template v-slot:default="{ row, index }">
             <td header="N°" class="center" width="40">
-              {{ pad(index+ 1, 2) }}
+              {{ pad(index + 1, 2) }}
             </td>
-            <td header="Fecha" class="center" width="120">{{ row.fecha | date('date-') }}</td>
+            <td header="Fecha" class="center" width="120">{{ date(row.fecha, 'date-') }}</td>
             <td header="Hora" class="center" width="120">{{ row.hora }}</td>
             <td header="Descripción" width="300">{{ row.descripcion }}</td>
           </template>
@@ -136,8 +133,17 @@
       <v-fieldset legend="Imagenes">
         <div>
           <div v-for="item in o.files" :key="item.tempFile" style="position:relative">
-            <div style="position:absolute;font-size: 30px;top:20px;right:20px;" @click="deleteFile(item)"><i
-                style="font-size: 30px;" class="fa fa-trash"></i></div>
+            <div style="padding: 10px;
+    cursor: pointer;
+    border: 1px solid gray;
+    background-color: white;
+    position: absolute;
+    font-size: 16px;
+    top: 20px;
+    text-align: center;
+    right: 20px;
+    border-radius: 50%;
+    width: 42px;" @click="deleteFile(item)"><i style="font-size: 20px;" class="fa fa-trash"></i></div>
             <img :style="{ border: '3px solid ' + (item.src ? 'white' : '#25eb25') }" :src="item.localSrc || item.src"
               @click="syncImagen(item)" />
           </div>
@@ -148,30 +154,30 @@
         </div>
       </v-fieldset>
     </div>
-    <center style="margin-bottom: 10px">
-      <v-button style="margin-left: 10px" value="Editar" :disabled="!o.id"
-       icon="fa-eye" class="blue" @click.prevent="
-  $router.replace(
-    '/admin/desarrollo-social/emed/' +
-    (o.tmpId ? -o.tmpId : o.id) +
-    '/edit'
-  )
-      "></v-button>
+    <center>
+      <v-button style="margin-left: 10px" value="Editar" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
+        $router.replace(
+          '/admin/desarrollo-social/emed/' +
+          (o.tmpId ? -o.tmpId : o.id) +
+          '/edit'
+        )
+        "></v-button>
     </center>
-  </v-form>
+  </v-page>
 </template>
 <script>
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Camera, CameraResultType } from '@capacitor/camera';
-
-var { _, axios } = window;
-export default _.ui({
+import { ui, db } from 'isobit-ui'
+import axios from 'axios'
+export default ui({
   props: ["id"],
   created() {
-    var me = this;
+    let me = this;
     me.getStoredList("emed").then((emeds) => {
 
+      /*
       me.$on("destroyed", (e, storeName) => {
         e.forEach((o) => {
           emeds.forEach((e) => {
@@ -180,7 +186,7 @@ export default _.ui({
               e.id == o.emedId
             ) {
               console.log(storeName);
-              var sn = storeName.replace("emed_", "");
+              let sn = storeName.replace("emed_", "");
               console.log(e);
               console.log(sn);
               me.setStoredList(storeName,
@@ -192,13 +198,13 @@ export default _.ui({
                 .put(e);
             }
           });
-
-
-
+ 
+ 
+ 
         });
-      });
+      });*/
     });
-    this.$on("sync", (o) => {
+    /*this.$on("sync", (o) => {
       me.getStoredList("emed").then((emeds) => {
         emeds.forEach((e) => {
           if (e.tmpId == Math.abs(o.tmpId)) {
@@ -219,7 +225,7 @@ export default _.ui({
           }
         });
       });
-    });
+    });*/
   },
   data() {
     return {
@@ -230,35 +236,11 @@ export default _.ui({
       selections: { damage_salud: null, damage_ipress: null, action: null },
       k: 0,
       dd: [],
-      width: null,
       maxHeight: '400px',
       o: { synchronized: null, files: [] },
     };
   },
   methods: {
-
-    getScrollBarWidth() {
-      var w = this.w;
-      if (!w) {
-        let el = document.createElement("div");
-        el.style.cssText = "overflow:scroll; visibility:hidden; position:absolute;";
-        document.body.appendChild(el);
-        this.w = w = el.offsetWidth - el.clientWidth;
-        el.remove();
-      }
-      return w;
-    },
-    onResize(e) {
-      var w = e.$target.$el.offsetWidth - 44 - this.getScrollBarWidth();
-
-      Array.prototype.forEach.call(
-        this.$el.querySelectorAll(".v-datatable"),
-        (e) => {
-          e.style.width = w + "px";
-          this.width = w;
-        }
-      );
-    },
     close() { },
     add(table, o) {
       this.open(
@@ -267,20 +249,19 @@ export default _.ui({
       );
     },
     loadTables() {
-      var refs = this.$refs;
-      for (var e in refs) {
+      let refs = this.$refs;
+      for (let e in refs) {
         if (refs[e] && refs[e].load) refs[e].load();
       }
     },
     changeRoute() {
-      var me = this,
+      const me = this,
         id = me.id;
-
       if (id < 0) {
         me.getStoredList("emed").then((emed) => {
           emed.forEach((e) => {
             if (e.tmpId == Math.abs(me.id)) {
-              var o = e;
+              let o = e;
               o.files = o.files || [];
               me.setStoredList("emed_action", o.action || []);
               me.setStoredList("emed_damage_ipress", o.damage_ipress || []);
@@ -294,17 +275,18 @@ export default _.ui({
         });
       } else if (Number(id)) {
         me.filters.emed = me.id;
-        var loaded = 0;
+        let loaded = 0;
         me.getStoredList("emed").then((emed) => {
           emed.forEach((e) => {
             if (e.id == me.id) {
-              var o = e;
+              let o = e;
               me.setStoredList("emed_action", o.action || []);
               me.setStoredList("emed_damage_ipress", o.damage_ipress || []);
               me.setStoredList("emed_damage_salud", o.damage_salud || []);
               me.setStoredList("emed_file", o.files || []);
               me.o = o;
               me.filters.emed = e.id;
+              //se espera q se cargue la data de los setStoredList
               me.loadTables();
               loaded = 1;
             }
@@ -313,7 +295,7 @@ export default _.ui({
         axios
           .get("/api/desarrollo-social/emed/" + id)
           .then((response) => {
-            var o = response.data;
+            let o = response.data;
             o.files = o.files || [];
             me.o = o;
             if (!loaded) me.loadTables();
@@ -322,11 +304,11 @@ export default _.ui({
     },
     syncImagen(file) {
 
-      var me = this;
+      let me = this;
       me.clicks++
       if (me.clicks === 1) {
         this.timer = setTimeout(function () {
-          if (me.online) {
+          if (me.app.online) {
             if (!file.src && file.localSrc) {
               fetch(file.localSrc)
                 .then((r) => r.blob())
@@ -348,13 +330,13 @@ export default _.ui({
 
     },
     async deleteFile(file) {
-      var me = this, o = me.o;
-      if (me.online && file.id > 0) {
+      let me = this, o = me.o;
+      if (me.app.online && file.id > 0) {
         await axios.delete('/api/desarrollo-social/emed/file/' + file.id);
       }
       o.files = o.files.filter((e) => e.id != file.id);
-      if (!me.online) {
-        _.db
+      if (!me.app.online) {
+        db()
           .transaction(["emed"], "readwrite")
           .objectStore("emed")
           .put(o);
@@ -364,7 +346,7 @@ export default _.ui({
       window.open(item.src || item.localSrc, "_blank");
     },
     changeImage(result) {
-      var me = this, o = me.o;
+      let me = this, o = me.o;
       me.count = 0;
       if (!result.src && result.tempFile)
         result.src = me.baseURL.replace('/wp-json', '') + "/uploads/" + result.tempFile;
@@ -377,19 +359,21 @@ export default _.ui({
         o.files.push(result);
       }
       result.emedId = o.id;
-      if (!me.online) {
+      console.log('me.online==', me.app);
+      if (!me.app.online) {
         result.tmpId = 1 * (new Date());
         result.id = -result.tmpId;
-        _.db
+        console.log('o==', o);
+        db()
           .transaction(["emed"], "readwrite")
           .objectStore("emed")
           .put(o);
       } else {
-        axios.post("/api/desarrollo-social/emed/file",{src:result.src,emedId:result.emedId})
+        axios.post("/api/desarrollo-social/emed/file", { src: result.src, emedId: result.emedId })
       }
     },
     uploaderClick(u) {
-      var me = this;
+      let me = this;
       me.count++;
       console.log(me.count);
       Camera.getPhoto({
@@ -402,11 +386,11 @@ export default _.ui({
         if (me.count == 0) {
 
           if (result.path) {
-            var fs = Filesystem;
+            let fs = Filesystem;
             fs.readFile({
               path: result.path,
             }).then(function (r) {
-              var fn = new Date().getTime() + ".jpeg";
+              let fn = new Date().getTime() + ".jpeg";
 
               fs.writeFile({
                 data: r.data,
@@ -417,11 +401,11 @@ export default _.ui({
                   path: fn,
                   directory: Directory.Data,
                 }).then(function (s) {
-                  var src = Capacitor.convertFileSrc(s.uri);
+                  let src = Capacitor.convertFileSrc(s.uri);
                   fetch(src)
                     .then((r) => r.blob())
                     .then((b) => {
-                      if (me.online) {
+                      if (me.app.online) {
                         u.submitFile(b, "name." + result.format);
                       } else {
                         me.changeImage({ ...result, localSrc: src, src: null });
@@ -436,7 +420,7 @@ export default _.ui({
               .then((r) => r.blob())
               .then((b) => {
                 console.log(result);
-                if (me.online)
+                if (me.app.online)
                   u.submitFile(b, "name." + result.format);
                 else {
 
@@ -445,23 +429,16 @@ export default _.ui({
               });
         }
       });
-    },
-    rewrite(url){
-        return '/admin'+url;
     }
   },
   mounted() {
-    var me = this;
-    if (this.$children[0]) me.app.title = this.$children[0].header;
+    const me = this;
+    //if (this.$children[0]) me.app.title = this.$children[0].header;*/
     me.changeRoute();
   },
 });
 </script>
 <style scoped>
-.visit>>>table {
-  width: 100%;
-}
-
 #dateDiff:empty,
 #msg:empty {
   display: none;

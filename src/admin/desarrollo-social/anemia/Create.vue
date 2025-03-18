@@ -96,37 +96,37 @@
     </v-form>
 </template>
 <script>
-var { _, axios } = window._;
-var MsgBox = _.MsgBox;
+let { _, axios } = window._;
+let MsgBox = _.MsgBox;
 /*
 function numDayInDates(dateStart, dateEnd) {
-    var arrayDateStart = dateStart.split('/');
-    var arrayDateEnd = dateEnd.split('/');
-    var msegDateStart = Date.UTC(arrayDateStart[2], arrayDateStart[1] - 1, arrayDateStart[0]);
-    var msegDateEnd = Date.UTC(arrayDateEnd[2], arrayDateEnd[1] - 1, arrayDateEnd[0]);
-    var diff = msegDateEnd - msegDateStart;
-    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    let arrayDateStart = dateStart.split('/');
+    let arrayDateEnd = dateEnd.split('/');
+    let msegDateStart = Date.UTC(arrayDateStart[2], arrayDateStart[1] - 1, arrayDateStart[0]);
+    let msegDateEnd = Date.UTC(arrayDateEnd[2], arrayDateEnd[1] - 1, arrayDateEnd[0]);
+    let diff = msegDateEnd - msegDateStart;
+    let days = Math.floor(diff / (1000 * 60 * 60 * 24));
     return days;
 }
 function daysInMonth(month, year) {
     return new Date(year, month, 0).getDate();
 }
 function sumDaysToDate(numDays, date) {
-    var arrayDate = date.split('/');
-    var newDate = new Date(arrayDate[2] + '/' + arrayDate[1] + '/' + arrayDate[0]);
+    let arrayDate = date.split('/');
+    let newDate = new Date(arrayDate[2] + '/' + arrayDate[1] + '/' + arrayDate[0]);
     newDate.setDate(newDate.getDate() + parseInt(numDays));
     return newDate.getDate() + '/' + (newDate.getMonth() + 1) + '/' + newDate.getFullYear();
 }
 */
 /*function daysMonthsYearsInDates(dateStart, dateEnd) {
-        var daysTotals = numDayInDates(dateStart, dateEnd);
-        var daysCal = 0;
-        var cantDays = 0;
-        var cantMonths = 0;
-        var cantYears = 0;
+        let daysTotals = numDayInDates(dateStart, dateEnd);
+        let daysCal = 0;
+        let cantDays = 0;
+        let cantMonths = 0;
+        let cantYears = 0;
         while (daysTotals > daysCal) {
-            var arrayDateStart = dateStart.split('/');
-            var daysOfMonth = daysInMonth(arrayDateStart[1], arrayDateStart[2]);
+            let arrayDateStart = dateStart.split('/');
+            let daysOfMonth = daysInMonth(arrayDateStart[1], arrayDateStart[2]);
             daysCal = daysCal + daysOfMonth;
             if (daysTotals >= daysCal) {
                 cantMonths++;
@@ -139,7 +139,7 @@ function sumDaysToDate(numDays, date) {
             }
             dateStart = sumDaysToDate(daysOfMonth, dateStart);
         }
-        var msg = {};
+        let msg = {};
         msg.year = cantYears;
         msg.month = cantMonths;
         msg.days = cantDays;
@@ -147,15 +147,15 @@ function sumDaysToDate(numDays, date) {
     }
     */
 function diferenciafechas(fa, fb) {  //fa y fb dos fechas
-    var totdias = fa - fb;
+    let totdias = fa - fb;
     totdias /= 3600000;
     totdias /= 24;
     totdias = Math.floor(totdias);
     totdias = Math.abs(totdias);
 
-    var ans, meses, dias, m2, m1, d3, d2, d1;
-    var f2 = new Date();
-    var f1 = new Date();
+    let ans, meses, dias, d3, d2, d1;
+    let f2 = new Date();
+    let f1 = new Date();
 
     if (fa > fb) {
         f2 = fa;
@@ -165,8 +165,8 @@ function diferenciafechas(fa, fb) {  //fa y fb dos fechas
         f1 = fa;
     }  //Siempre f2 > f1
     ans = f2.getFullYear() - f1.getFullYear(); // dif de a�os inicial
-    m2 = f2.getMonth();
-    m1 = f1.getMonth();
+    const m2 = f2.getMonth();
+    const m1 = f1.getMonth();
     meses = m2 - m1;
     if (0 > meses) {
         meses += 12;
@@ -177,7 +177,7 @@ function diferenciafechas(fa, fb) {  //fa y fb dos fechas
     d1 = f1.getDate();
     dias = d2 - d1;
 
-    var f3 = new Date(f2.getFullYear(), m2, 1);
+    let f3 = new Date(f2.getFullYear(), m2, 1);
     f3.setDate(f3.getDate() - 1);
     d3 = f3.getDate();
 
@@ -206,7 +206,7 @@ function diferenciafechas(fa, fb) {  //fa y fb dos fechas
 export default {
     watch: {
         $route() {
-            var me = this;
+            let me = this;
             setTimeout(function () { me.render() }, 200);
         }
     },
@@ -228,9 +228,9 @@ export default {
     },
     computed: {
         dateDiff() {
-            var s = '';
+            let s = '';
             if (this.o.birthDate) {
-                var d;
+                let d;
                 if (this.o.birthDate.split) {
                     d = this.o.birthDate.split('-');
                     d = new Date(d[0], d[1] - 1, d[2]);
@@ -250,10 +250,10 @@ export default {
     },
     methods: {
         render() {
-            var me = this, id = me.id;
-            var path = me.$el.parentNode.getAttribute('path');
+            let me = this, id = me.id;
+            let path = me.$el.parentNode.getAttribute('path');
             if (path) {
-                var action = path.split('/')[4].split('?')[0];
+                let action = path.split('/')[4].split('?')[0];
                 id = action == 'create' ? 0 : action;
             }
             if (id) {
@@ -275,7 +275,7 @@ export default {
         },
         close(r) { if (r === true) { this.$router.back(); } },
         camera() {
-            var me = this;
+            let me = this;
             _.getCamera().then((r) => {
                 //{src:?,name:?}
                 if (r.src)
@@ -297,11 +297,11 @@ export default {
                 MsgBox('Se requiere un identificador de monitoreado valido');
         },
         recoverData() {
-            var me = this;
+            let me = this;
             if (me.o.ext.peopleId) {
                 axios.error = function () { MsgBox('No se encontro datos') };
                 axios.get('/api/desarrollo-social/hemoglobin/last-control/' + me.o.ext.peopleId, { ee: 777 }).then(function (r) {
-                    var d = r.data;
+                    let d = r.data;
                     me.o.sex = d.sex;
                     me.o.birthDate = d.birthDate;
                 });
@@ -316,7 +316,7 @@ export default {
             }
         },
         updateSync(id) {
-            for (var i = 0; this.files.lengt > i; i++) {
+            for (let i = 0; this.files.lengt > i; i++) {
                 if (id == this.files[i].id) {
                     this.files[i].synced = true;
                     //Vue.set(this.files, i, this.files[i]);
@@ -328,7 +328,7 @@ export default {
             this.rows.splice(index, 1); // why is this removing only the last row?
         },
         getCoordinates() {
-            var me = this;
+            let me = this;
             _.getLocation().then(function (c) {
                 me.o.lat = c.coords.latitude;
                 me.o.lon = c.coords.longitude;

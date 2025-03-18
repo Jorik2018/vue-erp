@@ -1,5 +1,5 @@
 <template>
-  <v-form action="/api/desarrollo-social/vea-materno" :header="(o.id ? 'Editar' : 'Crear') + '  Registro VEA Materno'"
+  <v-page action="/api/desarrollo-social/vea-materno" :header="(o.id ? 'Editar' : 'Crear') + '  Registro VEA Materno'"
     :class="o.id < 0 || (o.tmpId && !o.synchronized)
       ? 'yellow'
       : o.tmpId
@@ -71,7 +71,7 @@
     <center>
       <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
     </center>
-  </v-form>
+  </v-page>
 </template>
 <script>
 import "ol/ol.css";

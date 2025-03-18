@@ -1,5 +1,5 @@
 <template>
-    <v-form header="VERIFICACION DE DOCUMENTOS FIRMADOS DIGITALMENTE">
+    <v-page header="VERIFICACION DE DOCUMENTOS FIRMADOS DIGITALMENTE">
         <div class="v-form">
             <label>Tipo de Documento (Requerido):</label>
             <v-select v-model="o.documentTypeId" required="true">
@@ -32,7 +32,7 @@
                 height: 80vw; width: 100% !important; border: 0px none;"></iframe>
             </v-fieldset>
         </div>
-    </v-form>
+    </v-page>
 </template>
 <script lang="ts">
 import axios from "axios";
@@ -65,7 +65,7 @@ export default {
     methods: {
         send() {
             const me = this;
-            axios.post('http://web.regionancash.gob.pe/admin/uti/api/document/find', me.o).then(({ data }) => {
+            axios.post('http://web.regionancash.gob.pe/admin/uti/api/document/find', me.o).then(({ data }:any) => {
                 me.o = { ...me.o, ...data }
             });
         },

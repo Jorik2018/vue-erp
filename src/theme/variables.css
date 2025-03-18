@@ -1,0 +1,12 @@
+/* For information on how to create your own theme, please see:
+http://ionicframework.com/docs/theming/ */
+
+ion-item > svg {
+  padding-right: 10px;
+}
+#app {
+  width: 100%;
+}
+ion-content::part(scroll) {
+  -overflow-y: hidden;
+}

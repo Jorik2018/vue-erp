@@ -1,10 +1,9 @@
 <template>
-    <v-form header="Cancer" action="/admin/desarrollo-social/cancer">
+    <v-page header="Cancer" action="/admin/desarrollo-social/cancer">
         <v-table :selectable="true" row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" store="cancer"
             @loaded="ll" :scrollable="true" rowKey="id" :pagination="20" @updated="bindLinks($el)" :filters="filters"
             src="/api/desarrollo-social/cancer">
             <template v-slot:header>
-
                 <v-button value="Enviar" v-if="app.connected" icon="fa-save" :disabled="!rowSelectedCount"
                     @click.prevent="sync"></v-button>
                 <v-button value="Crear" v-if="1 || can(perms.DESARROLLO_SOCIAL_REGISTER_SIVICO)" icon="fa-plus"
@@ -106,13 +105,16 @@
                 </td>
             </template>
         </v-table>
-    </v-form>
+    </v-page>
 </template>
 <script>
-import { ui, date, pad } from 'isobit-ui'
+import { ui } from 'isobit-ui'
+import { useRouter } from 'vue-router';
 export default ui({
-    setup() {
-        return { date, pad };
+    setup(props, cxt) {
+        let router=useRouter();
+        console.log("===///77777router==",router);
+        return {};
     },
     data() {
         return { rowSelectedCount2: 0, page: 0, data: [], mode: 0, query: null }

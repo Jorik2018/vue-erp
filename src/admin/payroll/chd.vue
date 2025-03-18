@@ -1,27 +1,28 @@
 <template>
-    <v-form class="v-form" header="CONSTANCIA DE PAGO DE HABERES Y DESCUENTOS" store="setting">
-        <div class="v-form">
+    <v-page class="v-form" header="CONSTANCIA DE PAGO DE HABERES Y DESCUENTOS" store="setting">
+        <div class="v-form" style="flex:1">
             <label>Empleado:</label>
             <v-autocomplete placeholder="Ingrese mas de 2 letras y presione ENTER" src="api/hr/employee"
                 v-model="o.employee">
                 <template v-slot:label="{ selected }">
-                    {{ selected.code }}: {{ selected.fullname }}
+                    {{ selected.code }}: {{ selected.fullName }}
                 </template>
                 <template v-slot="{ row }">
                     <a v-bind:href="'/admin/directorio/' + row.id" onclick="return false">
                         <span>{{ row.code }}</span>:
-                        {{ row.fullname ? row.fullname.toUpperCase() : null }}
+                        {{ row.fullName ? row.fullName.toUpperCase() : null }}
                     </a>
                 </template>
             </v-autocomplete>
-            <v-button style="margin-top: 10px;" icon="fa fa-download" value="Generar Constancia" v-on:click="send" />
+            <v-button :disabled="!o.employee" style="margin-top: 10px;" icon="fa fa-download" value="Generar Constancia"
+                v-on:click="send" />
         </div>
-    </v-form>
+    </v-page>
 </template>
 
-<script lang="ts">
-import axios from "axios";
-import { ui } from 'isobit-ui'
+<script>
+import axios from 'axios';
+import { ui } from "isobit-ui";
 export default ui({
     data() {
         return {
@@ -34,6 +35,7 @@ export default ui({
 
         send() {
             const me = this;
+            //me.saveAs('/api/payroll/chd', me.o);
             axios.post('/api/payroll/chd', me.o).then(({ data }) => {
                 const fo = new FormData();
                 fo.append(
@@ -43,7 +45,8 @@ export default ui({
                 );
                 fo.append("filename", "data.json");
                 fo.append("template", "hc");
-                me.saveAs(import.meta.env.VITE_REMOTE_PATH + "/api/jreport/", fo);
+                fo.append("original", "1");
+                me.saveAs(process.env.VUE_APP_REPORT_URL + "/api/jreport/", fo);
 
             });
         }

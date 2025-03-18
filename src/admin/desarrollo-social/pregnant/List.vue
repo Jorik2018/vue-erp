@@ -1,5 +1,5 @@
 <template>
-  <v-form header="Gestantes" action="/admin/desarrollo-social/pregnant">
+  <v-page header="Gestantes" action="/admin/desarrollo-social/pregnant">
     <v-table :selectable="true" row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" store="pregnant"
       @loaded="ll" :scrollable="true" rowKey="id" :pagination="20" @updated="bindLinks($el)" :filters="filters"
       src="/api/desarrollo-social/pregnant">
@@ -116,7 +116,7 @@
         </td>
       </template>
     </v-table>
-  </v-form>
+  </v-page>
 </template>
 <script>
 import { ui, date } from 'isobit-ui'
@@ -131,7 +131,7 @@ export default ui({
     };
   },
   created() {
-    var me = this;
+    let me = this;
     /*me.filters.uid = me.user.uid;
     me.filters.fnFullName=(row)=>{
       if(me.filters.fullName){
@@ -177,7 +177,7 @@ export default ui({
       this.rowSelectedCount2 = e ? e.length : 0;
     },*/
     can(o) {
-      var m = this,
+      let m = this,
         u = m.user;
       return o || u.uid == 1;
       /*return u.uid == 1 || p.REGISTER_DESARROLLO_SOCIAL_SIVICO &&

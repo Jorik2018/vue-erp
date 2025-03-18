@@ -236,9 +236,6 @@ img.error {
   --padding: 10px;
 }
 
-.v-fieldset {
-  border: 1px solid #0f62ac;
-}
 
 .v-controls {
   font-size: 30px;

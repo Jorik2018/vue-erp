@@ -26,13 +26,12 @@
     </v-table>
   </v-form>
 </template>
-<script lang="ts">
+<script>
 import { ui } from 'isobit-ui'
 export default ui({
   props: ["src"],
   computed: {
     filter() {
-      console.log(window.app.session.rol);
       const p = {},
         me = this;
       if (me.query) {
@@ -53,8 +52,8 @@ export default ui({
     me.filters.poll = me.app.poll;
     /*me.$on("sync", function (dr, dl) {
       if (dr.people && dl.people) {
-        for (var ki = 0; ki < dr.people.length; ki++) {
-          for (var kj = 0; kj < dl.people.length; kj++) {
+        for (let ki = 0; ki < dr.people.length; ki++) {
+          for (let kj = 0; kj < dl.people.length; kj++) {
             if (dl.people[kj].tmpId == dr.people[ki].tmpId) {
               if (dr.people[ki].id) {
                 dl.people[kj].id = dr.people[ki].id;

@@ -1,8 +1,12 @@
 <template>
 
-    <v-form class="v-form" header="Explorador de Archivo" store="setting">
+    <v-page class="v-form" header="Explorador de Archivo" store="setting">
 
-        <div class="v-form">
+        <div class="v-form" style="
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+">
             <div style="padding-bottom: 10px;">
                 <a style="display:inline-block;padding: 5px;" v-on:click="send({ path: null, type: 'D' })"><i
                         class="fa fa-home"></i></a>
@@ -10,25 +14,32 @@
                 <template v-for="item in subpaths">
                     \ <a style="display:inline-block;padding: 5px;" v-on:click="send({ path: item, type: 'D' })"> {{
                         item.split('\\').pop()
-                        }}</a>
+                    }}</a>
                 </template>
 
             </div>
-            <div v-for="item in o.files" style="display:block;padding: 10px;border:1px solid gray;position: relative;">
-                <i style="width: 20px;padding: 2px;margin-right: 10px;text-align: center;" class="fa"
-                    :class="item.type == 'F' ? 'fa-file' : 'fa-folder'"></i><a style="
-    line-break: anywhere;
-" v-on:click="send(item)"> {{
-    label(item.path) }}</a>
-                <span v-if="item.type == 'F'" style="position:absolute;right: 0px;padding: 4px 10px;"
-                    v-on:click="remove(item)"><i class="fa fa-trash"></i></span>
+            <div style="
+    flex-direction: column;
+    display: flex;
+    overflow-y: auto;
+    /* height: 0px; */
+">
+                <div v-for="item in o.files"
+                    style="display:block;padding: 10px;border:1px solid gray;position: relative;">
+                    <i style="width: 20px;padding: 2px;margin-right: 10px;text-align: center;" class="fa"
+                        :class="item.type == 'F' ? 'fa-file' : 'fa-folder'"></i><a style="line-break: anywhere;"
+                        v-on:click="send(item)"> {{
+                            label(item.path) }}</a>
+                    <span v-if="item.type == 'F'" style="position:absolute;right: 0px;padding: 4px 10px;"
+                        v-on:click="remove(item)"><i class="fa fa-trash"></i></span>
+                </div>
             </div>
         </div>
-    </v-form>
+    </v-page>
 
 </template>
 
-<script lang="ts">
+<script>
 import axios from "axios";
 import { ui } from 'isobit-ui'
 export default ui({
@@ -72,7 +83,9 @@ export default ui({
         send(item) {
             const me = this;
             if (item.type == 'D') {
-                axios.post('http://38.250.135.118/api/obresec/file', { folder: item.path }).then(({ data }) => {
+                axios.post('http://38.250.135.118/api/obresec/file', { folder: item.path }, {
+                    headers: { authorization: "" }
+                }).then(({ data }) => {
                     me.o.files = data.data;
                     me.o.current = item.path;
                 });
@@ -80,6 +93,7 @@ export default ui({
                 axios.post('http://38.250.135.118/api/obresec/file/download',
                     { folder: item.path },
                     {
+                        headers: { authorization: "" },
                         responseType: 'blob' // Especifica que la respuesta debe ser tratada como un archivo binario
                     }
                 ).then(({ data }) => {

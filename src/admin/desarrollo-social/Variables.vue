@@ -38,12 +38,12 @@
 </template>
 <script>
     import 'ol/ol.css';
-    var axios=window.axios;
-    var _=window._;
+    let axios=window.axios;
+    let _=window._;
     export default {
         watch:{
             $route(){
-                var me=this;
+                let me=this;
                 setTimeout(function(){me.render()},200);
             }
         },
@@ -77,15 +77,15 @@
         updated(){this.app.title=this.$children[0].header;},
         methods: {
 			guardar(){
-				var data=localStorage.getItem('census')+'\n\n'+localStorage.getItem('tracing');
+				let data=localStorage.getItem('census')+'\n\n'+localStorage.getItem('tracing');
 				axios.post('/api/desarrollo-social/tracing/save-data',{user:this.app.session.id,data:data}).then(function(r){_.MsgBox(r.data)});
 			},
             render(){
-                var me = this,id=me.id;
+                let me = this,id=me.id;
                 if(!id){
-                    var path=me.$el.parentNode.getAttribute('path');
+                    let path=me.$el.parentNode.getAttribute('path');
                     if(path){
-                        var action = path.split('/')[4].split('?')[0];
+                        let action = path.split('/')[4].split('?')[0];
                         id = action == 'create' ? 0 : action;
                     }
                 }

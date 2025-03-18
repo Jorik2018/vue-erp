@@ -1,18 +1,11 @@
 <template>
-  <v-form
-    action="/api/desarrollo-social/pregnant"
-    :title="o.synchronized"
-    header="Ver Gestante"
-    @resize="onResize"
-    store="pregnant"
-    :class="
-      o.id < 0 || (o.tmpId && !o.synchronized)
-        ? 'yellow'
-        : o.tmpId
+  <v-page action="/api/desarrollo-social/pregnant" :title="o.synchronized" header="Ver Gestante" store="pregnant"
+    :class="o.id < 0 || (o.tmpId && !o.synchronized)
+      ? 'yellow'
+      : o.tmpId
         ? 'green'
         : ''
-    "
-  >
+      ">
     <div class="v-form">
       <label>ID:</label>
       <div>
@@ -29,12 +22,10 @@
       <label>Establecimiento:</label>
       <div>
         {{ o.codigoEESS ? o.codigoEESS : "---" }}
-        <template v-if="o.establecimientoSalud"
-          >: {{ o.establecimientoSalud }}</template
-        >
+        <template v-if="o.establecimientoSalud">: {{ o.establecimientoSalud }}</template>
       </div>
       <v-fieldset legend="DATOS PERSONALES" closable="true" class="v-form">
-        
+
         <label>DNI:</label>
         <div>{{ o.numeroDNI }}</div>
         <label>Nombre completo:</label>
@@ -59,11 +50,11 @@
         <div>{{ o.gestanteParidad }}</div>
         <label>FUR:</label>
         <div>
-          {{ o.gestanteFUR || "yyyy-MM-dd" }}
+          {{ date(o.gestanteFUR, 'date-') || "yyyy-MM-dd" }}
         </div>
         <label>FPP:</label>
         <div>
-          {{ o.gestanteFPP || "yyyy-MM-dd" }}
+          {{ date(o.gestanteFPP, 'date-') || "yyyy-MM-dd" }}
         </div>
         <label>EG. En Semanas:</label>
         <div>{{ o.gestanteEdadGestacionalSemanas }}</div>
@@ -74,98 +65,59 @@
         </v-select>
       </v-fieldset>
       <v-fieldset legend="Coordenadas" style="width: auto">
-        <div
-          class="center location"
-          v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0)"
-        >
-          <a
-            :href="
-              'https://www.google.com/maps/search/?api=1&query=' +
-              o.lat +
-              ',' +
-              o.lon
-            "
-            target="_blank"
-            >({{ o.lat ? o.lat : "---" }},{{ o.lon }})</a
-          >
+        <div class="center location" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0)">
+          <a :href="'https://www.google.com/maps/search/?api=1&query=' +
+            o.lat +
+            ',' +
+            o.lon
+            " target="_blank">({{ o.lat ? o.lat : "---" }},{{ o.lon }})</a>
         </div>
       </v-fieldset>
       <v-fieldset legend="Visitas">
-        <v-table
-          autoload="false"
-          class="visit"
-          :scrollable="true" :width="width" :style="{ maxHeight: maxHeight }"
-          src="/api/desarrollo-social/pregnant/visit/0/0"
-          :value="o.visits"
-          store="pregnant_visit"
-          row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')"
-          ref="visit"
-          :filters="filters"
-          @row-select="visitSelected = $event.current"
-        >
+        <v-table autoload="false" class="visit" :scrollable="true" :width="width" :style="{ maxHeight: maxHeight }"
+          src="/api/desarrollo-social/pregnant/visit/0/0" :value="o.visits" store="pregnant_visit"
+          row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" ref="visit" :filters="filters"
+          @row-select="visitSelected = $event.current">
           <template v-slot:default="{ row }">
             <td header="N°" class="center" width="40">
               {{ pad(row.number, 2) }}
             </td>
             <td header="Fecha" class="center" width="120">
-              {{ row.fechaVisita | date }}
+              {{ date(row.fechaVisita) }}
             </td>
             <td header="Detalle" width="220">{{ row.detalle }}</td>
             <td header="Prox. Visita" class="center" width="120">
-              {{ row.fechaProxVisita | date }}
+              {{ date(row.fechaProxVisita) }}
             </td>
           </template>
         </v-table>
         <div class="right" style="margin-top: 10px">
-          <v-button
-            icon="fa-trash"
-            :disabled="!visitSelected"
-            @click="destroy($refs.visit)"
-          ></v-button>
-          <v-button
-            icon="fa-pen"
-            :disabled="!visitSelected"
-            @click="edit"
-          ></v-button>
+          <v-button icon="fa-trash" :disabled="!visitSelected" @click="destroy($refs.visit)"></v-button>
+          <v-button icon="fa-pen" :disabled="!visitSelected" @click="edit"></v-button>
           <v-button icon="fa-plus" @click="addPeople(o)"></v-button>
         </div>
       </v-fieldset>
       <label>Estado Migracion:</label>
-      <div>{{ o.migracionEstado||'--' }}</div>
+      <div>{{ o.migracionEstado || '--' }}</div>
     </div>
     <center style="margin-bottom: 10px">
-      <v-button
-        style="margin-left: 10px"
-        value="Editar"
-        :disabled="!o.id"
-        icon="fa-eye"
-        class="blue"
-        @click.prevent="
-          $router.replace(
-            '/admin/desarrollo-social/pregnant/' +
-              (o.tmpId ? -o.tmpId : o.id) +
-              '/edit'
-          )
-        "
-      ></v-button>
+      <v-button style="margin-left: 10px" value="Editar" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
+        $router.replace(
+          '/admin/desarrollo-social/pregnant/' +
+          (o.tmpId ? -o.tmpId : o.id) +
+          '/edit'
+        )
+        "></v-button>
     </center>
-  </v-form>
+  </v-page>
 </template>
 <script>
-var { _, axios } = window;
-export default _.ui({
+import { ui } from 'isobit-ui'
+import axios from 'axios'
+export default ui({
   props: ["id"],
-  watch: {
-    $route() {
-      this.render();
-    },
-  },
-  created() {
-    var me = this;
-    this.$on("destroyed", (o) => {
-      console.log(o);
-    });
-    this.$on("sync", (o) => {
+  setup({ $on }) {
+    $on("sync", (o) => {
       me.getStoredList("pregnant").then((pregnants) => {
         pregnants.forEach((e) => {
           if (e.tmpId == Math.abs(o.tmpId)) {
@@ -187,6 +139,11 @@ export default _.ui({
         });
       });
     });
+  },
+  watch: {
+    $route() {
+      this.render();
+    },
   },
   data() {
     return {
@@ -248,9 +205,9 @@ export default _.ui({
     };
   },
   methods: {
-    
+
     getScrollBarWidth() {
-      var w = this.w;
+      let w = this.w;
       if (!w) {
         let el = document.createElement("div");
         el.style.cssText = "overflow:scroll; visibility:hidden; position:absolute;";
@@ -261,7 +218,7 @@ export default _.ui({
       return w;
     },
     onResize(e) {
-      var w = e.$target.$el.offsetWidth - 44 - this.getScrollBarWidth();
+      let w = e.$target.$el.offsetWidth - 44 - this.getScrollBarWidth();
 
       Array.prototype.forEach.call(
         this.$el.querySelectorAll(".v-datatable"),
@@ -271,7 +228,7 @@ export default _.ui({
         }
       );
     },
-    close() {},
+    close() { },
     addPeople(o) {
       this.open(
         "/admin/desarrollo-social/pregnant/" + o.id + "/add/visit",
@@ -279,11 +236,11 @@ export default _.ui({
       );
     },
     loadTables() {
-      var refs = this.$refs;
+      let refs = this.$refs;
       refs.visit.load();
     },
     render() {
-      var me = this,
+      let me = this,
         id = me.id;
 
       if (id < 0) {
@@ -302,7 +259,7 @@ export default _.ui({
         });
       } else if (Number(id)) {
         me.filters.gestanteId = me.id;
-        var loaded = 0;
+        let loaded = 0;
         me.getStoredList("pregnant").then((pregnant) => {
           pregnant.forEach((e) => {
             if (e.id == me.id) {
@@ -321,26 +278,25 @@ export default _.ui({
             if (!loaded) me.loadTables();
           });
       }
-    },
-    rewrite(url){
-        return '/admin'+url;
     }
   },
   mounted() {
-    var me = this;
-    if (this.$children[0]) me.app.title = this.$children[0].header;
+    let me = this;
+    //if (this.$children[0]) me.app.title = this.$children[0].header;
     me.render();
   },
 });
 </script>
 <style scoped>
-.visit >>> table {
+.visit>>>table {
   width: 100%;
 }
+
 #dateDiff:empty,
 #msg:empty {
   display: none;
 }
+
 #dateDiff {
   border-radius: 4px;
   background-color: #fdfad9;
@@ -348,10 +304,11 @@ export default _.ui({
   padding: 5px 10px;
   margin-top: 10px;
 }
-.location{
+
+.location {
   margin-top: 10px;
-            border: 1px solid #ffcf00;
-            background-color: #ffff80;
-            padding: 10px;
+  border: 1px solid #ffcf00;
+  background-color: #ffff80;
+  padding: 10px;
 }
 </style>

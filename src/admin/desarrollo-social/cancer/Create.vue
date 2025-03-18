@@ -1,5 +1,5 @@
 <template>
-  <v-form action="/api/desarrollo-social/cancer" :header="(o.id ? 'Editar' : 'Crear') + '  Registro Cancer'" :class="o.id < 0 || (o.tmpId && !o.synchronized)
+  <v-page action="/api/desarrollo-social/cancer" :header="(o.id ? 'Editar' : 'Crear') + '  Registro Cancer'" :class="o.id < 0 || (o.tmpId && !o.synchronized)
     ? 'yellow'
     : o.tmpId
       ? 'green'
@@ -122,17 +122,13 @@
     <center>
       <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
     </center>
-  </v-form>
+  </v-page>
 </template>
 <script>
 import { Geolocation } from "@capacitor/geolocation";
-import "ol/ol.css";
-import Feature from "ol/Feature";
-import Icon from "ol/style/Icon";
-import { ui } from 'isobit-ui'
-var { _, axios, ol } = window;
-//ol.style.Icon = Icon;
-//ol.style.Feature = Feature;
+import { ui,MsgBox } from 'isobit-ui'
+import axios from 'axios'
+
 export default ui({
   props: ["id"],
   data() {
@@ -176,7 +172,7 @@ export default ui({
     },
   },
   created() {
-    var me = this;
+    let me = this;
     /*me.$on("sync", (o) => {
       me.getStoredList("cancer").then((cancers) => {
         cancers.forEach((e) => {
@@ -202,7 +198,7 @@ export default ui({
     });*/
   },
   mounted() {
-    var me = this;
+    let me = this;
     me.changeRoute();
   },
 
@@ -213,7 +209,7 @@ export default ui({
     async printCurrentPosition() {
       this.trayLocation = 1;
       const coordinates = await Geolocation.getCurrentPosition();
-      var c = coordinates.coords;
+      let c = coordinates.coords;
       this.o.lat = c.latitude;
       this.o.lon = c.longitude;
     },
@@ -227,12 +223,12 @@ export default ui({
       this.o.gestanteFPP = _.toDate(o, "date-");
     },
     inputProvince(a, b) {
-      var me = this, o = me.o;
+      let me = this, o = me.o;
       o.province = (b ? b.object.name || "" : "");
       me.$refs.district.load({ code: o.province_code })
     },
     inputDistrict(a, b) {
-      var me = this, o = me.o;
+      let me = this, o = me.o;
       o.district = b ? b.object.name || "" : "";
       me.$refs.ccpp.load({ id: o.district_code })
     },
@@ -244,13 +240,13 @@ export default ui({
     },
     process(o) {
       if (!this.trayLocation) {
-        this.MsgBox("Debe tratar de obtener la geolocalización.");
+        MsgBox("Debe tratar de obtener la geolocalización.");
         return false;
       }
       return o;
     },
     mapBuild() {
-      var o = this.o;
+      let o = this.o;
       if (0 > o.lon) {
         this.$refs.map.addFeature(
           {
@@ -266,13 +262,13 @@ export default ui({
       this.o.lon = o.lon;
     },
     async addMarker() {
-      //var o = this.o;
-      var me = this,
+      //let o = this.o;
+      let me = this,
         m = me.$refs.map;
       if (!m.collection.getLength()) {
         me.trayLocation = 1;
         const coordinates = await Geolocation.getCurrentPosition();
-        var c = coordinates.coords;
+        let c = coordinates.coords;
         me.o.lat = c.latitude;
         me.o.lon = c.longitude;
         if (m)
@@ -285,7 +281,7 @@ export default ui({
         });
     },
     async changeRoute() {
-      var me = this,
+      let me = this,
         id = me.id, m = me.$refs.map; me.age = 0;
       me.trayLocation = 0;
       if (id < 0) {
@@ -304,7 +300,7 @@ export default ui({
         axios
           .get("/api/desarrollo-social/cancer/" + id)
           .then((response) => {
-            var o = response.data;
+            let o = response.data;
             if (o.red) {
               o.red = me.pad(o.red, 2);
             }
@@ -329,10 +325,10 @@ export default ui({
           });
       } else {
         try {
-          var s = localStorage.getItem("setting");
+          let s = localStorage.getItem("setting");
           if (s) {
             s = JSON.parse(s);
-            var o = this.o;
+            let o = this.o;
             if (s.region) o.region = s.region.code;
             if (s.province) o.province_code = s.province.code;
             if (s.district) o.district_code = s.district.code;
@@ -346,7 +342,10 @@ export default ui({
       }
     },
     close(r) {
-      var me = this, o = me.o;
+      
+      alert(12);
+
+      let me = this, o = me.o;
       if (r.success === true) {
         me.o.id = r.data.id;
         me.o.tmpId = r.data.tmpId;
@@ -354,19 +353,19 @@ export default ui({
           delete o.tempFile;
         }
       }
-      var nid = o.tmpId ? -o.tmpId : o.id;
+      let nid = o.tmpId ? -o.tmpId : o.id;
       if (me.id != nid)
         me.$router.replace("/admin/desarrollo-social/cancer/" + nid);
     },
     async getCurrentPosition() {
-      var me = this;
+      let me = this;
       //const {Geolocation} = Plugins;
       const c = await Geolocation.getCurrentPosition();
       me.o.lat = c.coords.latitude;
       me.o.lon = c.coords.longitude;
     },
     getCoordinates() {
-      var me = this;
+      let me = this;
       if (me.getCurrentPosition) {
         me.getCurrentPosition();
       } else

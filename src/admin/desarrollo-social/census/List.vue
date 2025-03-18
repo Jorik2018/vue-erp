@@ -178,15 +178,15 @@
 <script>
 import "ol/ol.css";
 import { ui } from 'isobit-ui'
-var { _, axios } = window;
-var MsgBox = _.MsgBox;
+let { _, axios } = window;
+let MsgBox = _.MsgBox;
 export default ui({
   extends: _.extends,
   mounted() {
     this.app.title = this.$children[0].header;
   },
   created() {
-    var me = this,
+    let me = this,
       user = me.user;
     if (!(user.uid == 1 || me.perms.ADMIN_DESARROLLO_SOCIAL)) {
       me.filters.user = user.id;
@@ -196,7 +196,7 @@ export default ui({
   methods: {
     pad: Vue.pad,
     download() {
-      var me = this,
+      let me = this,
         o = {
           format: me.option.toLowerCase(),
           filename: "census." + me.option.toLowerCase(),
@@ -218,12 +218,12 @@ export default ui({
       }
     },
     canSync(o) {
-      var me = this,
+      let me = this,
         user = me.user;
       return o && o.user == user.id && o.tmpId;
     },
     canRegister(row) {
-      var me = this,
+      let me = this,
         user = me.user,
         perms = me.perms;
       return (
@@ -236,9 +236,9 @@ export default ui({
       return row.bossId == row.code;
     },
     add(o) {
-      var me = this,
+      let me = this,
         f = me.$children[0];
-      var action = f.action;
+      let action = f.action;
       if (!action) action = window.location.pathname;
       if (me.app)
         me.app.$router.push(
@@ -255,9 +255,9 @@ export default ui({
           .catch(me.error);
     },
     view(o) {
-      var me = this;
-      var f = me.$children[0];
-      var action = f.action;
+      let me = this;
+      let f = me.$children[0];
+      let action = f.action;
       if (!action) action = window.location.pathname;
       if (me.app.$router)
         me.app.$router.push(

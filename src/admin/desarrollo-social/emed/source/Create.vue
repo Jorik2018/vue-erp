@@ -76,8 +76,8 @@
 </template>
 <script>
 import { Geolocation } from "@capacitor/geolocation";
-var axios = window.axios;
-var _ = window._;
+let axios = window.axios;
+let _ = window._;
 export default _.ui({
   props: ["id", "action"],
   data() {
@@ -115,7 +115,7 @@ export default _.ui({
   },
   methods: {
     render() {
-      var me = this,
+      let me = this,
         id = me.id,
         action = me.action;
       me.trayLocation = 0;
@@ -171,12 +171,12 @@ export default _.ui({
     async printCurrentPosition() {
       this.trayLocation = 1;
       const coordinates = await Geolocation.getCurrentPosition();
-      var c = coordinates.coords;
+      let c = coordinates.coords;
       this.o.lat = c.latitude;
       this.o.lon = c.longitude;
     },
     close(r) {
-      var me = this;
+      let me = this;
       if (r.success === true) {
         me.o.id = r.data.id;
         me.o.tmpId = r.data.tmpId;
@@ -185,7 +185,7 @@ export default _.ui({
     },
   },
   created() {
-    var me = this;
+    let me = this;
     this.$on("sync", (data, o) => {
       me.getStoredList("emed").then((emeds) => {
         emeds.forEach((e) => {
@@ -223,7 +223,7 @@ export default _.ui({
     });
   },
   mounted() {
-    var me=this;
+    let me=this;
     if (me.$children[0]) me.app.title = me.$children[0].header;
     me.render();
   },

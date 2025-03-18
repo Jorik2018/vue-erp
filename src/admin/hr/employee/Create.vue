@@ -15,7 +15,7 @@
         </div>
     </v-form>
 </template>
-<script lang="ts">
+<script>
 import { ui } from 'isobit-ui'
 export default ui({
     props: ["id"],
