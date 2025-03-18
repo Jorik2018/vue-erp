@@ -17,7 +17,7 @@ import '@ionic/vue/css/flex-utils.css';
 import '@ionic/vue/css/display.css';
 import '@ionic/vue/css/palettes/dark.system.css';
 import './theme/variables.css';
-import { IsobitUI, initDB, VForm, VButton } from 'isobit-ui'
+import { IsobitUI, initDB, VForm } from 'isobit-ui'
 import { IonPage } from '@ionic/vue';
 import App from './App.vue'
 import router from './router';
