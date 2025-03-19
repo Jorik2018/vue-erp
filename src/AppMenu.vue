@@ -48,7 +48,9 @@
           <v-item v-if="perms.INVENTORY_ADMIN" icon="fa-plus" href="/admin/inventory/item/create" label="Agregar" />
         </v-item>
         <v-item v-if="perms.DESARROLLO_SOCIAL_ADULTO_MAYOR_READ" icon="fa-table"
-          href="/admin/desarrollo-social/adulto-mayor" label="Adulto Mayor"></v-item>
+          href="/admin/desarrollo-social/adulto-mayor" label="Adulto Mayor">
+          <v-item v-if="perms.CDESARROLLO_SOCIAL_ADULTO_MAYOR_ADMIN" icon="fa-plus" href="/admin/desarrollo-social/adulto-mayor" label="Agregar" />
+        </v-item>
         <v-item v-if="perms.OBRESEC" icon="fa-table" href="/admin/obresec/crime/type" label="Tipo Delitos"></v-item>
         <v-item v-if="perms.OBRESEC" icon="fa-table" href="/admin/obresec/crime/category"
           label="Categoria Delitos"></v-item>
