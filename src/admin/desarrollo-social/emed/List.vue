@@ -102,11 +102,11 @@
                         </v-filter>
                         {{ row.district }}
                     </td>
-                    <td width="200" header="Dirección">
+                    <td width="200" header="Referencia">
                         <v-filter>
-                            <input v-model="filters.direccion" />
+                            <input v-model="filters.referencia" />
                         </v-filter>
-                        {{ row.address }}
+                        {{ row.referencia }}
                     </td>
                     <td width="120" header="Ambulancias" class=center>
                         <v-filter>
