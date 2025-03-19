@@ -13,7 +13,6 @@
                     <img :key="'men-' + app.ki" style="width: 100%;object-fit: cover;height: 100%;"
                       :src="baseURL + '/fs/shami/profile/' + app.profileImg" @error="$event.target.src = imgError">
                   </div>
-
                 </td>
                 <td style="text-align: left;padding-left: 10px;">
                   <div style="color:blue">Hola,<br />{{ o.display_name }}</div>

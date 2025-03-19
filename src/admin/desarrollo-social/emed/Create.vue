@@ -78,8 +78,24 @@
         <v-map ref="map" @build="mapBuild" style="height: 400px; border: 1px solid lightgrey"
           @translateend="translateend">
           <v-layer-control />
-          <v-map-control @click.prevent="addMarker" style="bottom: 30px; right: 10px" icon="fa-map-marker" />
+          
+          <v-map-control @click.prevent="addMarker(1)" click.prevent="open" style="bottom: 70px; right: 10px" icon="fa-bullseye" />
+          <v-map-control @click.prevent="addMarker(0)" click.prevent="open" style="bottom: 30px; right: 10px" icon="fa-map-marker" />
         </v-map>
+        <div class="center" v-if="o.lat||o.lon">
+        <a :href="'https://www.google.com/maps/search/?api=1&query=' +
+            o.lat +
+            ',' +
+            o.lon
+            " target="_blank">({{ o.lat }},{{ o.lon }})</a>
+        </div>
+        <div v-if=show ref="addLocation" style="background-color: white;
+    padding: 20px;
+    display: flex
+;">
+          <v-button class="column" value="Centro Mapa" icon="fa-location-pin"/>
+          <v-button class="column" value="Ubicación Actual" icon="fa-person"/>
+        </div>
         <v-fieldset legend="Fuente de Información">
           <label>Institución:</label>
           <input v-model="o.fuente_institucion" />
@@ -133,11 +149,11 @@
 </template>
 <script>
 import { Geolocation } from "@capacitor/geolocation";
-import { ui, pad, MsgBox, Drag } from 'isobit-ui'
+import { ui, pad, MsgBox, mask, unmask } from 'isobit-ui'
 import axios from 'axios'
 import { onMounted, nextTick, ref } from 'vue';
 import { category, emed, ipress_inicial } from './constants';
-
+import {fromLonLat} from 'ol/proj';
 
 export default ui({
   props: ["id"],
@@ -172,6 +188,15 @@ export default ui({
     const map = ref(null);
     const trayLocation = ref(null);
     const province = ref();
+    const show = ref();
+    const addLocation = ref();
+    const open = () => {
+            show.value = true;
+            nextTick(() => {
+              //MsgBox(addLocation.value)
+              show.value = mask(addLocation.value)
+            })
+        }
     const changeRoute = () => {
       let m = map.value;
       let o = oRef.value;
@@ -201,7 +226,7 @@ export default ui({
             if (o.district) o.district = pad(o.district, 6);
             trayLocation.value = 1;
             oRef.value = o;
-            m.addFeature({ draggable: true, lat: o.lat, lon: o.lon }, { zoom: 14 });
+            m.addFeature({ draggable: true, lat: o.lat, lon: o.lon }, { zoom: 15 });
             province.value.load({ code: o && o.region || '02' });
           });
       } else {
@@ -237,23 +262,42 @@ export default ui({
     const translateend = ({ lat, lon }) => {
       oRef.value = { ...oRef.value, lat, lon }
     }
-    const addMarker = () => {
+    const addMarker = (option) => {
       const _map = map.value;
       if (_map.empty()) {
         trayLocation.value = 1;
-        const center = _map.map.getView().getCenter();
-        _map.addFeature({ draggable: true, lat: center[1], lon: center[0] }, { zoom: 14 });
-        /*Geolocation.getCurrentPosition().then(({ coords: { latitude, longitude } }) => {
-          oRef.value = { ...oRef.value, lat: latitude, lon: longitude };
-          _map.addFeature({ draggable: true, lat: latitude, lon: longitude }, { zoom: 14 });
-        });*/
+        if(option){
+          Geolocation.getCurrentPosition().then(({ coords: { latitude, longitude } }) => {
+          _map.addFeature({ draggable: true, lat: latitude, lon: longitude }, { zoom: 15});
+        });
+        }else{
+          const center = _map.map.getView().getCenter();
+          _map.addFeature({ draggable: true, lat: center[1], lon: center[0] }, { zoom: 15 });
+        }
       } else {
+        if(option){
+          
+       
+     
+
+          Geolocation.getCurrentPosition().then(({ coords: { latitude, longitude } }) => {
+            oRef.value = { ...oRef.value, lat: latitude, lon: longitude };
+            const coordinates=fromLonLat([longitude, latitude])
+            _map.map.getLayerById().getSource().getFeatures()[0].getGeometry().setCoordinates(coordinates);
+            _map.map.getView().animate({
+          center: coordinates,
+          zoom: 15,
+          duration: 500,
+        });
+        });
+        }else{
         const features = _map.map.getLayerById().getSource().getFeatures()
         _map.map.getView().animate({
           center: features[0].getGeometry().getCoordinates(),
-          zoom: 17,
+          zoom: 15,
           duration: 500,
         });
+      }
       }
     }
     const close = ({ data: { id, tmpId, uploaded }, success }) => {
@@ -271,7 +315,8 @@ export default ui({
       }
       oRef.value = o;
     }
-    return { o: oRef, map, mapBuild, addMarker, province, trayLocation, close, translateend }
+    
+    return { show, addLocation,open, o: oRef, map, mapBuild, addMarker, province, trayLocation, close, translateend }
   },
   created() {
     /*let me = this;
@@ -352,3 +397,16 @@ export default ui({
   },
 });
 </script>
+<style>
+.column.v-button{
+  display: flex
+;
+width:90px;
+    flex-direction: column;
+}
+.column.v-button > svg{
+  font-size: 20px;
+    margin-bottom: 10px;
+    margin-right: 0px;
+}
+</style>
