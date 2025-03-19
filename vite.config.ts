@@ -27,7 +27,7 @@ export default () => {
     )
   );
   console.log(import.meta.env);
-  const publicPath = process.env.VITE_PUBLIC_PATH || '/erp';
+  const publicPath = process.env.VITE_PUBLIC_PATH || '/';
   /*return defineConfig({
     plugins: [
       vue(),

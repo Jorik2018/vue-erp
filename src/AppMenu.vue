@@ -108,37 +108,3 @@ export default ui({
   }
 })
 </script>
-<style>
-.v-menu {
-  margin: 0px;
-}
-
-.v-menu,
-.v-menu ul {
-  list-style: none;
-}
-
-.v-menu,
-.v-menu ul {
-  padding: 0px;
-}
-
-.v-menu li {
-  padding: 14px 15px;
-  cursor: pointer;
-  border-bottom: 1px solid rgb(224, 224, 224);
-}
-
-.v-menu>ul>li {
-  padding-left: 40px;
-}
-
-.v-menu li>i,
-.v-menu li>svg {
-  margin-right: 10px;
-}
-
-.v-menu li:hover {
-  background-color: rgb(241, 240, 240);
-}
-</style>
