@@ -157,7 +157,7 @@
         </div>
       </v-fieldset>
     </div>
-    <center>
+    <center v-if="perms.EMED_REGISTER">
       <v-button style="margin-left: 10px" value="Editar" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
         $router.replace(
           '/admin/desarrollo-social/emed/' +
