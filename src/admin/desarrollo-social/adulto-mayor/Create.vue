@@ -11,9 +11,9 @@
       <div>{{ pad(o.id || 0, 4) }}</div>
       <v-fieldset legend="I. Datos generales" class="v-form">
         <label>DNI:</label>
-        <input v-model="o.dni"  maxlength="8" class="center" @input="validateInput" />
+        <input v-model="o.dni" maxlength="8" class="center" @input="validateInput" />
         <label>Apellidos y Nombres:</label>
-        <input v-model="o.apellidos_nombres" required/>
+        <input v-model="o.apellidos_nombres" required />
         <label>Fecha Nacimiento:</label>
         <v-calendar v-model="o.fecha_nacimiento" required @changed="inputEdad" />
         <label>Edad:</label>
@@ -266,9 +266,12 @@
         <label>Firma:</label>
         <div style="border: 1px solid gray;padding: 10px;margin-bottom: 10px;">
           <img style="height: 200px;" />
+          <VSketcher style="height: 200px;background-color: white;
+    width: -webkit-fill-available;"></VSketcher>
+
         </div>
         <div class="right">
-        <v-uploader v-model="o.firma" />
+          <v-uploader v-model="o.firma" />
         </div>
       </v-fieldset>
     </div>
@@ -281,11 +284,15 @@
 import { ui } from 'isobit-ui'
 import { ref } from 'vue'
 import axios from 'axios'
+import VSketcher from '@/components/v-sketcher.vue';
 export default ui({
   props: ["id"],
-  setup({ router,id }) {
+  components: {
+    VSketcher,
+  },
+  setup({ router, id }) {
     const o = ref({});
-    const close=({success,data}) =>{
+    const close = ({ success, data }) => {
       let _o = o.value;
       if (success === true) {
         _o = { ..._o, id: data.id, tmpId: data.tmpId };
@@ -296,10 +303,10 @@ export default ui({
       o.value = _o;
       const nid = _o.tmpId ? -_o.tmpId : _o.id;
       if (id != nid) {
-      router.replace("/admin/desarrollo-social/adulto-mayor/" + nid);
+        router.replace("/admin/desarrollo-social/adulto-mayor/" + nid);
       }
     }
-    return {o,close}
+    return { o, close }
   },
   data() {
     return {
@@ -317,8 +324,8 @@ export default ui({
   methods: {
     validateInput() {
       // Only keep digits and limit to 8 characters
-      if(this.o.dni)
-      this.o.dni = this.o.dni.replace(/\D/g, '').slice(0, 8);
+      if (this.o.dni)
+        this.o.dni = this.o.dni.replace(/\D/g, '').slice(0, 8);
     },
     inputEdad(e) {
       this.o.edad = this.o.fecha_nacimiento ? this.app.getAge(this.o.fecha_nacimiento) : null;

@@ -5,16 +5,16 @@
                 store="emed" :scrollable="true" rowKey="id" :pagination="20" @updated="bindLinks($el)"
                 :filters="filters" src="/api/desarrollo-social/emed">
                 <template v-slot:header>
-                    <v-button value="Enviar" v-if="app.connected" icon="fa-save" :disabled="!rowSelectedCount"
-                        @click.prevent="sync"></v-button>
-                    <v-button value="Crear" v-if="1 || can(perms.DESARROLLO_SOCIAL_REGISTER_SIVICO)" icon="fa-plus"
-                        class="on" @click.prevent="create"></v-button>
-                    <v-button value="Editar" v-if="1 || can(perms.DESARROLLO_SOCIAL_REGISTER_SIVICO)" icon="fa-pen"
-                        @click.prevent="edit" :disabled="!rowSelectedCount"></v-button>
+                    <v-button value="Enviar" v-if="app.connected && perms.EMED_REGISTER" icon="fa-save"
+                        :disabled="!rowSelectedCount" @click.prevent="sync"></v-button>
+                    <v-button value="Crear" v-if="perms.EMED_REGISTER" icon="fa-plus" class="on"
+                        @click.prevent="create"></v-button>
+                    <v-button value="Editar" v-if="perms.EMED_REGISTER" icon="fa-pen" @click.prevent="edit"
+                        :disabled="!rowSelectedCount"></v-button>
                     <v-button value="Ver" icon="fa-search" @click.prevent="view(getSelected()[0])"
                         :disabled="!rowSelectedCount"></v-button>
-                    <v-button value="Eliminar" v-if="1 || can(perms.DESARROLLO_SOCIAL_REGISTER_SIVICO)" icon="fa-trash"
-                        @click.prevent="destroy" :disabled="!rowSelectedCount"></v-button>
+                    <v-button value="Eliminar" v-if="perms.EMED_REGISTER" icon="fa-trash" @click.prevent="destroy"
+                        :disabled="!rowSelectedCount"></v-button>
                     <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh"></v-button>
                 </template>
                 <template v-slot="{ row }">

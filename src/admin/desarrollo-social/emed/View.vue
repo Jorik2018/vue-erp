@@ -79,7 +79,7 @@
             </td>
           </template>
         </v-table>
-        <div class="right" style="margin-top: 10px">
+        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER">
           <v-button icon="fa-trash" :disabled="!selections.damage_salud" @click="destroy"></v-button>
           <v-button icon="fa-pen" :disabled="!selections.damage_salud" @click="edit"></v-button>
           <v-button icon="fa-plus" @click="add('damage_salud', o)"></v-button>
@@ -104,10 +104,13 @@
             <td header="Observación" width="220">{{ row.remark }}</td>
           </template>
         </v-table>
-        <div class="right" style="margin-top: 10px">
+        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER">
+
           <v-button icon="fa-trash" :disabled="!selections.damage_ipress" @click="destroy"></v-button>
           <v-button icon="fa-pen" :disabled="!selections.damage_ipress" @click="edit"></v-button>
           <v-button icon="fa-plus" @click="add('damage_ipress', o)"></v-button>
+
+
         </div>
       </v-fieldset>
       <v-fieldset legend="Acciones realizadas en salud">
@@ -124,7 +127,7 @@
             <td header="Descripción" width="300">{{ row.descripcion }}</td>
           </template>
         </v-table>
-        <div class="right" style="margin-top: 10px">
+        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER">
           <v-button icon="fa-trash" :disabled="!selections.action" @click="destroy"></v-button>
           <v-button icon="fa-pen" :disabled="!selections.action" @click="edit"></v-button>
           <v-button icon="fa-plus" @click="add('action', o)"></v-button>
@@ -148,7 +151,7 @@
               @click="syncImagen(item)" />
           </div>
         </div>
-        <div class="right" style="margin-top: 10px">
+        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER">
           <v-uploader icon="fa-camera" ref="uploader" style="margin-top: 10px" value="Obtener Imagen"
             :click="uploaderClick" v-on:input="changeImage($event)"></v-uploader>
         </div>
