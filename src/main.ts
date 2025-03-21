@@ -79,6 +79,8 @@ router.isReady().then(() => {
     ["cancer", { keyPath: "tmpId" }]
   ]).then(() => {
     app.mount('#app');
+  }).catch((e) => {
+    console.log(e)
   });
 });
 
