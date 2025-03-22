@@ -10,10 +10,10 @@
                     <v-button value="Crear" v-if="perms.EMED_REGISTER" icon="fa-plus" class="on"
                         @click.prevent="create"></v-button>
                     <v-button value="Editar" v-if="perms.EMED_REGISTER" icon="fa-pen" @click.prevent="edit"
-                        :disabled="!rowSelectedCount"></v-button>
+                        :disabled="!editable"></v-button>
                     <v-button value="Ver" icon="fa-search" @click.prevent="view(getSelected()[0])"
                         :disabled="!rowSelectedCount"></v-button>
-                    <v-button value="Eliminar" v-if="perms.EMED_REGISTER" icon="fa-trash" @click.prevent="destroy"
+                    <v-button value="Eliminar" v-if="perms.EMED_ADMIN" icon="fa-trash" @click.prevent="destroy"
                         :disabled="!rowSelectedCount"></v-button>
                     <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh"></v-button>
                 </template>
@@ -120,7 +120,6 @@
                         </v-filter>
                         {{ row.personal }}
                     </td>
-
                     <td width="120" header="Brigadistas" class=center>
                         <v-filter>
                             <input v-model="filters.brigadistas" />
@@ -132,6 +131,18 @@
                             <input v-model="filters.equipo_tecnico" />
                         </v-filter>
                         {{ row.equipo_tecnico }}
+                    </td>
+                    <td width="120" header="Creador" class=center>
+                        <v-filter>
+                            <input v-model="filters.uid_insert" />
+                        </v-filter>
+                        {{ row.uid_insert }}
+                    </td>
+                    <td width="120" header="Fecha Insert" class=center>
+                        <v-filter>
+                            <input v-model="filters.insert_date" />
+                        </v-filter>
+                        {{ row.insert_date }}
                     </td>
                 </template>
             </v-table>
@@ -170,13 +181,13 @@ export default ui({
             }
         });*/
     },
+    computed: {
+        editable() {
+            const selected = this.getSelected()[0];
+            return selected ? 1 * selected.editable : null;
+        }
+    },
     methods: {
-        can(o) {
-            let m = this, u = m.user;
-            return o || u.uid == 1;
-            /*return u.uid == 1 || p.REGISTER_DESARROLLO_SOCIAL_SIVICO &&
-            !o || o.user == u.id;*/
-        },
         view(o) {
             this.open('/admin/desarrollo-social/emed/' + (o.tmpId ? (-o.tmpId) : o.id));
         }

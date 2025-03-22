@@ -78,23 +78,13 @@ export default ui({
         e.target.parentNode.classList.remove("v-focus");
       }
     },
-    initSession(session) {
-      const me = this;
-      me.app.connect(session);
-    },
     success({ token, perms, user_nicename }) {
       const me = this;
       if (token) {
         axios.defaults.headers.common = {
           Authorization: `Bearer ` + token,
         };
-        if (perms) {
-          me.initSession({ token, people: { display_name: user_nicename }, perms });
-        } else {
-          axios.get("/api/user").then(({ data }) => {
-            me.initSession({ token, people: { display_name: data.data.display_name }, perms: data.allcaps });
-          });
-        }
+        me.app.connect({ token, people: { display_name: user_nicename }, perms });
       } else {
         alert(8);
         this.openToast();
@@ -109,7 +99,7 @@ export default ui({
         axios.post(import.meta.env.VITE_LOGIN_PATH, {
           username: this.o.name,
           password: this.o.pass,
-        }).then((response) => {
+        }, { withCredentials: true }).then((response) => {
           me.success(response.data);
         });
       }

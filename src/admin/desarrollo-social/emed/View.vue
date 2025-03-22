@@ -79,8 +79,9 @@
             </td>
           </template>
         </v-table>
-        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER">
-          <v-button icon="fa-trash" :disabled="!selections.damage_salud" @click="destroy"></v-button>
+        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER && o.editable">
+          <v-button icon="fa-trash" :disabled="!selections.damage_salud" @click="destroy"
+            v-if="perms.EMED_ADMIN"></v-button>
           <v-button icon="fa-pen" :disabled="!selections.damage_salud" @click="edit"></v-button>
           <v-button icon="fa-plus" @click="add('damage_salud', o)"></v-button>
         </div>
@@ -104,9 +105,10 @@
             <td header="Observación" width="220">{{ row.remark }}</td>
           </template>
         </v-table>
-        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER">
+        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER && o.editable">
 
-          <v-button icon="fa-trash" :disabled="!selections.damage_ipress" @click="destroy"></v-button>
+          <v-button icon="fa-trash" :disabled="!selections.damage_ipress" @click="destroy"
+            v-if="perms.EMED_ADMIN"></v-button>
           <v-button icon="fa-pen" :disabled="!selections.damage_ipress" @click="edit"></v-button>
           <v-button icon="fa-plus" @click="add('damage_ipress', o)"></v-button>
 
@@ -127,16 +129,16 @@
             <td header="Descripción" width="300">{{ row.descripcion }}</td>
           </template>
         </v-table>
-        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER">
-          <v-button icon="fa-trash" :disabled="!selections.action" @click="destroy"></v-button>
+        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER && o.editable">
+          <v-button icon="fa-trash" :disabled="!selections.action" @click="destroy" v-if="perms.EMED_ADMIN"></v-button>
           <v-button icon="fa-pen" :disabled="!selections.action" @click="edit"></v-button>
           <v-button icon="fa-plus" @click="add('action', o)"></v-button>
         </div>
       </v-fieldset>
-      <v-fieldset legend="Imagenes">
+      <v-fieldset legend="Imagenes" v-if="o.editable || (o.files && o.files.length)">
         <div>
           <div v-for="item in o.files" :key="item.tempFile" style="position:relative">
-            <div style="padding: 10px;
+            <div v-if="perms.EMED_ADMIN" style="padding: 10px;
     cursor: pointer;
     border: 1px solid gray;
     background-color: white;
@@ -151,13 +153,13 @@
               @click="syncImagen(item)" />
           </div>
         </div>
-        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER">
+        <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER && o.editable">
           <v-uploader icon="fa-camera" ref="uploader" style="margin-top: 10px" value="Obtener Imagen"
             :click="uploaderClick" v-on:input="changeImage($event)"></v-uploader>
         </div>
       </v-fieldset>
     </div>
-    <center v-if="perms.EMED_REGISTER">
+    <center v-if="perms.EMED_REGISTER && o.editable">
       <v-button style="margin-left: 10px" value="Editar" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
         $router.replace(
           '/admin/desarrollo-social/emed/' +

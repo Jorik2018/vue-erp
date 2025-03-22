@@ -59,7 +59,8 @@
         <v-item v-if="perms.OBRESEC" icon="fa-table" href="/admin/obresec/risk" label="Riesgos"></v-item>
         <v-item v-if="perms.MCI_READ" icon="fa-table" href="/admin/desarrollo-social/sivico" label="MCI"></v-item>
         <v-item v-if="perms.EMED_READ" icon="fa-table" href="/admin/desarrollo-social/emed" label="EMED">
-          <v-item v-if="perms.EMED_ADMIN" icon="fa-plus" href="/admin/desarrollo-social/emed/create" label="Agregar" />
+          <v-item v-if="perms.EMED_REGISTER" icon="fa-plus" href="/admin/desarrollo-social/emed/create"
+            label="Agregar" />
         </v-item>
         <v-item v-if="perms.MATERNO_ADMIN" icon="fa-table" href="/admin/desarrollo-social/vea-materno"
           label="VEA Materno" />
