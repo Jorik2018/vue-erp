@@ -90,9 +90,10 @@ export default ui({
     login() {
       const me = this;
       if (me.validate(me.$el)) {
-        console.log('================>0===>')
+
         axios.config = {};
         axios.defaults.headers.common = {};
+        console.log('================>0===>' + import.meta.env.VITE_LOGIN_PATH)
         axios.post(import.meta.env.VITE_LOGIN_PATH, {
           username: this.o.name,
           password: this.o.pass,
