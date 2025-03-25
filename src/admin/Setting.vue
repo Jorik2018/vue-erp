@@ -41,7 +41,7 @@
         <v-options store="province" display-field="name" />
       </v-select>
 
-      <label>Distrito:{{ o.district }}</label>
+      <label :title="o.district">Distrito:</label>
       <v-select autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.province" @input="
         $refs.cpSelect.load({ id: o.district ? o.district.code : '*' })
         " ref="districtSelect" v-model="o.district">
