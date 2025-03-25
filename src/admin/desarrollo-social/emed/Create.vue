@@ -239,11 +239,11 @@ export default ui({
               s = JSON.parse(s);
               let o = oRef.value;
               if (s.region) o.region = s.region.code;
-              /*if (s.province) o.province = s.province.code;
+              if (s.province) o.province = s.province.code;
               if (s.district) o.district = s.district.code;
               if (s.town) o.codigoCCPP = s.town.id;
-              */
-              //o.town = s.town;
+
+              o.codigo_ccpp = s.town;
             }
           } catch (e) {
             console.log(e);

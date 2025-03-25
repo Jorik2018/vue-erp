@@ -1,7 +1,7 @@
 <template>
 
-  <v-form class="v-form" header="Configuración" store="setting">
-    <div :key="k">
+  <v-page header="Configuración" store="setting">
+    <div class="v-form">
       <v-button icon="fa fa-sync" value="Recuperar Datos Maestros" @click="load"
         style="width: -webkit-fill-available" />
       <label>Red:</label>
@@ -24,15 +24,15 @@
         <option>Select One...</option>
         <v-options store="establishment" display-field="name" value-field="code" />
       </v-select>
-      <label>Región:</label>
-      <v-select v-model="o.region" ref="regionSelect" :label="o.regionName ? o.regionName : '---'" @input="
+      <label>Región:{{ o.region }}</label>
+      <v-select name="region" v-model="o.region" ref="regionSelect" :label="o.regionName ? o.regionName : '---'" @input="
         $refs.provinceSelect.load({ code: o.region ? o.region.code : '*' }, 77)
         ">
         <option value="">Seleccionar Opción</option>
         <v-options store="region" display-field="name" />
       </v-select>
 
-      <label>Provincia:</label>
+      <label>Provincia:{{ o.province }}</label>
       <v-select id="prov" :label="o.provinceName ? o.provinceName : '---'" autoload="false" :disabled="!o.region"
         ref="provinceSelect" v-model="o.province" @input="$refs.districtSelect.load({
           code: o.province ? o.province.code : '*'
@@ -41,7 +41,7 @@
         <v-options store="province" display-field="name" />
       </v-select>
 
-      <label>Distrito:</label>
+      <label>Distrito:{{ o.district }}</label>
       <v-select autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.province" @input="
         $refs.cpSelect.load({ id: o.district ? o.district.code : '*' })
         " ref="districtSelect" v-model="o.district">
@@ -57,26 +57,32 @@
       <v-button icon="fa fa-save" value="Guardar Seleccion" @click="save"
         style="margin-top: 10px; width: -webkit-fill-available" />
     </div>
-  </v-form>
+  </v-page>
 </template>
 <script>
 import { ui, db, _ } from "isobit-ui";
 import axios from 'axios';
-
+import { onRenderTracked, ref } from 'vue'
 export default ui({
   props: ["id"],
-
+  setup({ app }) {
+    const oRef = ref({
+      red: null,
+      microred: null,
+      establishment: null,
+      region: null,
+      province: null,
+      district: null,
+      town: null,
+    });
+    const save = () => {
+      localStorage.setItem("setting", JSON.stringify(oRef.value));
+      app.toast("Configuracion grabada!");
+    }
+    return { o: oRef, save }
+  },
   data() {
     return {
-      o: {
-        red: null,
-        microred: null,
-        establishment: null,
-        region: null,
-        province: null,
-        district: null,
-        town: null,
-      },
       k: 0,
       memo: {},
     };
@@ -140,12 +146,7 @@ export default ui({
           }
         });
       });
-    },
-    async save() {
-      localStorage.setItem("setting", JSON.stringify(this.o));
-      console.log(this.app)
-      this.app.toast("Configuracion grabada!");
-    },
+    }
   },
 });
 </script>
