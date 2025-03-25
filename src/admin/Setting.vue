@@ -133,7 +133,11 @@ export default ui({
             objectStore.clear().onsuccess = () => {
               for (const i in data) {
                 try {
-                  postAdd(objectStore.add(data[i]));
+
+                  const item = data[i];
+                  if (!e[1].keyPath) item.$id = i;
+                  console.log(item)
+                  postAdd(objectStore.add(item));
                 } catch (exception) {
                   console.log("Error during add on " + e[1]);
                   console.log(data[i]);

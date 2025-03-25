@@ -54,11 +54,11 @@ app
   .use(IsobitUI);
 
 router.isReady().then(() => {
-  initDB(20, [
+  initDB(22, [
     ["region", { keyPath: "id" }, "/api/directory/region/0/0"],
     ["province", { keyPath: "code" }, "/api/directory/province/0/0"],
     ["district", { keyPath: "code" }, "/api/directory/district/0/0"],
-    ["town", { keyPath: "id" }, "/api/directory/town/0/0", "district"],
+    ["town", {}, "/api/directory/town/0/0", "district"],
     ["sample", { keyPath: "id" }],
     ["pool", { keyPath: "tmpId" }],
     ["people", { keyPath: "tmpId" }],
