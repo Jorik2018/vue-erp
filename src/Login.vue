@@ -96,7 +96,7 @@ export default ui({
         axios.post(import.meta.env.VITE_LOGIN_PATH, {
           username: this.o.name,
           password: this.o.pass,
-        }, { withCredentials: false }).then((response) => {
+        }).then((response) => {
           me.success(response.data);
         });
       }
