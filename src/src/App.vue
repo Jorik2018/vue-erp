@@ -228,11 +228,6 @@ export default ui({
 				});
 			});
 		},
-		logout() {
-			this.session = null;
-			localStorage.removeItem('session');
-			this.$router.push('/');
-		},
 		error(event, src) {
 			if (!src)
 				src = this.imgError;

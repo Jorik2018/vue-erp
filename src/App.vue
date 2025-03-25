@@ -31,14 +31,6 @@ export default ui({
     }
     Network.addListener("networkStatusChange", me.app.networkStatusChange);
     Network.getStatus().then(me.app.networkStatusChange);
-    //me.app.connect = this.connect;
-    me.app.logout = () => {
-      me.session = null;
-      localStorage.removeItem('session');
-      //this.$router.push('/login');
-      me.$router.push('/admin');
-      location.reload()
-    };
     me.app.getAge = (birthDate) => {
       const today = new Date();
       birthDate = typeof birthDate == 'string' || typeof birthDate == 'number' ? new Date(birthDate) : birthDate;

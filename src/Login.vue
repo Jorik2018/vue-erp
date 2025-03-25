@@ -81,12 +81,8 @@ export default ui({
     success({ token, perms, user_nicename }) {
       const me = this;
       if (token) {
-        axios.defaults.headers.common = {
-          Authorization: `Bearer ` + token,
-        };
         me.app.connect({ token, people: { display_name: user_nicename }, perms });
       } else {
-        alert(8);
         this.openToast();
         //_.MsgBox('El usuario o la contrase&ntilde;a no son reconocidas por el servidor.');
       }
@@ -99,7 +95,7 @@ export default ui({
         axios.post(import.meta.env.VITE_LOGIN_PATH, {
           username: this.o.name,
           password: this.o.pass,
-        }, { withCredentials: true }).then((response) => {
+        }, { withCredentials: false }).then((response) => {
           me.success(response.data);
         });
       }
