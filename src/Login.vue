@@ -90,6 +90,7 @@ export default ui({
     login() {
       const me = this;
       if (me.validate(me.$el)) {
+        console.log('================>0===>')
         axios.config = {};
         axios.defaults.headers.common = {};
         axios.post(import.meta.env.VITE_LOGIN_PATH, {
