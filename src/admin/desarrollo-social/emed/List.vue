@@ -157,7 +157,7 @@ export default ui({
             //row.synchronized ? 'green' : (row.tmpId > 0 ? 'yellow' : '')
             return row.editable ? 'bold' : 'bold'
         }
-        return rowClass;
+        return { rowClass };
     },
     data() {
         return { data: [], mode: 0, query: null, category }
