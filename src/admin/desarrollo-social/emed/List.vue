@@ -1,9 +1,8 @@
 <template>
     <ion-page>
         <v-form header="Eventos" action="/admin/desarrollo-social/emed">
-            <v-table :selectable="true" row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')"
-                store="emed" :scrollable="true" rowKey="id" :pagination="20" @updated="bindLinks($el)"
-                :filters="filters" src="/api/desarrollo-social/emed">
+            <v-table :selectable="true" :row-class="rowClass" store="emed" :scrollable="true" rowKey="id"
+                :pagination="20" @updated="bindLinks($el)" :filters="filters" src="/api/desarrollo-social/emed">
                 <template v-slot:header>
                     <v-button value="Enviar" v-if="app.connected && perms.EMED_REGISTER" icon="fa-save"
                         :disabled="!rowSelectedCount" @click.prevent="sync"></v-button>
@@ -153,6 +152,13 @@
 import { ui } from 'isobit-ui'
 import { category } from './constants';
 export default ui({
+    setup() {
+        const rowClass = (row) => {
+            //row.synchronized ? 'green' : (row.tmpId > 0 ? 'yellow' : '')
+            return row.editable ? 'bold' : 'bold'
+        }
+        return rowClass;
+    },
     data() {
         return { data: [], mode: 0, query: null, category }
     },
