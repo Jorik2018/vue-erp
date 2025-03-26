@@ -24,8 +24,8 @@
         <option>Select One...</option>
         <v-options store="establishment" display-field="name" value-field="code" />
       </v-select>
-      <label>Región:{{ o.region }}</label>
-      <v-select name="region" v-model="o.region" ref="regionSelect" :label="o.regionName ? o.regionName : '---'" @input="
+      <label>Región:</label>
+      <v-select v-model="o.region" ref="regionSelect" :label="o.regionName ? o.regionName : '---'" @input="
         $refs.provinceSelect.load({ code: o.region ? o.region.code : '*' }, 77)
         ">
         <option value="">Seleccionar Opción</option>
@@ -33,7 +33,7 @@
       </v-select>
 
       <label>Provincia:{{ o.province }}</label>
-      <v-select id="prov" :label="o.provinceName ? o.provinceName : '---'" autoload="false" :disabled="!o.region"
+      <v-select :label="o.provinceName ? o.provinceName : '---'" autoload="false" :disabled="!o.region"
         ref="provinceSelect" v-model="o.province" @input="$refs.districtSelect.load({
           code: o.province ? o.province.code : '*'
         })">
@@ -41,10 +41,11 @@
         <v-options store="province" display-field="name" />
       </v-select>
 
-      <label :title="o.district">Distrito:</label>
-      <v-select autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.province" @input="
-        $refs.cpSelect.load({ id: o.district ? o.district.code : '*' })
-        " ref="districtSelect" v-model="o.district">
+      <label :title="o.district">Distrito:{{ o.district }}</label>
+      <v-select name="dist" autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.province"
+        @input="
+          $refs.cpSelect.load({ id: o.district ? o.district.code : '*' })
+          " ref="districtSelect" v-model="o.district">
         <option value="">Seleccionar Opción</option>
         <v-options store="district" display-field="name" />
       </v-select>
@@ -60,12 +61,14 @@
   </v-page>
 </template>
 <script>
-import { ui, db, _ } from "isobit-ui";
+import { ui, db, _, pad } from "isobit-ui";
 import axios from 'axios';
-import { onRenderTracked, ref } from 'vue'
+import { ref } from 'vue'
 export default ui({
   props: ["id"],
   setup({ app }) {
+    const k = ref(0);
+    let timer;
     const oRef = ref({
       red: null,
       microred: null,
@@ -75,24 +78,11 @@ export default ui({
       district: null,
       town: null,
     });
-    const save = () => {
-      localStorage.setItem("setting", JSON.stringify(oRef.value));
-      app.toast("Configuracion grabada!");
-    }
-    return { o: oRef, save }
-  },
-  data() {
-    return {
-      k: 0,
-      memo: {},
-    };
-  },
-  created() {
     try {
       let s = localStorage.getItem("setting");
       if (s) {
         s = JSON.parse(s);
-        const o = this.o;
+        const o = oRef.value;
         o.red = s.red;
         o.microred = s.microred;
         o.region = s.region;
@@ -100,31 +90,30 @@ export default ui({
         o.district = s.district;
         o.establishment = s.establishment;
         o.town = s.town;
-        this.k++;
+        oRef.value = o;
+        k.value++;
       }
     } catch (e) {
       console.log(e);
     }
-  },
-  methods: {
-    load() {
-      const me = this, o = me.o;
-      let timer;
-      const reset = function () {
-        me.k++;
-      };
-      const postAdd = () => {
-        clearTimeout(timer);
-        timer = setTimeout(reset, 500);
-      };
+    const reset = () => {
+      location.reload()
+    };
+    const postAdd = () => {
+      clearTimeout(timer);
+      timer = setTimeout(reset, 500);
+    };
+    const load = () => {
+      const o = oRef.value;
       [
         "town",
         "red",
         "microred", "cie", "establishment", "district", "region", "province", "sample"
       ].forEach((store) => {
         const e = _.stores.filter(e => e[0] == store)[0];
-        if (!e[2]) return;
-        axios.get(e[2] + (o.district && e[0] == 'town' ? ('?district=' + o.district.code) : '')).then((data) => {
+        const { src } = e[1];
+        if (!src) return;
+        axios.get(src + (o.district && e[0] == 'town' ? ('?district=' + o.district.code) : '')).then((data) => {
           const objectStore = db()
             .transaction([e[0]], "readwrite")
             .objectStore(e[0]);
@@ -133,13 +122,11 @@ export default ui({
             objectStore.clear().onsuccess = () => {
               for (const i in data) {
                 try {
-
                   const item = data[i];
-                  if (!e[1].keyPath) item.$id = i;
                   console.log(item)
                   postAdd(objectStore.add(item));
                 } catch (exception) {
-                  console.log("Error during add on " + e[1]);
+                  console.log("Error during add on ", e[1]);
                   console.log(data[i]);
                   throw exception;
                 }
@@ -151,98 +138,11 @@ export default ui({
         });
       });
     }
-  },
+    const save = () => {
+      localStorage.setItem("setting", JSON.stringify(oRef.value));
+      app.toast("Configuracion grabada!");
+    }
+    return { o: oRef, save, load, k }
+  }
 });
 </script>
-<style scope>
-.table input {
-  width: 100% !important;
-}
-
-.table td {
-  padding: 2px;
-}
-
-.ww>a:not(:last-child) {
-  margin-bottom: 20px;
-}
-
-.ww>a {
-  display: block;
-  border: 1px solid gray;
-  padding: 10px;
-}
-
-.ww span {
-  font-size: 16px;
-  font-weight: bolder;
-}
-
-.ww i {
-  font-size: 14px;
-  color: gray;
-  display: block;
-}
-
-.ww div {
-  display: inline-block;
-  width: calc(100% - 100px);
-  padding-top: 20px;
-  float: left;
-}
-
-.ww img {
-  width: 100px;
-}
-
-img.error {
-  padding: 30% !important;
-  width: 40% !important;
-  background-color: transparent;
-}
-
-.cart-control>* {
-  display: block;
-  width: 90%;
-}
-
-.cart-control>*:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.controls a:not(:last-child) {
-  display: inline-block;
-  margin-right: 10px;
-}
-
-.product {
-  padding: 20px;
-  background-color: white;
-  position: relative;
-}
-
-.product-list iframe {
-  width: 100%;
-}
-
-.controls {
-  position: relative;
-}
-
-.controls>*:not(:last-child) {
-  margin-right: 10px;
-}
-
-.view {
-  margin: 15px 0px;
-}
-
-.inner-scroll {
-  --padding: 10px;
-}
-
-
-.v-controls {
-  font-size: 30px;
-}
-</style>
