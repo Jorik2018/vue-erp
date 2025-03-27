@@ -94,7 +94,7 @@ export default ui({
         axios.config = {};
         axios.defaults.headers.common = {};
 
-        const VITE_LOGIN_PATH = import.meta.env.VITE_LOGIN_PATH;
+        const VITE_LOGIN_PATH = '/simple-jwt-login/v1/auth';//import.meta.env.VITE_LOGIN_PATH;
         axios.VITE_LOGIN_PATH = VITE_LOGIN_PATH;
         axios.post(VITE_LOGIN_PATH, {
           username: this.o.name,
