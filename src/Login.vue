@@ -93,11 +93,15 @@ export default ui({
 
         axios.config = {};
         axios.defaults.headers.common = {};
-        console.log('================>0===>' + import.meta.env.VITE_LOGIN_PATH)
-        axios.post(import.meta.env.VITE_LOGIN_PATH, {
+
+        const VITE_LOGIN_PATH = '/simple-jwt-login/v1/auth';//import.meta.env.VITE_LOGIN_PATH;
+        axios.VITE_LOGIN_PATH = VITE_LOGIN_PATH;
+        axios.post(VITE_LOGIN_PATH, {
           username: this.o.name,
           password: this.o.pass,
-        }).then((response) => {
+        }
+          //, { withCredentials: true }
+        ).then((response) => {
           me.success(response.data);
         });
       }
