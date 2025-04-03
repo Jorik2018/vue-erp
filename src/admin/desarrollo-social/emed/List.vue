@@ -1,7 +1,7 @@
 <template>
     <ion-page>
         <v-form header="Eventos" action="/admin/desarrollo-social/emed">
-            <v-table :selectable="true" :row-class="rowClass" store="emed" :scrollable="true" rowKey="id"
+            <v-table :selectable="true" :row-style-class="rowClass" store="emed" :scrollable="true" rowKey="id"
                 :pagination="20" @updated="bindLinks($el)" :filters="filters" src="/api/desarrollo-social/emed">
                 <template v-slot:header>
                     <v-button value="Enviar" v-if="app.connected && perms.EMED_REGISTER" icon="fa-save"
@@ -17,7 +17,6 @@
                     <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh"></v-button>
                 </template>
                 <template v-slot="{ row }">
-
                     <td width="80" class="center" header="ID">
                         <v-filter>
                             <input v-model="filters.id" />
@@ -154,8 +153,9 @@ import { category } from './constants';
 export default ui({
     setup() {
         const rowClass = (row) => {
+            console.log(row);
             //row.synchronized ? 'green' : (row.tmpId > 0 ? 'yellow' : '')
-            return row.editable ? 'bold' : 'bold'
+            return row.editable ? 'bold' : ''
         }
         return { rowClass };
     },

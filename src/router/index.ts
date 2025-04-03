@@ -5,7 +5,10 @@ import { useAppStore } from 'isobit-ui';
 import { getActivePinia } from 'pinia';
 import axios from 'axios';
 const routes: Array<RouteRecordRaw> = [
-
+  {
+    path: '/file',
+    component: () => import('../admin/file/List.vue')
+  },
   {
     path: '/verify',
     component: () => import('../document/VerifyPanel.vue')
@@ -376,7 +379,9 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
-})
+});
+
+(axios as any).VITE_LOGIN_PATH = '/simple-jwt-login/v1/auth';//import.meta.env.VITE_LOGIN_PATH;
 
 router.beforeEach((to, from, next) => {
   const pinia = getActivePinia();
