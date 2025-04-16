@@ -153,7 +153,6 @@ import { category } from './constants';
 export default ui({
     setup() {
         const rowClass = (row) => {
-            console.log(row);
             //row.synchronized ? 'green' : (row.tmpId > 0 ? 'yellow' : '')
             return row.editable ? 'bold' : ''
         }

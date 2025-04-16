@@ -203,9 +203,9 @@ export const category = [
             },
             {
                 name: 'MOVILIZACION_SOCIAL',
-                detail: {
-                    name: "MOVILIZACION POR PROTESTA"
-                }
+                detail: [
+                    { name: "MOVILIZACION POR PROTESTA" }
+                ]
             },
             { name: "NARCOTRAFICO" },
             {
