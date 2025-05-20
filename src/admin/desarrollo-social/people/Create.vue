@@ -1,0 +1,174 @@
+<template>
+  <v-page action="/api/desarrollo-social/people" :header="(o.id ? 'Editar' : 'Crear') + '  Registro Persona'" :class="o.id < 0 || (o.tmpId && !o.synchronized)
+    ? 'yellow'
+    : o.tmpId
+      ? 'green'
+      : ''
+    " store="people">
+    <div class="v-form">
+      <label>ID:</label>
+      <div>{{ pad(o.id || 0, 4) }}</div>
+
+
+
+
+      <label>Nacionalidad:</label>
+      <input v-model="o.nacionalidad" required maxlength="50" />
+      <label>Ubigeo:</label>
+      <input v-model="o.ubigeo" required maxlength="6" />
+      <label>CCPP:</label>
+      <input v-model="o.ubigeo_ccpp" required maxlength="4" />
+
+      <v-fieldset legend="Documento Identidad" class="v-form">
+        <label>Tipo:</label>
+        <v-select v-model="o.documento_tipo" required>
+          <option value="">Select One...</option>
+          <v-options :data="documentType" value-field="code" display-field="name" />
+        </v-select>
+        <label>Número:</label>
+        <input v-model="o.documento_nro" maxlength="20" class="center" @input="validateInput" required />
+      </v-fieldset>
+      <label>Ape. Paterno:</label>
+      <input v-model="o.ape_paterno" required maxlength="50" />
+      <label>Ape. Materno:</label>
+      <input v-model="o.ape_materno" required maxlength="50" />
+      <label>Nombres:</label>
+      <input v-model="o.nombres" required maxlength="100" />
+
+      <label>Fecha Nacimiento:</label>
+      <v-calendar v-model="o.fecha_nacimiento" required @changed="inputEdad" />
+      <label>Edad:</label>
+      <div class="readonly">{{ (o.age || o.age
+        == 0 ? o.age : '---') }}
+      </div>
+      <label>Sexo:</label>
+      <v-radio-group required="true" v-model="o.sexo">
+        <v-radio label="MASCULINO" value="M"></v-radio>
+        <v-radio label="FEMENINO" value="F"></v-radio>
+      </v-radio-group>
+      <label>Estado Civil:</label>
+      <v-radio-group required="true" v-model="o.estado_civil">
+        <v-radio value="SOLTERO"></v-radio>
+        <v-radio value="CASADO"></v-radio>
+      </v-radio-group>
+      <template v-if="o.estado_civil == 'CASADO'">
+        <label>Ape. Casado:</label>
+        <input v-model="o.ape_casado" required maxlength="50" />
+      </template>
+      <label>Dirección:</label>
+      <v-textarea v-model="o.direccion" maxlength="150" />
+      <label>Celular:</label>
+      <input v-model="o.celular" maxlength="20" />
+      <label>Correo:</label>
+      <input v-model="o.correo" maxlength="100" />
+      <label>Idioma Predominante:</label>
+      <input v-model="o.idioma_predominante" maxlength="20" />
+      <label>Cod. Familia:</label>
+      <v-textarea v-model="o.cod_familia" maxlength="255" />
+
+      <v-fieldset legend="Coordenadas" style="word-break: break-all;">
+        <template v-if="o.lat">
+          ({{ o.lat }}, {{ o.lon }})
+        </template>
+        <div class="alert yellow" v-if="!o.lat">
+          No se pudo obtener las coordenadas actuales
+        </div>
+        <div class="right" style="margin-top:10px">
+          <v-button icon="fa-compass" value="Obtener coordenadas actuales" @click.prevent="getCoordinates" />
+        </div>
+      </v-fieldset>
+
+
+    </div>
+    <center>
+      <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
+      <v-button style="margin-left: 10px" value="Ver" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
+        $router.replace(
+          '/admin/desarrollo-social/people/' + (o.tmpId ? -o.tmpId : o.id)
+        )
+        "></v-button>
+    </center>
+  </v-page>
+</template>
+<script>
+import { ui } from 'isobit-ui'
+import { ref } from 'vue'
+import axios from 'axios'
+import VSketcher from '@/components/v-sketcher.vue';
+import { Geolocation } from "@capacitor/geolocation";
+import { documentType } from '../constants';
+
+export default ui({
+  props: ["id"],
+  components: {
+    VSketcher,
+  },
+  setup({ router, id }) {
+    const o = ref({});
+    const getCoordinates = () => {
+      Geolocation.getCurrentPosition().then(({ coords }) => {
+        if (coords) {
+          const { latitude: lat, longitude: lon } = coords;
+          o.value = { ...o.value, lat, lon }
+        }
+      })
+    }
+    const close = ({ success, data }) => {
+      let _o = o.value;
+      if (success === true) {
+        _o = { ..._o, id: data.id, tmpId: data.tmpId };
+        if (data.uploaded) {
+          delete _o.tempFile;
+        }
+      }
+      o.value = _o;
+      const nid = _o.tmpId ? -_o.tmpId : _o.id;
+      if (id != nid) {
+        router.replace("/admin/desarrollo-social/people/" + nid);
+      }
+    }
+    return { o, close, getCoordinates }
+  },
+  data() {
+    return {
+      count: 0,
+      red: [],
+      age: null,
+      documentType
+    };
+  },
+  mounted() {
+    this.changeRoute();
+  },
+  methods: {
+    process({ age, ...o }) {
+      return o;
+    },
+    validateInput() {
+      // Only keep digits and limit to 8 characters
+      if (this.o.dni)
+        this.o.dni = this.o.dni.replace(/\D/g, '').slice(0, 8);
+    },
+    inputEdad(e) {
+      this.o.age = this.o.fecha_nacimiento ? this.app.getAge(this.o.fecha_nacimiento) : null;
+    },
+    async changeRoute() {
+      const me = this, id = me.id;
+      if (id < 0) {
+        me.getStoredList("people").then((adultomayor) => {
+          adultomayor.forEach((e) => {
+            if (e.tmpId == Math.abs(me.id)) {
+              me.o = e;
+            }
+          });
+        });
+      } else if (Number(id)) {
+        axios.get("/api/desarrollo-social/people/" + id)
+          .then((response) => {
+            this.o = response.data;
+          });
+      }
+    }
+  },
+});
+</script>

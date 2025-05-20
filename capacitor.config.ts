@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'vue-erp-2',
+  appId: 'com.grupoipeys.erp',
+  appName: 'GrupoIPEYS-ERP',
   webDir: 'dist'
 };
 

@@ -32,6 +32,30 @@ const routes: Array<RouteRecordRaw> = [
     component: Admin,
     children: [
       {
+        path: 'desarrollo-social/people',
+        component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/List.vue')
+      },
+      {
+        path: 'desarrollo-social/people/create',
+        component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/Create.vue')
+      },
+      {
+        path: 'desarrollo-social/people/:id', props: true,
+        component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/View.vue')
+      },
+      {
+        path: 'desarrollo-social/people/:people/add/attention', props: true,
+        component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/attention/Create.vue')
+      },
+      {
+        path: 'desarrollo-social/attention/:id/edit', props: true,
+        component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/attention/Create.vue')
+      },
+      {
+        path: 'desarrollo-social/people/:id/edit', props: true,
+        component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/Create.vue')
+      },
+      {
         path: 'desarrollo-social/adulto-mayor',
         component: () => import(/* webpackChunkName: "adulto-mayor" */'../admin/desarrollo-social/adulto-mayor/List.vue')
       },

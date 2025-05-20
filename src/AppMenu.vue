@@ -46,6 +46,11 @@
         <v-item v-if="perms.INVENTORY_ADMIN" icon="fa-table" href="/admin/inventory/item" label="Inventario">
           <v-item v-if="perms.INVENTORY_ADMIN" icon="fa-plus" href="/admin/inventory/item/create" label="Agregar" />
         </v-item>
+        <v-item v-if="perms.DESARROLLO_SOCIAL_ADULTO_MAYOR_READ" icon="fa-table" href="/admin/desarrollo-social/people"
+          label="Persona">
+          <v-item v-if="perms.CDESARROLLO_SOCIAL_ADULTO_MAYOR_ADMIN" icon="fa-plus"
+            href="/admin/desarrollo-social/people/creare" label="Agregar" />
+        </v-item>
         <v-item v-if="perms.DESARROLLO_SOCIAL_ADULTO_MAYOR_READ" icon="fa-table"
           href="/admin/desarrollo-social/adulto-mayor" label="Adulto Mayor">
           <v-item v-if="perms.CDESARROLLO_SOCIAL_ADULTO_MAYOR_ADMIN" icon="fa-plus"

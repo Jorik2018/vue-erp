@@ -6,8 +6,7 @@
                 required="required" />
             <div id="msg"></div>
             <div class="right" style="margin-top:10px">
-                <v-button icon="fa-sync" v-on:click="recoverData" id="recover"
-                    value="Recuperar Datos"></v-button>
+                <v-button icon="fa-sync" v-on:click="recoverData" id="recover" value="Recuperar Datos"></v-button>
             </div>
             <label>Sexo:</label>
             <v-radio-group required="true" v-model="o.sex">
@@ -15,10 +14,10 @@
                 <v-radio label="Femenino" value="F"></v-radio>
             </v-radio-group>
             <label for="birthDate">Fecha de Nacimiento:</label>
-            <v-calendar v-model="o.birthDate" name="birthDate" required="required"/>
+            <v-calendar v-model="o.birthDate" name="birthDate" required="required" />
             <div id="dateDiff" v-if="dateDiff" style="width:unset">
                 {{ dateDiff }}
-            </div> 
+            </div>
             <v-fieldset>
                 <small class="form-text text-muted block">Registrar datos del carnet del niño.</small>
                 <label>Peso (Kg.):</label>
@@ -66,7 +65,8 @@
                 </v-select>
                 <label>Altitud de la Localidad (msnm):</label>
                 <input type="number" v-model="o.altitude" />
-            </v-fieldset> <v-fieldset legend="Coordenadas">
+            </v-fieldset>
+            <v-fieldset legend="Coordenadas">
                 <template v-if="o.lat">
                     ({{ o.lat }},{{ o.lon }})
                 </template>
@@ -74,9 +74,11 @@
                     No se pudo obtener las coordenadas actuales
                 </div>
                 <div class="right" style="margin-top:10px">
-                    <v-button icon="fa-compass" value="Obtener coordenadas actuales" v-on:click.prevent="getCoordinates"/>
+                    <v-button icon="fa-compass" value="Obtener coordenadas actuales"
+                        v-on:click.prevent="getCoordinates" />
                 </div>
-            </v-fieldset> <v-fieldset id="media" legend="MULTIMEDIA">
+            </v-fieldset>
+            <v-fieldset id="media" legend="MULTIMEDIA">
                 <div id="gallery">
                     <img v-for="(file, i) in o.ext.files" v-bind:key="i" v-bind:id="file.id" v-bind:src="file.src"
                         v-bind:class="{ synced: file.synced }" v-on:click="sync(file)" />
