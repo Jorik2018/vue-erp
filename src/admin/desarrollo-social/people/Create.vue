@@ -14,10 +14,32 @@
 
       <label>Nacionalidad:</label>
       <input v-model="o.nacionalidad" required maxlength="50" />
-      <label>Ubigeo:</label>
-      <input v-model="o.ubigeo" required maxlength="6" />
-      <label>CCPP:</label>
-      <input v-model="o.ubigeo_ccpp" required maxlength="4" />
+
+      <v-fieldset legend="Ubigeo" class="v-form">
+        <label>Región:</label>
+        <div>ANCASH</div>
+        <label>Provincia:</label>
+        <v-select ref="province" :autoload="false" storage="province_selected" v-model="o.province" required
+          @input="$refs.district.load({ code: o.province })">
+          <option value="">Select One...</option>
+          <v-options store="province" display-field="name" value-field="code" />
+        </v-select>
+
+        <label>Distrito:{{ o.ubigeo }}</label>
+        <v-select ref="district" :autoload="false" store="district_selected" :disabled="!o.province" v-model="o.ubigeo"
+          required @input="$refs.cpSelect.load({ id: o.ubigeo })">
+          <option value="">Select One...</option>
+          <v-options name="district" store="district" value-field="code" display-field="name" />
+        </v-select>
+
+        <label>Centro Poblado:</label>
+        <v-select :autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.ubigeo" required
+          ref="cpSelect" v-model="o.codigo_ccpp" @input="inputCCPP">
+          <option value="">Seleccionar Opción</option>
+          <v-options store="town" display-field="name" value-field="id" />
+        </v-select>
+
+      </v-fieldset>
 
       <v-fieldset legend="Documento Identidad" class="v-form">
         <label>Tipo:</label>
@@ -92,7 +114,7 @@
 </template>
 <script>
 import { ui } from 'isobit-ui'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import VSketcher from '@/components/v-sketcher.vue';
 import { Geolocation } from "@capacitor/geolocation";
@@ -105,6 +127,7 @@ export default ui({
   },
   setup({ router, id }) {
     const o = ref({});
+    const province = ref();
     const getCoordinates = () => {
       Geolocation.getCurrentPosition().then(({ coords }) => {
         if (coords) {
@@ -113,6 +136,44 @@ export default ui({
         }
       })
     }
+    const changeRoute = () => {
+      if (id < 0) {
+        me.getStoredList("people").then((adultomayor) => {
+          adultomayor.forEach((e) => {
+            if (e.tmpId == Math.abs(me.id)) {
+              me.o = e;
+            }
+          });
+        });
+      } else if (Number(id)) {
+        axios.get("/api/desarrollo-social/people/" + id)
+          .then((response) => {
+            this.o = response.data;
+          });
+      } else {
+        setTimeout(() => {
+          try {
+            let s = localStorage.getItem("setting");
+            if (s) {
+              s = JSON.parse(s);
+              let o = oRef.value;
+              if (s.region) o.region = s.region.code;
+              if (s.province) o.province = s.province.code;
+              if (s.district) o.district = s.district.code;
+              if (s.town) o.codigoCCPP = s.town.id;
+
+              o.codigo_ccpp = s.town;
+            }
+          } catch (e) {
+            console.log(e);
+          }
+          province.value.load({ code: o && o.region || '02' });
+        })
+      }
+    }
+    onMounted(() => {
+      changeRoute();
+    })
     const close = ({ success, data }) => {
       let _o = o.value;
       if (success === true) {
@@ -127,7 +188,7 @@ export default ui({
         router.replace("/admin/desarrollo-social/people/" + nid);
       }
     }
-    return { o, close, getCoordinates }
+    return { o, close, getCoordinates, province }
   },
   data() {
     return {
@@ -136,9 +197,6 @@ export default ui({
       age: null,
       documentType
     };
-  },
-  mounted() {
-    this.changeRoute();
   },
   methods: {
     process({ age, ...o }) {
@@ -151,23 +209,6 @@ export default ui({
     },
     inputEdad(e) {
       this.o.age = this.o.fecha_nacimiento ? this.app.getAge(this.o.fecha_nacimiento) : null;
-    },
-    async changeRoute() {
-      const me = this, id = me.id;
-      if (id < 0) {
-        me.getStoredList("people").then((adultomayor) => {
-          adultomayor.forEach((e) => {
-            if (e.tmpId == Math.abs(me.id)) {
-              me.o = e;
-            }
-          });
-        });
-      } else if (Number(id)) {
-        axios.get("/api/desarrollo-social/people/" + id)
-          .then((response) => {
-            this.o = response.data;
-          });
-      }
     }
   },
 });
