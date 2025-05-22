@@ -20,7 +20,7 @@
         </a>
       </v-fieldset>
 
-      <label>Codigo_Unico:</label>
+      <label>Codigo Unico:</label>
       <v-number v-model="o.codigo_unico" />
       <label>Cita:</label>
       <v-number v-model="o.id_cita" />

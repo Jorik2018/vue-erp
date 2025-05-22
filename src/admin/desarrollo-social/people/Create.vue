@@ -34,11 +34,12 @@
 
         <label>Centro Poblado:</label>
         <v-select :autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.ubigeo" required
-          ref="cpSelect" v-model="o.codigo_ccpp" @input="inputCCPP">
+          ref="cpSelect" v-model="o.ubigeo_ccpp" @input="inputCCPP">
           <option value="">Seleccionar Opción</option>
           <v-options store="town" display-field="name" value-field="id" />
         </v-select>
-
+        <label>Dirección:</label>
+        <v-textarea v-model="o.direccion" maxlength="150" />
       </v-fieldset>
 
       <v-fieldset legend="Documento Identidad" class="v-form">
@@ -77,8 +78,6 @@
         <label>Ape. Casado:</label>
         <input v-model="o.ape_casado" required maxlength="50" />
       </template>
-      <label>Dirección:</label>
-      <v-textarea v-model="o.direccion" maxlength="150" />
       <label>Celular:</label>
       <input v-model="o.celular" maxlength="20" />
       <label>Correo:</label>
@@ -199,8 +198,8 @@ export default ui({
     };
   },
   methods: {
-    process({ age, ...o }) {
-      return o;
+    process({ province, age, ubigeo_ccpp, ...o }) {
+      return { ...o, ubigeo_ccpp: ubigeo_ccpp.substring(6) };
     },
     validateInput() {
       // Only keep digits and limit to 8 characters

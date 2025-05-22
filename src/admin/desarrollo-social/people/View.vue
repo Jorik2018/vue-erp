@@ -20,17 +20,20 @@
 
         <label>Fecha Nacimiento:</label>
         <div>{{ date(o.fecha_nacimiento, 'date-') }}</div>
-
-        <label>Descripción:</label>
-        <div>{{ o.description || '---' }}</div>
+        <label>Sexo:</label>
+        <div>{{ o.sexo || '---' }}</div>
+        <label>Estado Civil:</label>
+        <div>{{ o.estado_civil || '---' }}</div>
+        <label>Nacionalidad:</label>
+        <div>{{ o.nacionalidad || '---' }}</div>
       </v-fieldset>
       <v-fieldset legend="Ubicación">
         <label>Región:</label>
         <div>ANCASH</div>
         <label>Centro poblado:</label>
-        <div>{{ o.ccpp || '---' }}</div>
-        <label>Referencia:</label>
-        <div>{{ o.referencia || '---' }}</div>
+        <div>{{ o.ubigeo_ccpp || '---' }}</div>
+        <label>Dirección:</label>
+        <div>{{ o.direccion || '---' }}</div>
       </v-fieldset>
 
       <v-fieldset legend="Coordenadas" style="width: auto">
@@ -51,16 +54,16 @@
             <td header="N°" class="center" width="40">
               {{ pad(index + 1, 2) }}
             </td>
-            <td header="Codigo Unico" class="right" width="80">{{ row.codigo_unico }}</td>
-            <td header="Cita" width="200">{{ row.id_cita }}</td>
+            <td header="Codigo Unico" class="center" width="80">{{ row.codigo_unico }}</td>
+            <td header="Cita" width="80" class="center">{{ row.id_cita }}</td>
             <td header="Fecha_Atencion" width="120" class="center">{{ row.fecha_atencion }}</td>
-            <td header="Codigo_Item" class="center" width="120">{{ row.codigo_item }}</td>
-            <td header="Correlativo Item" width="120" class="center">{{ row.id_correlativo_item }}</td>
-            <td header="Valor Lab" width="120" class="center">{{ row.valor_lab }}</td>
-            <td header="Correlativo Lab" width="120" class="center">{{ row.id_correlativo_lab }}</td>
-            <td header="Peso" width="120" class="center">{{ row.peso }}</td>
-            <td header="Talla" width="120" class="center">{{ row.talla }}</td>
-            <td header="Hemoglobina" width="120" class="center">{{ row.hemoglobina }}</td>
+            <td header="Codigo Item" class="center" width="80">{{ row.codigo_item }}</td>
+            <td header="Correlativo Item" width="80" class="center">{{ row.id_correlativo_item }}</td>
+            <td header="Valor Lab" width="80" class="center">{{ row.valor_lab }}</td>
+            <td header="Correlativo Lab" width="80" class="center">{{ row.id_correlativo_lab }}</td>
+            <td header="Peso" width="80" class="right">{{ row.peso }}</td>
+            <td header="Talla" width="80" class="right">{{ row.talla }}</td>
+            <td header="Hemoglobina" width="120" class="right">{{ row.hemoglobina }}</td>
             <td header="Coordenadas" width="120" class="center">
               <a v-if="row.lat || row.lon" :href="'https://www.google.com/maps/search/?api=1&query=' +
                 row.lat +
