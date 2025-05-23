@@ -32,19 +32,19 @@ const routes: Array<RouteRecordRaw> = [
     component: Admin,
     children: [
       {
-        path: 'desarrollo-social/people',
+        path: 'desarrollo-social/people', meta: { perm: 'DS_PEOPLE_READ' },
         component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/List.vue')
       },
       {
-        path: 'desarrollo-social/people/create',
+        path: 'desarrollo-social/people/create', meta: { perm: 'DS_PEOPLE_REGISTER' },
         component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/Create.vue')
       },
       {
-        path: 'desarrollo-social/people/:id', props: true,
+        path: 'desarrollo-social/people/:id', props: true, meta: { perm: 'DS_PEOPLE_READ' },
         component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/View.vue')
       },
       {
-        path: 'desarrollo-social/people/:people/add/attention', props: true,
+        path: 'desarrollo-social/people/:people/add/attention', props: true, meta: { perm: 'DS_PEOPLE_REGISTER' },
         component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/attention/Create.vue')
       },
       {
