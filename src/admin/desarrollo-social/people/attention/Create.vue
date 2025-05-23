@@ -46,9 +46,9 @@
       <label>Correlativo Item:</label>
       <v-number v-model="o.id_correlativo_item" />
       <label>Valor Lab:</label>
-      <v-number v-model="o.valor_lab" />
+      <input v-model="o.valor_lab" maxlength="3" class="center" v-uppercase />
       <label>Correlativo Lab:</label>
-      <input v-model="o.id_correlativo_lab" maxlength="3" class="center" v-uppercase />
+      <v-number v-model="o.id_correlativo_lab" />
       <label>Peso:</label>
       <v-number v-model="o.peso" />
       <label>Talla:</label>
