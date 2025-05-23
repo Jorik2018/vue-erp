@@ -89,6 +89,8 @@
 
     </div>
     <center v-if="perms.DS_PEOPLE_REGISTER && o.editable">
+      <v-button icon="fa-circle-arrow-left" class="blue" @click.prevent="$router.go(
+        -1)"></v-button>
       <v-button style="margin-left: 10px" value="Editar" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
         $router.replace(
           '/admin/desarrollo-social/people/' +

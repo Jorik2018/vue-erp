@@ -68,6 +68,8 @@
       </v-fieldset>
     </div>
     <center>
+      <v-button icon="fa-circle-arrow-left" class="blue" @click.prevent="$router.go(
+        -1)"></v-button>
       <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
     </center>
   </v-page>

@@ -19,21 +19,21 @@
         <label>Región:</label>
         <div>ANCASH</div>
         <label>Provincia:</label>
-        <v-select ref="province" :autoload="false" storage="province_selected" v-model="o.province" required
+        <v-select ref="province" :autoload="false" storage="province_selected" v-model="o.province"
           @input="$refs.district.load({ code: o.province })">
           <option value="">Select One...</option>
           <v-options store="province" display-field="name" value-field="code" />
         </v-select>
 
-        <label>Distrito:{{ o.ubigeo }}</label>
+        <label>Distrito:</label>
         <v-select ref="district" :autoload="false" store="district_selected" :disabled="!o.province" v-model="o.ubigeo"
-          required @input="$refs.cpSelect.load({ id: o.ubigeo })">
+          @input="$refs.cpSelect.load({ id: o.ubigeo })">
           <option value="">Select One...</option>
           <v-options name="district" store="district" value-field="code" display-field="name" />
         </v-select>
 
         <label>Centro Poblado:</label>
-        <v-select :autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.ubigeo" required
+        <v-select :autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.ubigeo"
           ref="cpSelect" v-model="o.ubigeo_ccpp" @input="inputCCPP">
           <option value="">Seleccionar Opción</option>
           <v-options store="town" display-field="name" value-field="id" />
@@ -125,14 +125,14 @@ export default ui({
     VSketcher,
   },
   setup({ router, id }) {
-    const o = ref({});
+    const oRef = ref({});
     const tried = ref(false);
     const province = ref();
     const getCoordinates = () => {
       Geolocation.getCurrentPosition().then(({ coords }) => {
         if (coords) {
           const { latitude: lat, longitude: lon } = coords;
-          o.value = { ...o.value, lat, lon }
+          oRef.value = { ...oRef.value, lat, lon }
         }
         tried.value = true;
       }).catch(() => { tried.value = true; });
@@ -142,14 +142,16 @@ export default ui({
         me.getStoredList("people").then((adultomayor) => {
           adultomayor.forEach((e) => {
             if (e.tmpId == Math.abs(me.id)) {
-              me.o = e;
+              oRef.value = { ...e };
             }
           });
         });
       } else if (Number(id)) {
+
         axios.get("/api/desarrollo-social/people/" + id)
-          .then((response) => {
-            this.o = response.data;
+          .then(({ data }) => {
+            oRef.value = { ...data };
+            province.value.load({ code: oRef.value.region || '02' });
           });
       } else {
         setTimeout(() => {
@@ -161,14 +163,12 @@ export default ui({
               if (s.region) o.region = s.region.code;
               if (s.province) o.province = s.province.code;
               if (s.district) o.district = s.district.code;
-              if (s.town) o.codigoCCPP = s.town.id;
-
-              o.codigo_ccpp = s.town;
             }
           } catch (e) {
             console.log(e);
           }
-          province.value.load({ code: o && o.region || '02' });
+
+          province.value.load({ code: oRef.value && oRef.value.region || '02' });
         })
       }
     }
@@ -176,20 +176,20 @@ export default ui({
       changeRoute();
     })
     const close = ({ success, data }) => {
-      let _o = o.value;
+      let _o = oRef.value;
       if (success === true) {
         _o = { ..._o, id: data.id, tmpId: data.tmpId };
         if (data.uploaded) {
           delete _o.tempFile;
         }
       }
-      o.value = _o;
+      oRef.value = _o;
       const nid = _o.tmpId ? -_o.tmpId : _o.id;
       if (id != nid) {
         router.replace("/admin/desarrollo-social/people/" + nid);
       }
     }
-    return { o, close, getCoordinates, province, tried }
+    return { o: oRef, close, getCoordinates, province, tried }
   },
   data() {
     return {
