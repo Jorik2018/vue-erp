@@ -30,8 +30,14 @@
       <v-fieldset legend="Ubicación">
         <label>Región:</label>
         <div>ANCASH</div>
+        <label>Provincia:</label>
+        <div>{{ o.provincia || '---' }}</div>
+        <label>Distrito:</label>
+        <div v-if="o.ubigeo_distrito">{{ o.ubigeo_distrito }}: {{ o.distrito }}</div>
+        <div v-else>---</div>
         <label>Centro poblado:</label>
-        <div>{{ o.ubigeo_ccpp || '---' }} {{ o.ccpp }}</div>
+        <div v-if="o.ubigeo_ccpp">{{ o.ubigeo_ccpp }}: {{ o.ccpp }}</div>
+        <div v-else>---</div>
         <label>Dirección:</label>
         <div>{{ o.direccion || '---' }}</div>
       </v-fieldset>
