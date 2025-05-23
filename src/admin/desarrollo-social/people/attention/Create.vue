@@ -59,7 +59,7 @@
         <div v-if="o.lat" class="center">
           ({{ o.lat }}, {{ o.lon }})
         </div>
-        <div class="alert yellow" v-if="!o.lat">
+        <div class="alert yellow" v-if="!o.lat && tried">
           No se pudo obtener las coordenadas actuales
         </div>
         <div class="right" style="margin-top:10px">
@@ -85,13 +85,15 @@ export default ui({
   },
   setup({ router, getStoredList, id, people }) {
     const oRef = ref({});
+    const tried = ref(false);
     const getCoordinates = () => {
       Geolocation.getCurrentPosition().then(({ coords }) => {
         if (coords) {
           const { latitude: lat, longitude: lon } = coords;
           oRef.value = { ...oRef.value, lat, lon }
         }
-      })
+        tried.value = true;
+      }).catch(() => { tried.value = true; });
     }
     const loadIPRESS = () => {
       let s = localStorage.getItem("setting");

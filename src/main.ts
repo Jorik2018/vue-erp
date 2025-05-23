@@ -30,6 +30,14 @@ const pinia = createPinia();
 setupApp({ pinia, axios, router });
 app.config.ignoredElements = [/^ion-/, /^v-/, 'center'];
 app.config.productionTip = false;
+app.directive('uppercase', {
+  // This function will be called whenever the bound element is inserted into the DOM.
+  mounted(el) {
+    el.addEventListener('input', () => {
+      el.value = el.value.toUpperCase();  // Transform input to uppercase.
+    });
+  }
+});
 app
   .use(pinia)
   .use(IonicVue)

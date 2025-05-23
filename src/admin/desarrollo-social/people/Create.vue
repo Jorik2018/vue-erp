@@ -13,7 +13,7 @@
 
 
       <label>Nacionalidad:</label>
-      <input v-model="o.nacionalidad" required maxlength="50" />
+      <input v-model="o.nacionalidad" v-uppercase required maxlength="50" />
 
       <v-fieldset legend="Ubigeo" class="v-form">
         <label>Región:</label>
@@ -39,7 +39,7 @@
           <v-options store="town" display-field="name" value-field="id" />
         </v-select>
         <label>Dirección:</label>
-        <v-textarea v-model="o.direccion" maxlength="150" />
+        <v-textarea v-model="o.direccion" maxlength="150" v-uppercase />
       </v-fieldset>
 
       <v-fieldset legend="Documento Identidad" class="v-form">
@@ -83,7 +83,7 @@
       <label>Correo:</label>
       <input v-model="o.correo" maxlength="100" />
       <label>Idioma Predominante:</label>
-      <input v-model="o.idioma_predominante" maxlength="20" />
+      <input v-model="o.idioma_predominante" maxlength="20" v-uppercase />
       <label>Cod. Familia:</label>
       <v-textarea v-model="o.cod_familia" maxlength="255" />
 
@@ -91,7 +91,7 @@
         <template v-if="o.lat">
           ({{ o.lat }}, {{ o.lon }})
         </template>
-        <div class="alert yellow" v-if="!o.lat">
+        <div class="alert yellow" v-if="!o.lat && tried">
           No se pudo obtener las coordenadas actuales
         </div>
         <div class="right" style="margin-top:10px">
@@ -126,6 +126,7 @@ export default ui({
   },
   setup({ router, id }) {
     const o = ref({});
+    const tried = ref(false);
     const province = ref();
     const getCoordinates = () => {
       Geolocation.getCurrentPosition().then(({ coords }) => {
@@ -133,7 +134,8 @@ export default ui({
           const { latitude: lat, longitude: lon } = coords;
           o.value = { ...o.value, lat, lon }
         }
-      })
+        tried.value = true;
+      }).catch(() => { tried.value = true; });
     }
     const changeRoute = () => {
       if (id < 0) {
@@ -187,7 +189,7 @@ export default ui({
         router.replace("/admin/desarrollo-social/people/" + nid);
       }
     }
-    return { o, close, getCoordinates, province }
+    return { o, close, getCoordinates, province, tried }
   },
   data() {
     return {
