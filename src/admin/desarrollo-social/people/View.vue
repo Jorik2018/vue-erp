@@ -31,7 +31,7 @@
         <label>Región:</label>
         <div>ANCASH</div>
         <label>Centro poblado:</label>
-        <div>{{ o.ubigeo_ccpp || '---' }}</div>
+        <div>{{ o.ubigeo_ccpp || '---' }} {{ o.ccpp }}</div>
         <label>Dirección:</label>
         <div>{{ o.direccion || '---' }}</div>
       </v-fieldset>
@@ -56,7 +56,7 @@
             </td>
             <td header="Codigo Unico" class="center" width="80">{{ row.codigo_unico }}</td>
             <td header="Cita" width="80" class="center">{{ row.id_cita }}</td>
-            <td header="Fecha_Atencion" width="120" class="center">{{ row.fecha_atencion }}</td>
+            <td header="Fecha Atencion" width="120" class="center">{{ row.fecha_atencion }}</td>
             <td header="Codigo Item" class="center" width="80">{{ row.codigo_item }}</td>
             <td header="Correlativo Item" width="80" class="center">{{ row.id_correlativo_item }}</td>
             <td header="Valor Lab" width="80" class="center">{{ row.valor_lab }}</td>
