@@ -4,13 +4,13 @@
             @loaded="ll" :scrollable="true" rowKey="id" :pagination="20" @updated="app.bindLinks($el)"
             :filters="filters" src="/api/desarrollo-social/people">
             <template v-slot:header>
-                <v-button value="Crear" v-if="1 || can(perms.DESARROLLO_SOCIAL_ADULTO_MAYOR)" icon="fa-plus" class="on"
+                <v-button value="Crear" v-if="1 || can(perms.DS_PEOPLE_REGISTER)" icon="fa-plus" class="on"
                     @click.prevent="create"></v-button>
-                <v-button value="Editar" v-if="1 || can(perms.DESARROLLO_SOCIAL_ADULTO_MAYOR)" icon="fa-pen"
-                    @click.prevent="edit" :disabled="!rowSelectedCount"></v-button>
+                <v-button value="Editar" v-if="1 || can(perms.DS_PEOPLE_REGISTER)" icon="fa-pen" @click.prevent="edit"
+                    :disabled="!rowSelectedCount"></v-button>
                 <v-button value="Ver" icon="fa-search" @click.prevent="view(getSelected()[0])"
                     :disabled="!rowSelectedCount"></v-button>
-                <v-button value="Eliminar" v-if="1 || can(perms.DESARROLLO_SOCIAL_ADULTO_MAYOR)" icon="fa-trash"
+                <v-button value="Eliminar" v-if="1 || can(perms.DS_PEOPLE_ADMIN)" icon="fa-trash"
                     @click.prevent="destroy" :disabled="!rowSelectedCount"></v-button>
                 <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh"></v-button>
             </template>

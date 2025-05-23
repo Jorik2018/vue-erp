@@ -73,16 +73,16 @@
             </td>
           </template>
         </v-table>
-        <div class="right" style="margin-top: 10px" v-if="1 || perms.EMED_REGISTER && o.editable">
+        <div class="right" style="margin-top: 10px" v-if="perms.DS_PEOPLE_REGISTER && o.editable">
           <v-button icon="fa-trash" :disabled="!selections.damage_salud" @click="destroy"
-            v-if="perms.EMED_ADMIN"></v-button>
+            v-if="perms.DS_PEOPLE_ADMIN"></v-button>
           <v-button icon="fa-pen" :disabled="!selections.damage_salud" @click="edit"></v-button>
           <v-button icon="fa-plus" @click="add('attention', o)"></v-button>
         </div>
       </v-fieldset>
 
     </div>
-    <center v-if="perms.EMED_REGISTER && o.editable">
+    <center v-if="perms.DS_PEOPLE_REGISTER && o.editable">
       <v-button style="margin-left: 10px" value="Editar" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
         $router.replace(
           '/admin/desarrollo-social/people/' +
