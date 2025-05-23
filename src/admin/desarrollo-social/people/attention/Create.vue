@@ -19,9 +19,24 @@
           <div>{{ o.people.ape_paterno }} {{ o.people.ape_materno }} {{ o.people.nombres }}</div>
         </a>
       </v-fieldset>
-
-      <label>Codigo Unico:</label>
-      <v-number v-model="o.codigo_unico" />
+      <label>Red:</label>
+      <v-select v-model="o.red" autoload="true" required="required" ref="red" v-on:input="
+        $refs.microred.load({ code: o.red })
+        ">
+        <option value="">Select One...</option>
+        <v-options store="red" display-field="name" value-field="code" />
+      </v-select>
+      <label>Microred:</label>
+      <v-select autoload="false" :disabled="!o.red" store="microred" ref="microred" v-model="o.microred"
+        :required="true" @input="$refs.establishment.load({ microredCode: /*'02' +*/ o.microred, type: 1 })">
+        <option value="">Select One...</option>
+        <v-options store="microred" display-field="name" value-field="code" />
+      </v-select>
+      <label>IPRESS:</label>
+      <v-select ref="establishment" v-model="o.codigo_unico" :autoload="false" :disabled="!o.microred">
+        <option value="">Select One...</option>
+        <v-options store="establishment" display-field="name" value-field="code" />
+      </v-select>
       <label>Cita:</label>
       <v-number v-model="o.id_cita" />
       <label>Fecha Atencion:</label>
@@ -59,7 +74,7 @@
 </template>
 <script>
 import { ui } from 'isobit-ui'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import VSketcher from '@/components/v-sketcher.vue';
 import { Geolocation } from "@capacitor/geolocation";
@@ -68,31 +83,74 @@ export default ui({
   components: {
     VSketcher,
   },
-  setup({ router, id }) {
-    const o = ref({});
+  setup({ router, getStoredList, id, people }) {
+    const oRef = ref({});
     const getCoordinates = () => {
       Geolocation.getCurrentPosition().then(({ coords }) => {
         if (coords) {
           const { latitude: lat, longitude: lon } = coords;
-          o.value = { ...o.value, lat, lon }
+          oRef.value = { ...oRef.value, lat, lon }
         }
       })
     }
+    const loadIPRESS = () => {
+      let s = localStorage.getItem("setting");
+      if (s) {
+        s = JSON.parse(s);
+        let o = oRef.value;
+        if (s.red) o.red = s.red;
+        if (s.microred) o.microred = s.microred;
+        if (s.establishment) o.codigo_unico = s.establishment;
+        oRef.value = { ...o };
+      }
+    }
+    const changeRoute = () => {
+      const o = oRef.value;
+      if (id < 0) {
+        getStoredList("adulto-mayor").then((adultomayor) => {
+          adultomayor.forEach((e) => {
+            if (e.tmpId == Math.abs(me.id)) {
+              oRef.value = { ...e };
+            }
+          });
+        });
+      } else if (Number(id)) {
+        axios.get("/api/desarrollo-social/attention/" + id)
+          .then(({ data }) => {
+            oRef.value = { ...data };
+          });
+      } else {
+        if (Number(people)) {
+          axios.get("/api/desarrollo-social/people/" + people)
+            .then(({ data }) => {
+
+              o.people = data;
+              o.persona_id = people;
+              oRef.value = { ...o };
+              loadIPRESS()
+            });
+        } else
+          loadIPRESS()
+      }
+    }
+    onMounted(() => {
+      changeRoute();
+    })
     const close = ({ success, data }) => {
-      let _o = o.value;
+      let _o = oRef.value;
       if (success === true) {
         _o = { ..._o, id: data.id, tmpId: data.tmpId };
         if (data.uploaded) {
           delete _o.tempFile;
         }
       }
-      o.value = _o;
+      oRef.value = _o;
       const nid = _o.tmpId ? -_o.tmpId : _o.id;
       if (id != nid) {
-        //router.replace("/admin/desarrollo-social/adulto-mayor/" + nid);
+        router.replace("/admin/desarrollo-social/attention/" + nid + '/edit');
       }
     }
-    return { o, close, getCoordinates }
+    return { o: oRef, close, getCoordinates }
   },
   data() {
     return {
@@ -104,11 +162,8 @@ export default ui({
       ]
     };
   },
-  mounted() {
-    this.changeRoute();
-  },
   methods: {
-    process({ people, ...o }) {
+    process({ people, microred, red, ...o }) {
       return o;
     },
     validateInput() {
@@ -118,33 +173,6 @@ export default ui({
     },
     inputEdad(e) {
       this.o.edad = this.o.fecha_nacimiento ? this.app.getAge(this.o.fecha_nacimiento) : null;
-    },
-    async changeRoute() {
-      const me = this, id = me.id, people = me.people;
-      if (id < 0) {
-        me.getStoredList("adulto-mayor").then((adultomayor) => {
-          adultomayor.forEach((e) => {
-            if (e.tmpId == Math.abs(me.id)) {
-              me.o = e;
-            }
-          });
-        });
-      } else if (Number(id)) {
-        axios.get("/api/desarrollo-social/attention/" + id)
-          .then(({ data }) => {
-            this.o = data;
-            axios.get("/api/desarrollo-social/people/" + data.persona_id)
-              .then(({ data }) => {
-                this.o.people = data;
-              });
-          });
-      } else if (Number(people)) {
-        axios.get("/api/desarrollo-social/people/" + people)
-          .then(({ data }) => {
-            this.o.people = data;
-            this.o.persona_id = people;
-          });
-      }
     }
   },
 });
