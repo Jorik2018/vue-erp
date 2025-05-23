@@ -42,13 +42,13 @@
       <label>Fecha Atencion:</label>
       <v-calendar v-model="o.fecha_atencion" />
       <label>Codigo Item:</label>
-      <v-number v-model="o.codigo_item" />
+      <input v-model="o.codigo_item" class="center" maxlength="11" v-uppercase />
       <label>Correlativo Item:</label>
       <v-number v-model="o.id_correlativo_item" />
       <label>Valor Lab:</label>
       <v-number v-model="o.valor_lab" />
       <label>Correlativo Lab:</label>
-      <v-number v-model="o.id_correlativo_lab" />
+      <input v-model="o.id_correlativo_lab" maxlength="3" class="center" v-uppercase />
       <label>Peso:</label>
       <v-number v-model="o.peso" />
       <label>Talla:</label>
