@@ -1,7 +1,7 @@
 <template>
 
   <v-page header="Configuración" store="setting">
-    <div class="v-form">
+    <div class="v-form" :key="k">
       <v-button icon="fa fa-sync" value="Recuperar Datos Maestros" @click="load"
         style="width: -webkit-fill-available" />
       <label>Red:</label>
@@ -32,7 +32,7 @@
         <v-options store="region" display-field="name" />
       </v-select>
 
-      <label>Provincia:{{ o.province }}</label>
+      <label>Provincia:</label>
       <v-select :label="o.provinceName ? o.provinceName : '---'" autoload="false" :disabled="!o.region"
         ref="provinceSelect" v-model="o.province" @input="$refs.districtSelect.load({
           code: o.province ? o.province.code : '*'
@@ -41,7 +41,7 @@
         <v-options store="province" display-field="name" />
       </v-select>
 
-      <label :title="o.district">Distrito:{{ o.district }}</label>
+      <label :title="o.district">Distrito:</label>
       <v-select name="dist" autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.province"
         @input="
           $refs.cpSelect.load({ id: o.district ? o.district.code : '*' })
@@ -97,12 +97,13 @@ export default ui({
       console.log(e);
     }
     const reset = () => {
-      location.reload()
+      k.value++;
     };
-    const postAdd = () => {
-      clearTimeout(timer);
-      timer = setTimeout(reset, 500);
-    };
+    const addItem = (store, item) => new Promise((resolve, rejected) => {
+      const request = store.add(item);
+      request.onsuccess = () => resolve(item);
+      request.onerror = () => rejected(request.error);
+    })
     const load = () => {
       const o = oRef.value;
       [
@@ -120,17 +121,7 @@ export default ui({
           data = data.data;
           try {
             objectStore.clear().onsuccess = () => {
-              for (const i in data) {
-                try {
-                  const item = data[i];
-                  console.log(item)
-                  postAdd(objectStore.add(item));
-                } catch (exception) {
-                  console.log("Error during add on ", e[1]);
-                  console.log(data[i]);
-                  throw exception;
-                }
-              }
+              Promise.all(data.map((item => addItem(objectStore, item)))).then(() => reset())
             };
           } catch (exception) {
             console.error(exception);

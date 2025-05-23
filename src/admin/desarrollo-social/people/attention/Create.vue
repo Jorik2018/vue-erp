@@ -5,11 +5,11 @@
       : o.tmpId
         ? 'green'
         : ''
-      " store="adulto-mayor">
+      " store="attention">
     <div class="v-form">
       <label>ID:</label>
       <div>{{ pad(o.id || 0, 4) }}</div>
-      <v-fieldset v-if="o.people" legend="I. Datos generales" class="v-form">
+      <v-fieldset v-if="o.people" legend="Información personal" class="v-form">
         <label>Documento:</label>
         <div>{{ o.people.documento_tipo }} - {{ o.people.documento_nro }}</div>
         <label>Apellidos y Nombres:</label>
