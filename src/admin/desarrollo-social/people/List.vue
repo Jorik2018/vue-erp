@@ -41,9 +41,9 @@
                 </td>
                 <td width="220" header="Dirección" class="center">
                     <v-filter>
-                        <input v-model="filters.direccion_habitual" />
+                        <input v-model="filters.direccion" />
                     </v-filter>
-                    {{ row.direccion_habitual }}
+                    {{ row.direccion }}
                 </td>
 
                 <td width="120" header="Insertado" class="center">
