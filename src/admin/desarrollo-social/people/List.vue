@@ -35,7 +35,7 @@
                 </td>
                 <td width="120" header="Fecha Nacimiento" class="center">
                     <v-filter>
-                        <input v-model="filters.fecha_nacimiento" />
+                        <v-calendar-range v-model="filters.fecha_nacimiento" />
                     </v-filter>
                     {{ date(row.fecha_nacimiento, 'date') }}
                 </td>
