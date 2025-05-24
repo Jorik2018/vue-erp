@@ -10,3 +10,12 @@ ion-item > svg {
 ion-content::part(scroll) {
   -overflow-y: hidden;
 }
+
+@media (prefers-color-scheme: dark) {
+  select {
+    background: black;
+  }
+  option {
+    background: black;
+  }
+}
