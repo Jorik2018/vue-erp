@@ -23,7 +23,7 @@ jobs:
 
       - name: Update isobit-ui to latest
         run: npm install isobit-ui@latest
-        
+
       - name: Build app with secrets
         run: |
           echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env
@@ -33,7 +33,7 @@ jobs:
           npm run build
 
       - name: Upload to FTP
-        uses: SamKirkland/FTP-Deploy-Action@v3
+        uses: uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
