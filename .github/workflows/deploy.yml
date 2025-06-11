@@ -33,7 +33,7 @@ jobs:
           npm run build
 
       - name: Upload to FTP
-        uses: uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
