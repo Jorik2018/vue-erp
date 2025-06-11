@@ -32,6 +32,7 @@ jobs:
           echo "VITE_REMOTE_PATH=${{ secrets.VITE_REMOTE_PATH }}" >> .env
           npm run build
 
+
       - name: Add .htaccess to dist
         run: |
           echo "RewriteEngine on
@@ -39,7 +40,7 @@ jobs:
           RewriteCond %{REQUEST_FILENAME} !-f
           RewriteCond %{REQUEST_FILENAME} !-d
           RewriteRule ^(.*)$ ${VITE_BASE}/index.html [NC,L,QSA]" > dist/.htaccess
-          
+
       - name: Upload to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
