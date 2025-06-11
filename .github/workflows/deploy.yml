@@ -21,8 +21,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build app
-        run: npm run build
+      - name: Build app with secrets
+        run: |
+          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env
+          echo "VITE_BASE=${{ secrets.VITE_BASE }}" >> .env
+          echo "VITE_LOGIN_PATH=${{ secrets.VITE_LOGIN_PATH }}" >> .env
+          echo "VITE_REMOTE_PATH=${{ secrets.VITE_REMOTE_PATH }}" >> .env
+          npm run build
 
       - name: Upload to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4
