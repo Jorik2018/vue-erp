@@ -54,7 +54,7 @@
       <input type="text" v-model="o.address" required title="Direccion" />
       <v-fieldset legend="DATOS PERSONALES">
         <label>DNI:</label>
-        <input type="text" v-model="o.numeroDNI" required title="Numero DNI" />
+        <input type="text" v-model="o.numeroDNI" class="center" maxlength="12" required title="Numero DNI" />
         <label>Apellidos:</label>
         <input type="text" v-model="o.apellidoPaterno" required />
         <label>Nombres:</label>
