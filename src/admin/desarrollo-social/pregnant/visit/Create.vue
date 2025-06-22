@@ -43,14 +43,9 @@ import { ui, date, pad } from 'isobit-ui'
 import { onMounted, nextTick, ref } from 'vue';
 export default ui({
   props: ["id", "action"],
-  data() {
-    return {
-      trayLocation: null,
-      o: { pregnantId: null, number: null, lat: null, lon: null, ext: {} },
-    };
-  },
   setup({ id, router }) {
-    const oRef = ref({});
+    const oRef = ref({ ext: {} });
+    const trayLocation = ref(null);
     const getCurrentPosition = () => {
       tryLocation.value = 1;
       Geolocation.getCurrentPosition().then(({ coords: { latitude, longitude } }) => {
