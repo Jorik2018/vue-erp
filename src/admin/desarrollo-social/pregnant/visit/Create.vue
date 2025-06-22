@@ -1,16 +1,10 @@
 <template>
-  <v-form
-    action="/api/desarrollo-social/pregnant/visit"
-    store="pregnant_visit"
-    :class="
-      o.id < 0 || (o.tmpId && !o.synchronized)
-        ? 'yellow'
-        : o.tmpId
-        ? 'green'
-        : ''
-    "
-    v-bind:header="(o.id ? 'Editar' : 'Crear') + ' Visita'"
-  >
+  <v-form action="/api/desarrollo-social/pregnant/visit" store="pregnant_visit" :class="o.id < 0 || (o.tmpId && !o.synchronized)
+    ? 'yellow'
+    : o.tmpId
+      ? 'green'
+      : ''
+    " v-bind:header="(o.id ? 'Editar' : 'Crear') + ' Visita'">
     <div class="v-form">
       <label>ID:</label>
       <div>{{ pad(o.id || 0, 4) }}</div>
@@ -26,46 +20,57 @@
       <v-textarea v-model="o.detalle"></v-textarea>
       <v-fieldset legend="Coordenadas" style="width: auto">
         <div class="right">
-          <v-button
-            icon="fa-compass"
-            value="Obtener Geolocalización"
-            v-on:click="printCurrentPosition"
-          />
+          <v-button icon="fa-compass" value="Obtener Geolocalización" v-on:click="getCurrentPosition" />
         </div>
-        <div
-          class="center"
-          v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0) || trayLocation"
-          style="
+        <div class="center" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0) || trayLocation" style="
             margin-top: 10px;
             border: 1px solid #ffcf00;
             background-color: #ffff80;
             padding: 10px;
-          "
-        >
+          ">
           ({{ o.lat }},{{ o.lon }})
         </div>
       </v-fieldset>
     </div>
     <center>
-      <v-button
-        value="Grabar"
-        icon="fa-save"
-        v-on:click.prevent="save"
-      ></v-button>
+      <v-button value="Grabar" icon="fa-save" v-on:click.prevent="save"></v-button>
     </center>
   </v-form>
 </template>
 <script>
 import { Geolocation } from "@capacitor/geolocation";
-let axios = window.axios;
-let _ = window._;
-export default _.ui({
+import { ui, date } from 'isobit-ui'
+export default ui({
   props: ["id", "action"],
   data() {
     return {
       trayLocation: null,
-      o: { pregnantId: null,number:null, lat: null, lon: null, ext: {} },
+      o: { pregnantId: null, number: null, lat: null, lon: null, ext: {} },
     };
+  },
+  setup({ id, router }) {
+    const oRef = ref({});
+    const getCurrentPosition = () => {
+      tryLocation.value = 1;
+      Geolocation.getCurrentPosition().then(({ coords: { latitude, longitude } }) => {
+        let o = oRef.value;
+        o.lat = latitude;
+        o.lon = longitude;
+        oRef.value = o;
+      });
+    }
+    const close = ({ data: { id, tmpId, uploaded }, success }) => {
+      let o = oRef.value;
+      const _id = o.id;
+      if (success === true) {
+        o = { ...o, id, tmpId }
+      }
+      router.back();
+    }
+    return {
+      show, addLocation, open, o: oRef, map, mapBuild, addMarker, province, today,
+      trayLocation, emergencyRed, close, getCurrentPosition
+    }
   },
   methods: {
     render() {
@@ -75,15 +80,15 @@ export default _.ui({
       me.trayLocation = 0;
       if (Number(id)) {
         if (action == "add") {
-          me.o = { pregnantId: id, ext: {}, lat: null, lon: null ,number:null};
-          if(me.app.connected)
-          axios
-            .get(
-              "/api/desarrollo-social/pregnant/" + id + "/visit/number"
-            )
-            .then((result) => {
-              me.o.number = result.data;
-            });
+          me.o = { pregnantId: id, ext: {}, lat: null, lon: null, number: null };
+          if (me.app.connected)
+            axios
+              .get(
+                "/api/desarrollo-social/pregnant/" + id + "/visit/number"
+              )
+              .then((result) => {
+                me.o.number = result.data;
+              });
           me.filters.pregnantId = id;
         } else {
           if (id < 0) {
@@ -123,25 +128,10 @@ export default _.ui({
         return false;
       }
       return o;
-    },
-    async printCurrentPosition() {
-      this.trayLocation = 1;
-      const coordinates = await Geolocation.getCurrentPosition();
-      let c = coordinates.coords;
-      this.o.lat = c.latitude;
-      this.o.lon = c.longitude;
-    },
-    close(r) {
-      let me = this;
-      if (r.success === true) {
-        me.o.id = r.data.id;
-        me.o.tmpId = r.data.tmpId;
-      }
-      me.$router.back();
-    },
+    }
   },
   created() {
-    let me = this;
+    /*let me = this;
     this.$on("sync", (data, o) => {
       me.getStoredList("pregnant").then((pregnants) => {
         pregnants.forEach((e) => {
@@ -176,11 +166,10 @@ export default _.ui({
           }
         });
       });
-    });
+    });*/
   },
   mounted() {
-    let me=this;
-    if (me.$children[0]) me.app.title = me.$children[0].header;
+    let me = this;
     me.render();
   },
 });
