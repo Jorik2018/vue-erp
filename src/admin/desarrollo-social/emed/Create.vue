@@ -278,10 +278,6 @@ export default ui({
         }
       } else {
         if (option) {
-
-
-
-
           Geolocation.getCurrentPosition().then(({ coords: { latitude, longitude } }) => {
             oRef.value = { ...oRef.value, lat: latitude, lon: longitude };
             const coordinates = fromLonLat([longitude, latitude])
@@ -378,24 +374,7 @@ export default ui({
         return false;
       }
       return o;
-    },
-    async getCurrentPosition() {
-      let me = this;
-      //const {Geolocation} = Plugins;
-      const c = await Geolocation.getCurrentPosition();
-      me.o.lat = c.coords.latitude;
-      me.o.lon = c.coords.longitude;
-    },
-    getCoordinates() {
-      let me = this;
-      if (me.getCurrentPosition) {
-        me.getCurrentPosition();
-      } else
-        _.getLocation().then(function (c) {
-          me.o.lat = c.coords.latitude;
-          me.o.lon = c.coords.longitude;
-        });
-    },
+    }
   },
 });
 </script>
