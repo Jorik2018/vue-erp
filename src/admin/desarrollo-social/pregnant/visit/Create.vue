@@ -77,6 +77,7 @@ export default ui({
       if (Number(id)) {
         if (action == "add") {
           me.o = { pregnantId: id, ext: {}, lat: null, lon: null, number: null };
+          console.log(me.app, me)
           if (me.app.connected)
             axios
               .get(
