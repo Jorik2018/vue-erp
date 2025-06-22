@@ -52,9 +52,9 @@
             <v-options name="district" store="district" value-field="code" display-field="name" />
           </v-select>
 
-          <label>Centro Poblado:{{ o.codigo_ccpp }}</label>
+          <label>Centro Poblado:{{ o.codigoCCPP }}</label>
           <v-select :autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.district" required
-            ref="cpSelect" v-model="o.codigo_ccpp" @input="inputCCPP">
+            ref="cpSelect" v-model="o.codigoCCPP" @input="inputCCPP">
             <option value="">Seleccionar Opción</option>
             <v-options store="town" display-field="name" value-field="id" />
           </v-select>
