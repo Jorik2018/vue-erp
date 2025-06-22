@@ -242,8 +242,7 @@ export default ui({
               if (s.province) o.province = s.province.code;
               if (s.district) o.district = s.district.code;
               if (s.town) o.codigoCCPP = s.town.id;
-
-              o.codigo_ccpp = s.town;
+              oRef.value = o;
             }
           } catch (e) {
             console.log(e);
