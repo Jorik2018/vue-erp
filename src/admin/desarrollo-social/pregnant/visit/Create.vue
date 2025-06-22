@@ -39,7 +39,8 @@
 </template>
 <script>
 import { Geolocation } from "@capacitor/geolocation";
-import { ui, date } from 'isobit-ui'
+import { ui, date, pad } from 'isobit-ui'
+import { onMounted, nextTick, ref } from 'vue';
 export default ui({
   props: ["id", "action"],
   data() {
@@ -69,7 +70,7 @@ export default ui({
     }
     return {
       show, addLocation, open, o: oRef, map, mapBuild, addMarker, province, today,
-      trayLocation, emergencyRed, close, getCurrentPosition
+      trayLocation, emergencyRed, close, getCurrentPosition, pad
     }
   },
   methods: {
