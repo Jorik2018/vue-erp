@@ -1,5 +1,5 @@
 <template>
-  <v-form action="/api/desarrollo-social/pregnant/visit" store="pregnant_visit" :class="o.id < 0 || (o.tmpId && !o.synchronized)
+  <v-page action="/api/desarrollo-social/pregnant/visit" store="pregnant_visit" :class="o.id < 0 || (o.tmpId && !o.synchronized)
     ? 'yellow'
     : o.tmpId
       ? 'green'
@@ -35,11 +35,11 @@
     <center>
       <v-button value="Grabar" icon="fa-save" v-on:click.prevent="save"></v-button>
     </center>
-  </v-form>
+  </v-page>
 </template>
 <script>
 import { Geolocation } from "@capacitor/geolocation";
-import { ui, date, pad } from 'isobit-ui'
+import { ui, date } from 'isobit-ui'
 import { onMounted, nextTick, ref } from 'vue';
 export default ui({
   props: ["id", "action"],
@@ -65,7 +65,7 @@ export default ui({
     }
     return {
       show, addLocation, open, o: oRef, map, mapBuild, addMarker, province, today,
-      trayLocation, emergencyRed, close, getCurrentPosition, pad
+      trayLocation, emergencyRed, close, getCurrentPosition
     }
   },
   methods: {
