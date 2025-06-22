@@ -242,6 +242,7 @@ export default ui({
               if (s.province) o.province = s.province.code;
               if (s.district) o.district = s.district.code;
               if (s.town) o.codigoCCPP = s.town.id;
+              o.codigo_ccpp = s.town;
               oRef.value = o;
             }
           } catch (e) {
@@ -369,7 +370,7 @@ export default ui({
   },
   methods: {
     inputCCPP(a, b) {
-      this.o.ccpp = b ? b.object.name || "" : "";
+      this.o.ccpp = b ? b.object?.name || "" : "";
     },
     process(o) {
       if (!this.trayLocation) {
