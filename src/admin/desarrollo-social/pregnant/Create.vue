@@ -350,7 +350,7 @@ export default ui({
       });
     }
     return {
-      addLocation, open, o: oRef, map, mapBuild, province, today,
+      addLocation, open, o: oRef, map, province, today,
       tryLocation, emergencyRed, close, getCurrentPosition
     }
   },
