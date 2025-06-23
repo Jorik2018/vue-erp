@@ -49,7 +49,7 @@ export default ui({
     const oRef = ref({ ext: {} });
     const tryLocation = ref(null);
     const changeRoute = () => {
-      trayLocation.value = 0;
+      tryLocation.value = 0;
       let o = oRef.value;
       if (Number(id)) {
         if (action == "add") {
@@ -119,12 +119,12 @@ export default ui({
     }
     return {
       open, o: oRef,
-      trayLocation, close, getCurrentPosition
+      tryLocation, close, getCurrentPosition
     }
   },
   methods: {
     process(o) {
-      if (!this.trayLocation && !(o.id && o.lat)) {
+      if (!this.tryLocation && !(o.id && o.lat)) {
         this.MsgBox("Debe tratar de obtener la geolocalización.");
         return false;
       }
