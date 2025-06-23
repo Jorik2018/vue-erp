@@ -9,7 +9,8 @@
       <label>ID:</label>
       <div>{{ pad(o.id || 0, 4) }}</div>
       <label>Gestante:</label>
-      <div>{{ pad(o.pregnantId || 0, 4) }}</div>
+      <div><a :href="`/admin/desarrollo-social/pregnant/${o.pregnantId}`" @click.stop="op">{{ pad(o.pregnantId || 0, 4)
+      }}</a></div>
       <label>Numbero:</label>
       <div>{{ pad(o.number || 0, 2) }}</div>
       <label>Fecha:</label>
@@ -119,7 +120,11 @@ export default ui({
       }
       router.back();
     }
+    const op = (e) => {
+      console.log(e);
+    };
     return {
+      op,
       open, o: oRef,
       tryLocation, close, getCurrentPosition
     }
