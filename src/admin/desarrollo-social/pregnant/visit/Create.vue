@@ -56,14 +56,13 @@ export default ui({
           o = { ...o, pregnantId: id, ext: {}, lat: null, lon: null, number: null };
           console.log(app)
           if (app.connected)
-            axios
-              .get(
-                "/api/desarrollo-social/pregnant/" + id + "/visit/number"
-              )
-              .then((result) => {
-                o.number = result.data;
-              });
-          me.filters.pregnantId = id;
+            axios.get(
+              "/api/desarrollo-social/pregnant/" + id + "/visit/number"
+            ).then(({ data }) => {
+              o.number = data;
+              oRef.value = o;
+            });
+          //me.filters.pregnantId = id;
         } else {
           if (id < 0) {
             me.getStoredList("pregnant").then((pregnants) => {
