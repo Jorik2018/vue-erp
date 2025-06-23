@@ -260,7 +260,7 @@ export default ui({
     const changeRoute = () => {
       tryLocation.value = 0;
       emergencyRed.value.load();
-      migra_red.load();
+      migra_red.value.load();
       let m = map.value;
       let o = oRef.value;
       tryLocation.value = 0;
@@ -350,7 +350,7 @@ export default ui({
       });
     }
     return {
-      addLocation, open, o: oRef, map, province, today,
+      addLocation, open, o: oRef, map, province, today, migra_red,
       tryLocation, emergencyRed, close, getCurrentPosition
     }
   },
