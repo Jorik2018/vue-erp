@@ -22,7 +22,7 @@
         <div class="right">
           <v-button icon="fa-compass" value="Obtener Geolocalización" v-on:click="getCurrentPosition" />
         </div>
-        <div class="center" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0) || trayLocation" style="
+        <div class="center" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0) || tryLocation" style="
             margin-top: 10px;
             border: 1px solid #ffcf00;
             background-color: #ffff80;
@@ -47,7 +47,7 @@ export default ui({
   props: ["id", "action"],
   setup({ id, action, router, app }) {
     const oRef = ref({ ext: {} });
-    const trayLocation = ref(null);
+    const tryLocation = ref(null);
     const changeRoute = () => {
       trayLocation.value = 0;
       let o = oRef.value;
