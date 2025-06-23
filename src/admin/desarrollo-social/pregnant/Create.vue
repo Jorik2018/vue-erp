@@ -252,18 +252,18 @@ export default ui({
     const oRef = ref({});
     const today = ref(date(new Date(), 'date-'));
     const map = ref(null);
-    const trayLocation = ref(null);
+    const tryLocation = ref(null);
     const province = ref();
     const addLocation = ref();
     const emergencyRed = ref();
     const migra_red = ref();
     const changeRoute = () => {
-      trayLocation.value = 0;
+      tryLocation.value = 0;
       emergencyRed.value.load();
       migra_red.load();
       let m = map.value;
       let o = oRef.value;
-      trayLocation.value = 0;
+      tryLocation.value = 0;
       if (id < 0) {
         console.log(me.getStoredList("pregnant"));
         me.getStoredList("pregnant").then((pregnant) => {
@@ -274,7 +274,7 @@ export default ui({
               console.log(e.visits);
               m.addFeature({ draggable: true, lat: me.o.lat, lon: me.o.lon }, { zoom: 14 });
               province.value.load({ code: me.o.region || "02" });
-              trayLocation.value = e.lat && e.lon;
+              tryLocation.value = e.lat && e.lon;
             }
           });
         });
@@ -289,7 +289,7 @@ export default ui({
               o.region = o.province.substring(0, 2);
             }
             if (o.district) o.district = pad(o.district, 6);
-            trayLocation.value = 1;
+            tryLocation.value = 1;
             oRef.value = o;
             o.ext.src = null;
             o.ext.tempFile = null;
@@ -350,8 +350,8 @@ export default ui({
       });
     }
     return {
-      show, addLocation, open, o: oRef, map, mapBuild, addMarker, province, today,
-      trayLocation, emergencyRed, close, getCurrentPosition
+      addLocation, open, o: oRef, map, mapBuild, province, today,
+      tryLocation, emergencyRed, close, getCurrentPosition
     }
   },
   created() {
