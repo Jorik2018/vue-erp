@@ -119,8 +119,8 @@ export default ui({
       router.back();
     }
     return {
-      addLocation, open, o: oRef, map, mapBuild, addMarker, province, today,
-      trayLocation, emergencyRed, close, getCurrentPosition
+      open, o: oRef,
+      trayLocation, close, getCurrentPosition
     }
   },
   methods: {
