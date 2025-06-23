@@ -41,50 +41,27 @@
 import { Geolocation } from "@capacitor/geolocation";
 import { ui, date } from 'isobit-ui'
 import { onMounted, nextTick, ref } from 'vue';
+import axios from 'axios'
+
 export default ui({
   props: ["id", "action"],
-  setup({ id, router }) {
+  setup({ id, action, router, app }) {
     const oRef = ref({ ext: {} });
     const trayLocation = ref(null);
-    const getCurrentPosition = () => {
-      tryLocation.value = 1;
-      Geolocation.getCurrentPosition().then(({ coords: { latitude, longitude } }) => {
-        let o = oRef.value;
-        o.lat = latitude;
-        o.lon = longitude;
-        oRef.value = o;
-      });
-    }
-    const close = ({ data: { id, tmpId, uploaded }, success }) => {
+    const changeRoute = () => {
+      trayLocation.value = 0;
       let o = oRef.value;
-      const _id = o.id;
-      if (success === true) {
-        o = { ...o, id, tmpId }
-      }
-      router.back();
-    }
-    return {
-      show, addLocation, open, o: oRef, map, mapBuild, addMarker, province, today,
-      trayLocation, emergencyRed, close, getCurrentPosition
-    }
-  },
-  methods: {
-    render() {
-      let me = this,
-        id = me.id,
-        action = me.action;
-      me.trayLocation = 0;
       if (Number(id)) {
         if (action == "add") {
-          me.o = { pregnantId: id, ext: {}, lat: null, lon: null, number: null };
-          console.log(me.app, me)
-          if (me.app.connected)
+          o = { ...o, pregnantId: id, ext: {}, lat: null, lon: null, number: null };
+          console.log(app)
+          if (app.connected)
             axios
               .get(
                 "/api/desarrollo-social/pregnant/" + id + "/visit/number"
               )
               .then((result) => {
-                me.o.number = result.data;
+                o.number = result.data;
               });
           me.filters.pregnantId = id;
         } else {
@@ -110,15 +87,42 @@ export default ui({
               });
         }
       } else if (action == "add") {
-        me.o = { pregnantId: id, log: null, lat: null, ext: {} };
-        me.filters.pregnantId = id;
+        o = { ...o, pregnantId: id, log: null, lat: null, ext: {} };
+        //me.filters.pregnantId = id;
         axios
           .get("/api/desarrollo-social/pregnant/" + id + "/visit/number")
           .then((result) => {
-            me.o.number = result.data;
+            o.number = result.data;
+            oRef.value = o;
           });
       }
-    },
+    }
+    onMounted(() => {
+      changeRoute();
+    })
+    const getCurrentPosition = () => {
+      tryLocation.value = 1;
+      Geolocation.getCurrentPosition().then(({ coords: { latitude, longitude } }) => {
+        let o = oRef.value;
+        o.lat = latitude;
+        o.lon = longitude;
+        oRef.value = o;
+      });
+    }
+    const close = ({ data: { id, tmpId, uploaded }, success }) => {
+      let o = oRef.value;
+      const _id = o.id;
+      if (success === true) {
+        o = { ...o, id, tmpId }
+      }
+      router.back();
+    }
+    return {
+      show, addLocation, open, o: oRef, map, mapBuild, addMarker, province, today,
+      trayLocation, emergencyRed, close, getCurrentPosition
+    }
+  },
+  methods: {
     process(o) {
       if (!this.trayLocation && !(o.id && o.lat)) {
         this.MsgBox("Debe tratar de obtener la geolocalización.");
@@ -164,10 +168,6 @@ export default ui({
         });
       });
     });*/
-  },
-  mounted() {
-    let me = this;
-    me.render();
-  },
+  }
 });
 </script>
