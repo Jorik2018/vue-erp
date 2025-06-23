@@ -81,9 +81,10 @@ export default ui({
           } else
             axios
               .get("/api/desarrollo-social/pregnant/visit/" + id)
-              .then(function (response) {
-                me.filters.pregnantId = response.data.pregnantId;
-                me.o = response.data;
+              .then(({ data }) => {
+                //me.filters.pregnantId = response.data.pregnantId;
+                o = { ...o, ...data };
+                oRef.value = o;
               });
         }
       } else if (action == "add") {
@@ -118,7 +119,7 @@ export default ui({
       router.back();
     }
     return {
-      show, addLocation, open, o: oRef, map, mapBuild, addMarker, province, today,
+      addLocation, open, o: oRef, map, mapBuild, addMarker, province, today,
       trayLocation, emergencyRed, close, getCurrentPosition
     }
   },
