@@ -114,6 +114,8 @@ export default ui({
       const _id = o.id;
       if (success === true) {
         o = { ...o, id, tmpId }
+        oRef.value = o;
+        console.log(o);
       }
       router.back();
     }
