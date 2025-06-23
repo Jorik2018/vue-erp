@@ -57,7 +57,7 @@ export default ui({
           console.log(app)
           if (app.connected)
             axios.get(
-              "/api/desarrollo-social/pregnant/" + id + "/visit/number"
+              `/api/desarrollo-social/pregnant/${id}/visit/number`
             ).then(({ data }) => {
               o.number = data;
               oRef.value = o;
