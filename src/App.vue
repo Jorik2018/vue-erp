@@ -10,6 +10,7 @@ import { Network } from "@capacitor/network";
 import { toastController } from '@ionic/vue';
 import Unauthorized from './Unauthorized.vue';
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
+
 export default ui({
   components: { Unauthorized },
   created() {

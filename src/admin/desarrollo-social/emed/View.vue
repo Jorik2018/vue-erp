@@ -129,6 +129,7 @@
             <td header="Descripción" width="300">{{ row.descripcion }}</td>
           </template>
         </v-table>
+
         <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER && o.editable">
           <v-button icon="fa-trash" :disabled="!selections.action" @click="destroy" v-if="perms.EMED_ADMIN"></v-button>
           <v-button icon="fa-pen" :disabled="!selections.action" @click="edit"></v-button>
