@@ -27,7 +27,7 @@
                         <v-filter>
                             <input v-model="filters.secuenciaFuncional" />
                         </v-filter>
-                        {{ row.secuencia_funcional }}
+                        {{ row.secuenciaFuncional }}
                     </td>
                     <td width="120" class="center" header="Actividad">
                         <v-filter>
@@ -45,13 +45,13 @@
                         <v-filter>
                             <input v-model="filters.codigoAirhsp" />
                         </v-filter>
-                        {{ row.codigo_airhsp }}
+                        {{ row.codigoAirhsp }}
                     </td>
                     <td width="220" header="Apellidos Nombres" >
                         <v-filter>
                             <input v-model="filters.apellidosNombres" />
                         </v-filter>
-                        {{ row.apellidos_nombres }}
+                        {{ row.apellidosNombres }}
                     </td>
                     <td width="120" header="Organo" >
                         <v-filter>
@@ -81,55 +81,55 @@
                         <v-filter>
                             <input v-model="filters.fechaDeInicioContrato" />
                         </v-filter>
-                        {{ row.fecha_de_inicio_contrato }}
+                        {{ row.fechaDeInicioContrato }}
                     </td>
                     <td width="120" header="Fecha Inicio Ofis" class=center>
                         <v-filter>
                             <input v-model="filters.fechaDeInicioOfis" />
                         </v-filter>
-                        {{ row.fecha_de_inicio_ofis }}
+                        {{ row.fechaDeInicioOfis }}
                     </td>
                     <td width="120" header="Tipo Contrato" >
                         <v-filter>
                             <input v-model="filters.tipoDeContrato" />
                         </v-filter>
-                        {{ row.tipo_de_contrato }}
+                        {{ row.tipoDeContrato }}
                     </td>
                     <td width="120" header="Clasificador Gasto Contrato" >
                         <v-filter>
-                            <input v-model="filters.clasificador_de_gasto_contrato" />
+                            <input v-model="filters.clasificadorDeGastoContrato" />
                         </v-filter>
                         {{ row.clasificadorDeGastoContrato }}
                     </td>
                     <td width="120" header="Clasificador Gasto Contrato" >
                         <v-filter>
-                            <input v-model="filters.clasificador_de_gasto_contrato" />
+                            <input v-model="filters.clasificadorDeGastoContrato" />
                         </v-filter>
                         {{ row.clasificadorDeGastoContrato }}
                     </td>
-                    <td width="120" header="Sistema Pensión" >
+                    <td width="120" header="Sistema Pensión-" >
                         <v-filter>
                             <input v-model="filters.afpOnp" />
                         </v-filter>
-                        {{ row.afp_onp }}
+                        {{ row.afpOnp }}
                     </td>
                     <td width="120" header="CUSPP" >
                         <v-filter>
-                            <input v-model="filters.n_cuspp" />
+                            <input v-model="filters.nCuspp" />
                         </v-filter>
-                        {{ row.n_cuspp }}
+                        {{ row.nCuspp }}
                     </td>
                     <td width="120" header="Inserted" class="center">
                         <v-filter>
-                            <input v-model="filters.insert_date" />
+                            <input v-model="filters.insertDate" />
                         </v-filter>
-                        {{ date(row.insert_date) }}
+                        {{ date(row.insertDate) }}
                     </td>
                     <td width="120" header="Updated" class="center">
                         <v-filter>
-                            <input v-model="filters.updated_date" />
+                            <input v-model="filters.updatedDate" />
                         </v-filter>
-                        {{ date(row.updated_date) }}
+                        {{ date(row.updatedDate) }}
                     </td>
                 </template>
             </v-table>
