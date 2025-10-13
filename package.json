@@ -32,7 +32,6 @@
     "@ionic/vue-router": "^8.0.0",
     "axios": "^1.7.9",
     "ionicons": "^7.0.0",
-    "isobit-ui": "link:C:/Users/USER/AppData/Local/pnpm/global/5/node_modules/isobit-ui",
     "ol": "^10.4.0",
     "pinia": "^2.3.1",
     "vue": "^3.3.0",
