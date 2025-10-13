@@ -23,9 +23,9 @@
                         </v-filter>
                         {{ pad(row.id, 4) }}
                     </td>
-                    <td width="120" class="center" header="Secuencia Funcional">
+                    <td width="80" class="center" header="Secuencia Funcional">
                         <v-filter>
-                            <input v-model="filters.secuencia_funcional" />
+                            <input v-model="filters.secuenciaFuncional" />
                         </v-filter>
                         {{ row.secuencia_funcional }}
                     </td>
@@ -43,13 +43,13 @@
                     </td>
                     <td width="120" header="AIRHSP" class="center">
                         <v-filter>
-                            <input v-model="filters.codigo_airhsp" />
+                            <input v-model="filters.codigoAirhsp" />
                         </v-filter>
                         {{ row.codigo_airhsp }}
                     </td>
                     <td width="220" header="Apellidos Nombres" >
                         <v-filter>
-                            <input v-model="filters.apellidos_nombres" />
+                            <input v-model="filters.apellidosNombres" />
                         </v-filter>
                         {{ row.apellidos_nombres }}
                     </td>
@@ -67,7 +67,7 @@
                     </td>
                     <td width="120" header="Unidad Organica" >
                         <v-filter>
-                            <input v-model="filters.unidad_organica" />
+                            <input v-model="filters.unidadOrganica" />
                         </v-filter>
                         {{ row.unidad_organica }}
                     </td>
@@ -79,19 +79,19 @@
                     </td>
                     <td width="120" header="Fecha Inicio Contrato" class=center>
                         <v-filter>
-                            <input v-model="filters.fecha_de_inicio_contrato" />
+                            <input v-model="filters.fechaDeInicioContrato" />
                         </v-filter>
                         {{ row.fecha_de_inicio_contrato }}
                     </td>
                     <td width="120" header="Fecha Inicio Ofis" class=center>
                         <v-filter>
-                            <input v-model="filters.fecha_de_inicio_ofis" />
+                            <input v-model="filters.fechaDeInicioOfis" />
                         </v-filter>
                         {{ row.fecha_de_inicio_ofis }}
                     </td>
                     <td width="120" header="Tipo Contrato" >
                         <v-filter>
-                            <input v-model="filters.tipo_de_contrato" />
+                            <input v-model="filters.tipoDeContrato" />
                         </v-filter>
                         {{ row.tipo_de_contrato }}
                     </td>
@@ -99,17 +99,17 @@
                         <v-filter>
                             <input v-model="filters.clasificador_de_gasto_contrato" />
                         </v-filter>
-                        {{ row.clasificador_de_gasto_contrato }}
+                        {{ row.clasificadorDeGastoContrato }}
                     </td>
                     <td width="120" header="Clasificador Gasto Contrato" >
                         <v-filter>
                             <input v-model="filters.clasificador_de_gasto_contrato" />
                         </v-filter>
-                        {{ row.clasificador_de_gasto_contrato }}
+                        {{ row.clasificadorDeGastoContrato }}
                     </td>
                     <td width="120" header="Sistema Pensión" >
                         <v-filter>
-                            <input v-model="filters.afp_onp" />
+                            <input v-model="filters.afpOnp" />
                         </v-filter>
                         {{ row.afp_onp }}
                     </td>
