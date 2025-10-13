@@ -54,7 +54,7 @@
 
           <label>Centro Poblado:</label>
           <v-select :autoload="false" :label="o.districtName ? o.districtName : '---'" :disabled="!o.district" required
-            ref="cpSelect" v-model="o.codigo_ccpp" @input="inputCCPP">
+            ref="cpSelect" v-model="o.codigoCCPP" @input="inputCCPP">
             <option value="">Seleccionar Opción</option>
             <v-options store="town" display-field="name" value-field="id" />
           </v-select>
@@ -242,8 +242,8 @@ export default ui({
               if (s.province) o.province = s.province.code;
               if (s.district) o.district = s.district.code;
               if (s.town) o.codigoCCPP = s.town.id;
-
               o.codigo_ccpp = s.town;
+              oRef.value = o;
             }
           } catch (e) {
             console.log(e);
@@ -278,10 +278,6 @@ export default ui({
         }
       } else {
         if (option) {
-
-
-
-
           Geolocation.getCurrentPosition().then(({ coords: { latitude, longitude } }) => {
             oRef.value = { ...oRef.value, lat: latitude, lon: longitude };
             const coordinates = fromLonLat([longitude, latitude])
@@ -370,7 +366,7 @@ export default ui({
   },
   methods: {
     inputCCPP(a, b) {
-      this.o.ccpp = b ? b.object.name || "" : "";
+      this.o.ccpp = b ? b.object?.name || "" : "";
     },
     process(o) {
       if (!this.trayLocation) {
@@ -378,24 +374,7 @@ export default ui({
         return false;
       }
       return o;
-    },
-    async getCurrentPosition() {
-      let me = this;
-      //const {Geolocation} = Plugins;
-      const c = await Geolocation.getCurrentPosition();
-      me.o.lat = c.coords.latitude;
-      me.o.lon = c.coords.longitude;
-    },
-    getCoordinates() {
-      let me = this;
-      if (me.getCurrentPosition) {
-        me.getCurrentPosition();
-      } else
-        _.getLocation().then(function (c) {
-          me.o.lat = c.coords.latitude;
-          me.o.lon = c.coords.longitude;
-        });
-    },
+    }
   },
 });
 </script>

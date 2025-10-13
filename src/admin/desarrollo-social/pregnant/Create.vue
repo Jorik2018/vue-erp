@@ -54,7 +54,7 @@
       <input type="text" v-model="o.address" required title="Direccion" />
       <v-fieldset legend="DATOS PERSONALES">
         <label>DNI:</label>
-        <input type="text" v-model="o.numeroDNI" required title="Numero DNI" />
+        <input type="text" v-model="o.numeroDNI" class="center" maxlength="12" required title="Numero DNI" />
         <label>Apellidos:</label>
         <input type="text" v-model="o.apellidoPaterno" required />
         <label>Nombres:</label>
@@ -168,7 +168,7 @@
       </v-fieldset>
       <v-fieldset legend="Coordenadas" style="width: auto">
         <div class="right">
-          <v-button icon="fa-compass" value="Obtener Geolocalización" @click="printCurrentPosition" />
+          <v-button icon="fa-compass" value="Obtener Geolocalización" @click="getCurrentPosition" />
         </div>
         <div class="center coordinate" v-if="(o.lat && o.lat != 0) || (o.lon && o.lon != 0) || tryLocation">
           ({{ o.lat || 0 }},{{ o.lon || 0 }})
@@ -199,6 +199,7 @@ import { Camera, CameraResultType } from "@capacitor/camera";
 import { Filesystem, Directory } from "@capacitor/filesystem";
 import { Geolocation } from "@capacitor/geolocation";
 import { ui, date } from 'isobit-ui'
+import { onMounted, nextTick, ref } from 'vue';
 import axios from 'axios'
 export default ui({
   props: ["id"],
@@ -247,10 +248,113 @@ export default ui({
       },
     };
   },
-  created() {
-    const me = this;
-    if (!me.today) me.today = date(new Date(), 'date-');
+  setup({ id, router }) {
+    const oRef = ref({});
+    const today = ref(date(new Date(), 'date-'));
+    const map = ref(null);
+    const tryLocation = ref(null);
+    const province = ref();
+    const addLocation = ref();
+    const emergencyRed = ref();
+    const migra_red = ref();
+    const changeRoute = () => {
+      tryLocation.value = 0;
+      emergencyRed.value.load();
+      migra_red.value.load();
+      let m = map.value;
+      let o = oRef.value;
+      tryLocation.value = 0;
+      if (id < 0) {
+        console.log(me.getStoredList("pregnant"));
+        me.getStoredList("pregnant").then((pregnant) => {
+          console.log(pregnant);
+          pregnant.forEach((e) => {
+            if (e.tmpId == Math.abs(id)) {
+              me.o = e;
+              console.log(e.visits);
+              m.addFeature({ draggable: true, lat: me.o.lat, lon: me.o.lon }, { zoom: 14 });
+              province.value.load({ code: me.o.region || "02" });
+              tryLocation.value = e.lat && e.lon;
+            }
+          });
+        });
+      } else if (Number(id)) {
+        axios
+          .get("/api/desarrollo-social/pregnant/" + id)
+          .then(({ data }) => {
+            const o = data;
+            if (o.red) o.red = pad(o.red, 2);
+            if (o.province) {
+              o.province = pad(o.province, 4);
+              o.region = o.province.substring(0, 2);
+            }
+            if (o.district) o.district = pad(o.district, 6);
+            tryLocation.value = 1;
+            oRef.value = o;
+            o.ext.src = null;
+            o.ext.tempFile = null;
+            m.addFeature({ draggable: true, lat: o.lat, lon: o.lon }, { zoom: 15 });
+            province.value.load({ code: o && o.region || '02' });
+          });
+      } else {
+        setTimeout(() => {
+          try {
+            let s = localStorage.getItem("setting");
+            if (s) {
+              s = JSON.parse(s);
+              let o = oRef.value;
+              o.red = s.red;
+              o.microred = s.microred;
+              o.codigoEESS = s.establishment;
 
+              if (s.region) o.region = s.region.code;
+              if (s.province) o.province = s.province.code;
+              if (s.district) o.district = s.district.code;
+              if (s.town) o.codigoCCPP = s.town.id;
+              o.codigo_ccpp = s.town;
+              oRef.value = o;
+            }
+          } catch (e) {
+            console.log(e);
+          }
+          province.value.load({ code: o && o.region || '02' });
+        })
+      }
+    }
+    onMounted(() => {
+      changeRoute();
+    })
+    const close = ({ data: { id, tmpId, uploaded }, success }) => {
+      let o = oRef.value;
+      const _id = o.id;
+      if (success === true) {
+        o = { ...o, id, tmpId }
+        if (uploaded) {
+          delete o.tempFile;
+          delete o.ext.pending;
+        }
+      }
+      let nid = o.tmpId ? -o.tmpId : o.id;
+      if (_id != nid) {
+        router.replace("/admin/desarrollo-social/pregnant/" + nid);
+      }
+      oRef.value = o;
+    }
+    const getCurrentPosition = () => {
+      tryLocation.value = 1;
+      Geolocation.getCurrentPosition().then(({ coords: { latitude, longitude } }) => {
+        let o = oRef.value;
+        o.lat = latitude;
+        o.lon = longitude;
+        oRef.value = o;
+      });
+    }
+    return {
+      addLocation, open, o: oRef, map, province, today, migra_red,
+      tryLocation, emergencyRed, close, getCurrentPosition
+    }
+  },
+  created() {
     /*this.$on("sync", (o) => {
       me.getStoredList("pregnant").then((pregnants) => {
         pregnants.forEach((e) => {
@@ -283,10 +387,6 @@ export default ui({
         });
       });
     });*/
-  },
-  mounted() {
-    const me = this;
-    me.changeRoute();
   },
   methods: {
     onInputFUR() {
@@ -399,109 +499,9 @@ export default ui({
         }
       });
     },
-    async printCurrentPosition() {
-      this.tryLocation = 1;
-      const coordinates = await Geolocation.getCurrentPosition();
-      const c = coordinates.coords;
-      this.o.lat = c.latitude;
-      this.o.lon = c.longitude;
-    },
-    async changeRoute() {
-      const me = this,
-        id = me.id;
-      me.tryLocation = 0;
-      me.$refs.emergencyRed.load();
-      me.$refs.migra_red.load();
-      if (id < 0) {
-        console.log(me.getStoredList("pregnant"));
-        me.getStoredList("pregnant").then((pregnant) => {
-          console.log(pregnant);
-          pregnant.forEach((e) => {
-            if (e.tmpId == Math.abs(me.id)) {
-              me.o = e;
-              console.log(e.visits);
-              me.$refs.province.load({ code: me.o.region || "02" });
-              me.tryLocation = e.lat && e.lon;
-            }
-          });
-        });
-      } else if (Number(id)) {
-        axios
-          .get("/api/desarrollo-social/pregnant/" + id)
-          .then(function (response) {
-            const o = response.data;
-
-            if (o.red) o.red = me.pad(o.red, 2);
-
-            if (o.province) {
-              o.province = me.pad(o.province, 4);
-              o.region = o.province.substring(0, 2);
-            }
-            if (o.district) o.district = me.pad(o.district, 6);
-            o.ext.src = null;
-            o.ext.tempFile = null;
-            me.tryLocation = 1;
-            me.o = o;
-            me.$refs.province.load({ code: me.o.region });
-          });
-      } else {
-        try {
-          let s = localStorage.getItem("setting");
-          if (s) {
-            s = JSON.parse(s);
-            const o = me.o;
-            o.red = s.red;
-            o.microred = s.microred;
-            o.codigoEESS = s.establishment;
-            if (s.region) {
-              o.region = s.region.code;
-            }
-            if (s.province) o.province = s.province.code;
-            if (s.district) o.district = s.district.code;
-            if (s.town) o.codigoCCPP = s.town.id;
-            /*o.town = s.town;*/
-          }
-        } catch (e) {
-          console.log(e);
-        }
-        me.$refs.province.load({ code: me.o.region || '02' });
-      }
-    },
-    close(r) {
-      const me = this;
-      if (r.success === true) {
-        me.o.id = r.data.id;
-        me.o.tmpId = r.data.tmpId;
-        if (r.data.uploaded) {
-          delete o.tempFile;
-          delete o.ext.pending;
-        }
-      }
-      let o = me.o;
-      const nid = o.tmpId ? -o.tmpId : o.id;
-      if (me.id != nid)
-        me.$router.replace("/admin/desarrollo-social/pregnant/" + nid);
-    },
-    async getCurrentPosition() {
-      const me = this;
-      //const {Geolocation} = Plugins;
-      const c = await Geolocation.getCurrentPosition();
-      me.o.lat = c.coords.latitude;
-      me.o.lon = c.coords.longitude;
-    },
     invalidDate(e) {
       this.MsgBox('Fecha no valida ' + e.value);
-    },
-    getCoordinates() {
-      const me = this;
-      if (me.getCurrentPosition) {
-        me.getCurrentPosition();
-      } else
-        _.getLocation().then(function (c) {
-          me.o.lat = c.coords.latitude;
-          me.o.lon = c.coords.longitude;
-        });
-    },
+    }
   },
 });
 </script>

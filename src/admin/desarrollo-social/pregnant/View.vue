@@ -92,7 +92,8 @@
           </template>
         </v-table>
         <div class="right" style="margin-top: 10px">
-          <v-button icon="fa-trash" :disabled="!visitSelected" @click="destroy($refs.visit)"></v-button>
+
+          <v-button icon="fa-trash" :disabled="!visitSelected" @click="destroy"></v-button>
           <v-button icon="fa-pen" :disabled="!visitSelected" @click="edit"></v-button>
           <v-button icon="fa-plus" @click="addPeople(o)"></v-button>
         </div>

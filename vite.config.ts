@@ -6,7 +6,6 @@ import path from 'path'
 //import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
 //import vueJsx from '@vitejs/plugin-vue-jsx'
 //import vueDevTools from 'vite-plugin-vue-devtools'
 
@@ -26,7 +25,7 @@ export default () => {
       Object.entries(process.env).filter(([key]) => key.startsWith('VITE_'))
     )
   );
-  console.log(import.meta.env);
+  //console.log(import.meta.env);
   const publicPath = process.env.VITE_PUBLIC_PATH || '/erp';
   /*return defineConfig({
     plugins: [

@@ -203,7 +203,7 @@ export default ui({
   },
   methods: {
     process({ province, age, ubigeo_ccpp, ...o }) {
-      return { ...o, ubigeo_ccpp: ubigeo_ccpp.substring(6) };
+      return { ...o, ubigeo_ccpp: ubigeo_ccpp?.substring(6) };
     },
     validateInput() {
       // Only keep digits and limit to 8 characters
