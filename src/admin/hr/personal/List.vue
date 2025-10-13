@@ -53,13 +53,7 @@
                         </v-filter>
                         {{ row.apellidosNombres }}
                     </td>
-                    <td width="120" header="Organo" >
-                        <v-filter>
-                            <input v-model="filters.organo" />
-                        </v-filter>
-                        {{ row.organo }}
-                    </td>
-                    <td width="120" header="Organo" >
+                    <td width="220" header="Organo" >
                         <v-filter>
                             <input v-model="filters.organo" />
                         </v-filter>
@@ -71,19 +65,19 @@
                         </v-filter>
                         {{ row.unidad_organica }}
                     </td>
-                    <td width="120" header="Cargo" >
+                    <td width="220" header="Cargo" >
                         <v-filter>
                             <input v-model="filters.cargo" />
                         </v-filter>
                         {{ row.cargo }}
                     </td>
-                    <td width="120" header="Fecha Inicio Contrato" class=center>
+                    <td width="80" header="Fecha Inicio Contrato" class="center">
                         <v-filter>
                             <input v-model="filters.fechaDeInicioContrato" />
                         </v-filter>
                         {{ row.fechaDeInicioContrato }}
                     </td>
-                    <td width="120" header="Fecha Inicio Ofis" class=center>
+                    <td width="80" header="Fecha Inicio Ofis" class="center">
                         <v-filter>
                             <input v-model="filters.fechaDeInicioOfis" />
                         </v-filter>
