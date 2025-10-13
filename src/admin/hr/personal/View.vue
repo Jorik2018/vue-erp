@@ -13,7 +13,7 @@
       </div>
       <v-fieldset legend="Datos generales">
         <label>Secuencia Funcional:</label>
-        <div>{{ o.secuencia_funcional || '---' }}</div>
+        <div>{{ o.secuenciaFuncional || '---' }}</div>
         <label>Actividad:</label>
         <div>{{ o.actividad || '---' }}</div>
         <label>DNI:</label>
