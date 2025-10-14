@@ -8,12 +8,20 @@
     <div class="v-form">
       <label>ID:</label>
       <div>{{ pad(o.id || 0, 4) }}</div>
-      <label>DNI:</label>
-      <div>{{ o.dni || '---' }}</div>
-      <label>Apellidos y nombres:</label>
-      <div>{{ o.apellidosNombres || '---' }}</div>
+      <label>Personal:</label>
+      <div>
+        <a :href="`/admin/hr/personal/${o.id}`" @click.stop="op">
+          {{ o.dni || '---' }}: {{ o.apellidosNombres || '---' }}
+        </a>
+      </div>
       <label>Usuario de Red:</label>
       <input v-model="o.usuarioDeRed" />
+      <label>Usuario de SGD:</label>
+      <input v-model="o.usuarioDeSgd" />
+      <label>Usuario de SIAF:</label>
+      <input v-model="o.usuarioDeSiaf" />
+      <label>Usuario de SIGA:</label>
+      <input v-model="o.usuarioDeSiga" />
       <label>Correo Institucional:</label>
       <input v-model="o.correoInstitucional" />
       <label>Correo Grupo:</label>
@@ -22,6 +30,14 @@
       <input v-model="o.numeroCelular" />
       <label>Numero Anexo:</label>
       <input v-model="o.numeroAnexo" />
+      <label>IP:</label>
+      <input v-model="o.ip" />
+      <label>VPN Anydesk:</label>
+      <input v-model="o.vpnAnydesk" />
+      <label>Certificado Digital:</label>
+      <input v-model="o.certificadoDigital" />
+      <label>AC Compartido:</label>
+      <input v-model="o.acCompartido" />
       <label>Otros Recursos:</label>
       <v-textarea v-model="o.otrosRecursos" />
     </div>
@@ -42,7 +58,7 @@ export default ui({
       o: {},
     };
   },
-  setup({ id, action, app }) {
+  setup({ id, action, app, router }) {
     const oRef = ref({});
     const changeRoute = () => {
       let o = oRef.value;
@@ -62,7 +78,7 @@ export default ui({
           });
         });
       } else if (Number(id)) {
-        axios.get( `/api/hr/personal/service/${id}`)
+        axios.get(`/api/hr/personal/service/${id}`)
           .then(({ data }) => {
             oRef.value = data;
           });
@@ -78,7 +94,11 @@ export default ui({
       }
       oRef.value = o;
     }
-    return { o: oRef, close };
+    const op = (e) => {
+      console.log(e);
+      router.replace(e.href);
+    };
+    return { o: oRef, close, op };
   },
   created() {
     let me = this;

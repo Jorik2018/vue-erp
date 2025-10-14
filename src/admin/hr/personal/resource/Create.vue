@@ -8,10 +8,8 @@
     <div class="v-form">
       <label>ID:</label>
       <div>{{ pad(o.id || 0, 4) }}</div>
-      <label>DNI:</label>
-      <div>{{ o.dni || '---' }}</div>
-      <label>Apellidos y nombres:</label>
-      <div>{{ o.apellidosNombres || '---' }}</div>
+      <label>Personal:</label>
+      <div>{{ o.dni || '---' }}: {{ o.apellidosNombres || '---' }}</div>
       <label>Codigo Patrimonial:</label>
       <input v-model="o.codpatrimonio" />
       <label>Codigo:</label>
