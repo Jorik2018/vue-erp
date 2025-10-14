@@ -68,6 +68,12 @@
             <td header="Marca" class="center" width="160">
               {{ row.marca }}
             </td>
+            <td header="Fecha Asignación" class="center" width="160">
+              {{ row.fechaAsignacion }}
+            </td>
+            <td header="Fecha Devolución" class="center" width="160">
+              {{ row.fechaDevolucion }}
+            </td>
             <td width="120" header="Creado" class="center">
               {{ date(row.insert_date) }}
             </td>

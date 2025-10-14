@@ -12,8 +12,8 @@
       <div>{{ o.dni || '---' }}</div>
       <label>Apellidos y nombres:</label>
       <div>{{ o.apellidosNombres || '---' }}</div>
-      <label>Estado:</label>
-      <input v-model="o.estado" />
+      <label>Codigo Patrimonial:</label>
+      <input v-model="o.codpatrimonio" />
       <label>Codigo:</label>
       <input v-model="o.codigo" />
       <label>Modelo:</label>
@@ -22,6 +22,10 @@
       <input v-model="o.marca" />
       <label>Observaciones:</label>
       <input v-model="o.observaciones" />
+      <label>Fecha Asignación:</label>
+      <v-calendar v-model="o.fechaAsignacion" />
+      <label>Fecha Devolución:</label>
+      <v-calendar v-model="o.fechaDevolucion" />
     </div>
 
     <center>
