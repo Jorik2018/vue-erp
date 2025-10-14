@@ -65,8 +65,8 @@ export default ui({
   },
   setup({ id, action, app }) {
     const oRef = ref({});
+    let o = oRef.value;
     const changeRoute = () => {
-      let o = oRef.value;
       if (action == "add") {
         if (app.connected)
           axios.get("/api/hr/personal/" + id)
@@ -96,13 +96,18 @@ export default ui({
       changeRoute();
     })
     const close = ({ data: { id, tmpId }, success }) => {
-      let o = oRef.value;
       if (success === true) {
         o = { ...o, id, tmpId }
       }
       oRef.value = o;
     }
-    return { o: oRef, close };
+    const op = (e) => {
+      axios.get("/api/hr/personal/" + id, { params: { dni: o.dni } })
+        .then(({ data: { id } }) => {
+          router.replace(`/admin/hr/personal/${id}`);
+        });
+    };
+    return { o: oRef, close, op };
   },
   methods: {
     process(o) {

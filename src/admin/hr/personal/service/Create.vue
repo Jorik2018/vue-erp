@@ -10,7 +10,7 @@
       <div>{{ pad(o.id || 0, 4) }}</div>
       <label>Personal:</label>
       <div>
-        <a :href="`/admin/hr/personal/${o.id}`" @click.stop="op">
+        <a href="#" @click.stop="op">
           {{ o.dni || '---' }}: {{ o.apellidosNombres || '---' }}
         </a>
       </div>
@@ -60,8 +60,8 @@ export default ui({
   },
   setup({ id, action, app, router }) {
     const oRef = ref({});
+    let o = oRef.value;
     const changeRoute = () => {
-      let o = oRef.value;
       if (action == "add") {
         if (app.connected)
           axios.get("/api/hr/personal/" + id)
@@ -88,15 +88,16 @@ export default ui({
       changeRoute();
     })
     const close = ({ data: { id, tmpId }, success }) => {
-      let o = oRef.value;
       if (success === true) {
         o = { ...o, id, tmpId }
       }
       oRef.value = o;
     }
     const op = (e) => {
-      console.log(e);
-      router.replace(e.href);
+      axios.get("/api/hr/personal/" + id, { params: { dni: o.dni } })
+        .then(({ data: { id } }) => {
+          router.replace(`/admin/hr/personal/${id}`);
+        });
     };
     return { o: oRef, close, op };
   },
