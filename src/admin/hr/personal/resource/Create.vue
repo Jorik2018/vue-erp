@@ -62,7 +62,7 @@ export default ui({
             "Comprende las caracteristicas de la vivienda, eliminaci�n de excretas, tenencia de animales, aguas estancadas, vectores, pandillaje y otros alrededor de la vivienda",
         },
       ],
-      o: { emedId: null, apellidosNombres: null, lat: null, type: null, ext: {} },
+      o: { emedId: null, apellidosNombres: null, type: null, ext: {} },
     };
   },
   setup({ id, action, app }) {
@@ -108,6 +108,9 @@ export default ui({
   },
   methods: {
     process(o) {
+      if(o.id===0){
+        delete o.id;
+      }
       return o;
     },
   },
