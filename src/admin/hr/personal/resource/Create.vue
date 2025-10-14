@@ -9,7 +9,11 @@
       <label>ID:</label>
       <div>{{ pad(o.id || 0, 4) }}</div>
       <label>Personal:</label>
-      <div>{{ o.dni || '---' }}: {{ o.apellidosNombres || '---' }}</div>
+      <div>
+        <a href="#" @click.prevent="op">
+          {{ o.dni || '---' }}: {{ o.apellidosNombres || '---' }}
+        </a>
+      </div>
       <label>Codigo Patrimonial:</label>
       <input v-model="o.codpatrimonio" />
       <label>Codigo:</label>
@@ -71,7 +75,7 @@ export default ui({
         if (app.connected)
           axios.get("/api/hr/personal/" + id)
             .then(({ data: { apellidosNombres, dni } }) => {
-              o = { apellidosNombres, dni };
+              o = { apellidosNombres, dni, personal: id };
               oRef.value = o;
             });
       } else if (id < 0) {
@@ -102,10 +106,8 @@ export default ui({
       oRef.value = o;
     }
     const op = (e) => {
-      axios.get("/api/hr/personal/" + id, { params: { dni: o.dni } })
-        .then(({ data: { id } }) => {
-          router.replace(`/admin/hr/personal/${id}`);
-        });
+      console.log(e);
+      router.replace(`/admin/hr/personal/${oRef.value.personal}`);
     };
     return { o: oRef, close, op };
   },
