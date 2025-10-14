@@ -16,8 +16,8 @@
       <input v-model="o.usuarioDeRed" />
       <label>Correo Institucional:</label>
       <input v-model="o.correoInstitucional" />
-      <label>Correo de Grupo:</label>
-      <input v-model="o.correoDeGrupo" />
+      <label>Correo Grupo:</label>
+      <input v-model="o.correoGrupo" />
       <label>Numero Celular:</label>
       <input v-model="o.numeroCelular" />
       <label>Numero Anexo:</label>
