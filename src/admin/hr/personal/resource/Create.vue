@@ -42,32 +42,7 @@ import { onMounted, ref } from 'vue';
 
 export default ui({
   props: ["id", "action"],
-  data() {
-    return {
-      type: [
-        {
-          id: "P",
-          name: "SALUD INDIVIDUAL",
-          decription:
-            "Comprende los paquetes de atención integral por etapas de vida",
-        },
-        {
-          id: "F",
-          name: "FUNCIONES DE LA FAMILIA",
-          decription:
-            "Comprende las funciones básicas: cuidado, afecto, expresi�n de sexualidad, socializaci�n estatus social y las funciones seg�n seg�n sus relaciones internas: comunicaci�n, cohesi�n, permeabilidad, rol, adaptabilidad y armon�a)",
-        },
-        {
-          id: "V",
-          name: "CODICIONES MATERIALES DE VIDA Y ENTORNO",
-          decription:
-            "Comprende las caracteristicas de la vivienda, eliminaci�n de excretas, tenencia de animales, aguas estancadas, vectores, pandillaje y otros alrededor de la vivienda",
-        },
-      ],
-      o: { emedId: null, apellidosNombres: null, type: null, ext: {} },
-    };
-  },
-  setup({ id, action, app }) {
+  setup({ id, action, app, router }) {
     const oRef = ref({});
     let o = oRef.value;
     const changeRoute = () => {
