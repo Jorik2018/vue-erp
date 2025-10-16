@@ -75,10 +75,10 @@
               {{ row.fechaDevolucion }}
             </td>
             <td width="120" header="Creado" class="center">
-              {{ date(row.insert_date) }}
+              {{ date(row.insertDate) }}
             </td>
             <td width="120" header="Editado" class="center">
-              {{ date(row.updated_date) }}
+              {{ date(row.updateDate) }}
             </td>
           </template>
         </v-table>
@@ -138,10 +138,10 @@
               {{ row.otrosRecursos }}
             </td>
             <td width="120" header="Creado" class="center">
-              {{ date(row.insert_date) }}
+              {{ date(row.insertDate) }}
             </td>
             <td width="120" header="Editado" class="center">
-              {{ date(row.updated_date) }}
+              {{ date(row.updateDate) }}
             </td>
           </template>
         </v-table>
