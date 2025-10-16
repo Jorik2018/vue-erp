@@ -29,13 +29,13 @@
         <label>Cargo:</label>
         <div>{{ o.cargo || '---' }}</div>
         <label>Fecha Inicio Contrato:</label>
-        <div>{{ o.fecha_de_inicio_contrato || '---' }}</div>
+        <div>{{ o.fechaDeInicioContrato || '---' }}</div>
         <label>Fecha Inicio OFIS:</label>
-        <div>{{ o.fecha_de_inicio_ofis || '---' }}</div>
+        <div>{{ o.fechaDeInicioOfis || '---' }}</div>
         <label>Tipo Contrato:</label>
-        <div>{{ o.tipo_de_contrato || '---' }}</div>
+        <div>{{ o.tipoDeContrato || '---' }}</div>
         <label>Clasificador Gasto Contrato:</label>
-        <div>{{ o.clasificador_de_gasto_contrato || '---' }}</div>
+        <div>{{ o.clasificadorDeGastoContrato || '---' }}</div>
         <label>Sistema Pensión:</label>
         <div>{{ o.afpOnp || '---' }}</div>
         <label>CUSPP:</label>
