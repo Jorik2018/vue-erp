@@ -48,7 +48,7 @@ export default ui({
     const changeRoute = () => {
       if (action == "add") {
         if (app.connected)
-          axios.get("/api/hr/personal/" + id)
+          axios.get(`/api/hr/personal/${id}`)
             .then(({ data: { apellidosNombres, dni } }) => {
               o = { apellidosNombres, dni, personal: id };
               oRef.value = o;
@@ -76,9 +76,8 @@ export default ui({
     })
     const close = ({ data: { id, tmpId }, success }) => {
       if (success === true) {
-        o = { ...o, id, tmpId }
+        oRef.value = { ...oRef.value, id, tmpId }
       }
-      oRef.value = o;
     }
     const op = (e) => {
       console.log(e);

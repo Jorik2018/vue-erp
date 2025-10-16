@@ -89,9 +89,8 @@ export default ui({
     })
     const close = ({ data: { id, tmpId }, success }) => {
       if (success === true) {
-        o = { ...o, id, tmpId }
+        oRef.value = { ...oRef.value, id, tmpId }
       }
-      oRef.value = o;
     }
     const op = (e) => {
       console.log(e);
