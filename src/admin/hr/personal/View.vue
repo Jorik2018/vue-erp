@@ -99,13 +99,22 @@
               {{ pad(index + 1, 2) }}
             </td>
             <td header="Usuario Red" class="center" width="120">
-              {{ row.usuario_de_red }}
+              {{ row.usuarioDeRed }}
+            </td>
+            <td header="Usuario Red" class="center" width="120">
+              {{ row.usuarioDeSgd }}
+            </td>
+            <td header="Usuario Red" class="center" width="120">
+              {{ row.usuarioDeSiaf }}
+            </td>
+            <td header="Usuario Red" class="center" width="120">
+              {{ row.usuarioDeSiga }}
             </td>
             <td header="Correo Institucional" width="220">
-              {{ row.correo_institucional }}
+              {{ row.correoInstitucional }}
             </td>
             <td header="Correo Grupo" width="220">
-              {{ row.correo_de_grupo }}
+              {{ row.correoGrupo }}
             </td>
             <td header="Numero Celular" width="120">
               {{ row.numeroCelular }}
@@ -113,8 +122,20 @@
             <td header="Numero Anexo" width="120">
               {{ row.numeroAnexo }}
             </td>
+            <td header="IP" width="120">
+              {{ row.ip }}
+            </td>
+            <td header="VPN Anydesk" width="120">
+              {{ row.vpnAnydesk }}
+            </td>
+            <td header="Certificado Digital" width="120">
+              {{ row.certificadoDigital }}
+            </td>
+            <td header="AC Compartido" width="120">
+              {{ row.acCompartido }}
+            </td>
             <td header="Otros Recursos" width="120">
-              {{ row.otros_recursos }}
+              {{ row.otrosRecursos }}
             </td>
             <td width="120" header="Creado" class="center">
               {{ date(row.insert_date) }}
