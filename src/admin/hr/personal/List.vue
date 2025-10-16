@@ -59,7 +59,7 @@
                         </v-filter>
                         {{ row.organo }}
                     </td>
-                    <td width="120" header="Unidad Organica" >
+                    <td width="220" header="Unidad Organica" >
                         <v-filter>
                             <input v-model="filters.unidadOrganica" />
                         </v-filter>
@@ -71,13 +71,13 @@
                         </v-filter>
                         {{ row.cargo }}
                     </td>
-                    <td width="80" header="Fecha Inicio Contrato" class="center">
+                    <td width="90" header="Fecha Inicio Contrato" class="center">
                         <v-filter>
                             <input v-model="filters.fechaDeInicioContrato" />
                         </v-filter>
                         {{ row.fechaDeInicioContrato }}
                     </td>
-                    <td width="80" header="Fecha Inicio Ofis" class="center">
+                    <td width="90" header="Fecha Inicio Ofis" class="center">
                         <v-filter>
                             <input v-model="filters.fechaDeInicioOfis" />
                         </v-filter>
@@ -89,13 +89,13 @@
                         </v-filter>
                         {{ row.tipoDeContrato }}
                     </td>
-                    <td width="120" header="Clasificador Gasto Contrato" >
+                    <td width="120" header="Clasificador Gasto Contrato"  class="center" >
                         <v-filter>
                             <input v-model="filters.clasificadorDeGastoContrato" />
                         </v-filter>
                         {{ row.clasificadorDeGastoContrato }}
                     </td>
-                    <td width="120" header="Clasificador Gasto Contrato" >
+                    <td width="120" header="Clasificador Gasto Contrato" class="center" >
                         <v-filter>
                             <input v-model="filters.clasificadorDeGastoContrato" />
                         </v-filter>
@@ -107,7 +107,7 @@
                         </v-filter>
                         {{ row.afpOnp }}
                     </td>
-                    <td width="120" header="CUSPP" >
+                    <td width="120" header="CUSPP" class="center" >
                         <v-filter>
                             <input v-model="filters.nCuspp" />
                         </v-filter>
