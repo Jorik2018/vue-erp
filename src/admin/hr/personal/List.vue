@@ -63,7 +63,7 @@
                         <v-filter>
                             <input v-model="filters.unidadOrganica" />
                         </v-filter>
-                        {{ row.unidad_organica }}
+                        {{ row.unidadOrganica }}
                     </td>
                     <td width="220" header="Cargo" >
                         <v-filter>
@@ -101,7 +101,7 @@
                         </v-filter>
                         {{ row.clasificadorDeGastoContrato }}
                     </td>
-                    <td width="120" header="Sistema Pensión-" >
+                    <td width="80" header="Sistema Pensión" class="center" >
                         <v-filter>
                             <input v-model="filters.afpOnp" />
                         </v-filter>
@@ -123,7 +123,7 @@
                         <v-filter>
                             <input v-model="filters.updatedDate" />
                         </v-filter>
-                        {{ date(row.updatedDate) }}
+                        {{ date(row.updateDate) }}
                     </td>
                 </template>
             </v-table>
