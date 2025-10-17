@@ -53,7 +53,7 @@
                         </v-filter>
                         {{ row.apellidosNombres }}
                     </td>
-                    <td width="220" header="Organo" >
+                    <td width="220" header="Organo" :title="'==='+filters.organo">
                         <v-filter>
                             <v-select v-model="filters.organo">
                                 <option value="">Select One...</option>
