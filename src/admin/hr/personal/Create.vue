@@ -21,7 +21,10 @@
           <label>Apellidos Nombres:</label>
           <v-textarea v-model="o.apellidosNombres" maxlength="200" />
           <label>Organo:</label>
-          <input v-model="o.organo" />
+          <v-select v-model="o.organo" required>
+            <option value="">Select One...</option>
+            <v-options :data="organ" value-field="name"></v-options>
+          </v-select>
           <label>Unidad Organica:</label>
           <input v-model="o.unidad_organica" />
           <label>Cargo:</label>
@@ -31,7 +34,10 @@
           <label>Fecha Inicio OFIS:</label>
           <v-calendar v-model="o.fechaDeInicioOfis" />
           <label>Tipo Contrato:</label>
-          <input v-model="o.tipoDeContrato" />
+          <v-select v-model="o.tipoDeContrato" required>
+            <option value="">Select One...</option>
+            <v-options :data="contract_type"></v-options>
+          </v-select>
           <label>Clasificador Gasto Contrato:</label>
           <input v-model="o.clasificadorDeGastoContrato" />
           <label>Sistema Pensión:</label>
@@ -59,12 +65,14 @@
 import { ui, pad } from 'isobit-ui'
 import axios from 'axios'
 import { onMounted, ref } from 'vue';
+import { contract_type, afp_onp, organ } from './constants';
 
 export default ui({
   props: ["id"],
   data() {
     return {
-      red: []
+      red: [],
+      contract_type, afp_onp, organ
     };
   },
   computed: {

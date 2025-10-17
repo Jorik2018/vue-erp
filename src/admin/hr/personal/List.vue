@@ -55,7 +55,10 @@
                     </td>
                     <td width="220" header="Organo" >
                         <v-filter>
-                            <input v-model="filters.organo" />
+                            <v-select v-model="filters.organo">
+                                <option value="">Select One...</option>
+                                <v-options :data="organ"></v-options>
+                            </v-select>
                         </v-filter>
                         {{ row.organo }}
                     </td>
@@ -138,7 +141,7 @@
 </template>
 <script>
 import { ui } from 'isobit-ui'
-import { contract_type, afp_onp } from './constants';
+import { contract_type, afp_onp, organ } from './constants';
 export default ui({
     setup() {
         const rowClass = (row) => {
@@ -148,7 +151,7 @@ export default ui({
         return { rowClass };
     },
     data() {
-        return { data: [], mode: 0, query: null, contract_type, afp_onp }
+        return { data: [], mode: 0, query: null, contract_type, afp_onp, organ }
     },
     created() {
         //const me = this;
