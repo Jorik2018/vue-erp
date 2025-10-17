@@ -83,7 +83,7 @@
                         </v-filter>
                         {{ row.fechaDeInicioOfis }}
                     </td>
-                    <td width="120" header="Tipo Contrato" >
+                    <td width="128" header="Tipo Contrato" class="center" >
                         <v-filter>
                             <v-select v-model="filters.tipoDeContrato">
                                 <option value="">Select One...</option>
