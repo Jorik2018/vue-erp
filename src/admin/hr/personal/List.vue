@@ -57,7 +57,7 @@
                         <v-filter>
                             <v-select v-model="filters.organo">
                                 <option value="">Select One...</option>
-                                <v-options :data="organ"></v-options>
+                                <v-options :data="organ" value-field="name"></v-options>
                             </v-select>
                         </v-filter>
                         {{ row.organo }}
