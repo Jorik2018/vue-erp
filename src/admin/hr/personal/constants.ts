@@ -567,37 +567,17 @@ export const category = [
     }
 ]
 
-export const emed = [
-    'RSCN',
-    'RSCS',
-    'RSHN',
-    'RSHS',
-    'RSPN',
-    'RSPS',
-    'HLC',
-    'HEGB',
-    'HVRG'
+export const contract_type = [
+    'INDETERMINADO',
+    'TRANSITORIO',
+    'DESIGNACION'
 ]
 
-export const ipress_inicial = [
-    'CIA BOMBEROS',
-    'COE SALUD',
-    'COEN',
-    'CPCED - COE',
-    'CPCED - EMED',
-    'EJÉRCITO DEL PERÚ',
-    'EMED SALUD',
-    'FUERZA AÉREA DEL PERÚ',
-    'IGP',
-    'INDECI',
-    'MARINA DE GUERRA DEL PERÚ',
-    'OTROS',
-    'P.N.P',
-    'PRENSA',
-    'RADIO',
-    'REPORTA SALUD',
-    'SAMU',
-    'SENAMHI',
-    'TELEVISION'
+export const afp_onp = [
+    'ONP',
+    'AFP Integra',
+    'Prima AFP',
+    'Profuturo',
+    'AFP Habitat'
 ];
 

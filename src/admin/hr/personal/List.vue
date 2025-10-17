@@ -85,7 +85,10 @@
                     </td>
                     <td width="120" header="Tipo Contrato" >
                         <v-filter>
-                            <input v-model="filters.tipoDeContrato" />
+                            <v-select v-model="filters.tipoDeContrato">
+                                <option value="">Select One...</option>
+                                <v-options :data="contract_type"></v-options>
+                            </v-select>
                         </v-filter>
                         {{ row.tipoDeContrato }}
                     </td>
@@ -103,7 +106,10 @@
                     </td>
                     <td width="80" header="Sistema Pensión" class="center" >
                         <v-filter>
-                            <input v-model="filters.afpOnp" />
+                            <v-select v-model="filters.afpOnp">
+                                <option value="">Select One...</option>
+                                <v-options :data="afp_onp"></v-options>
+                            </v-select>
                         </v-filter>
                         {{ row.afpOnp }}
                     </td>
@@ -132,7 +138,7 @@
 </template>
 <script>
 import { ui } from 'isobit-ui'
-import { category } from './constants';
+import { contract_type, afp_onp } from './constants';
 export default ui({
     setup() {
         const rowClass = (row) => {
@@ -142,7 +148,7 @@ export default ui({
         return { rowClass };
     },
     data() {
-        return { data: [], mode: 0, query: null, category }
+        return { data: [], mode: 0, query: null, contract_type, afp_onp }
     },
     created() {
         //const me = this;
