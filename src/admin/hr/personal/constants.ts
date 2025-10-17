@@ -59,14 +59,6 @@ export const organ = [
         ]
     },
     {
-        name: 'DIRECCIÓN DE GOBIERNO DE DATOS Y SUPERVISIÓN',
-        type: [
-            {
-                name: 'SUBDIRECCIÓN DE GOBIERNO DE DATOS'
-            }
-        ]
-    },
-    {
         name: 'DIRECCIÓN DE SISTEMAS DE INFORMACIÓN SOCIAL',
         type: [
             {
