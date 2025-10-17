@@ -575,9 +575,9 @@ export const contract_type = [
 
 export const afp_onp = [
     'ONP',
-    'AFP Integra',
-    'Prima AFP',
-    'Profuturo',
-    'AFP Habitat'
+    'INTEGRA',
+    'PRIMA',
+    'PROFUTURO',
+    'HABITAD'
 ];
 
