@@ -81,6 +81,7 @@ export default ui({
     const close = ({ data: { id, tmpId }, success }) => {
       if (success === true) {
         oRef.value = { ...oRef.value, id, tmpId }
+        router.replace(`/admin/hr/personal/resource/${id}`);
       }
     }
     const op = (e) => {
