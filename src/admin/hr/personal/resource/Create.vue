@@ -14,6 +14,10 @@
           {{ o.dni || '---' }}: {{ o.apellidosNombres || '---' }}
         </a>
       </div>
+      <v-select v-model="o.tipo" required>
+          <option value="">Select One...</option>
+          <v-options store="typeResource" display-field="name" value-field="code" />
+      </v-select>
       <label>Codigo Patrimonial:</label>
       <input v-model="o.codpatrimonio" />
       <label>Codigo:</label>

@@ -75,6 +75,8 @@ router.isReady().then(() => {
     ["pregnant_visit", { keyPath: "tmpId" }],
     ["agreement", { keyPath: "tmpId" }],
     ["red", { keyPath: "code", src: "/api/desarrollo-social/red/0/0" }],
+    ["typeResource", { keyPath: "code", src: "/api/hr/personal/type-resource/0/0" }],
+    ["organ", { keyPath: "code", src: "/api/hr/personal/organ/0/0" }],
     ["microred", { keyPath: "ID", src: "/api/desarrollo-social/microred/0/0" }],
     ["establishment", { keyPath: "code", src: "/api/desarrollo-social/establishment/0/0" }],
     ["setting", { keyPath: "code" }],
