@@ -35,7 +35,10 @@
       <label>VPN Anydesk:</label>
       <input v-model="o.vpnAnydesk" />
       <label>Certificado Digital:</label>
-      <input v-model="o.certificadoDigital" />
+      <v-select v-model="o.certificadoDigital" required>
+          <option value="">Select One...</option>
+          <v-options :data="digital_certified"></v-options>
+      </v-select>
       <label>AC Compartido:</label>
       <input v-model="o.acCompartido" />
       <label>Otros Recursos:</label>
@@ -50,12 +53,14 @@
 import { ui } from 'isobit-ui'
 import axios from 'axios'
 import { onMounted, ref } from 'vue';
+import { digital_certified } from './../constants';
 
 export default ui({
   props: ["id", "action"],
   data() {
     return {
       o: {},
+      digital_certified
     };
   },
   setup({ id, action, app, router }) {
@@ -89,7 +94,8 @@ export default ui({
     })
     const close = ({ data: { id, tmpId }, success }) => {
       if (success === true) {
-        oRef.value = { ...oRef.value, id, tmpId }
+        oRef.value = { ...oRef.value, id, tmpId };
+        router.replace(`/admin/hr/personal/service/${id}`);
       }
     }
     const op = (e) => {

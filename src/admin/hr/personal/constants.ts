@@ -109,3 +109,8 @@ export const afp_onp = [
     'HABITAD'
 ];
 
+export const digital_certified = [
+    'SOFTWARE',
+    'HARDWARE',
+    'SOFTWARE / HARDWARE',
+];
