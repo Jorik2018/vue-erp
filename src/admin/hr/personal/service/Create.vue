@@ -98,6 +98,7 @@ export default ui({
         router.replace(`/admin/hr/personal/service/${id}`);
       }
     }
+    
     const op = (e) => {
       console.log(e);
       router.replace(`/admin/hr/personal/${oRef.value.personal}`);
