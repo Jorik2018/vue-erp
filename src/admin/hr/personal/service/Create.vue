@@ -35,7 +35,7 @@
       <label>VPN Anydesk:</label>
       <input v-model="o.vpnAnydesk" />
       <label>Certificado Digital:</label>
-      <v-select v-model="o.certificadoDigital" required>
+      <v-select v-model="o.certificadoDigital">
           <option value="">Select One...</option>
           <v-options :data="digital_certified"></v-options>
       </v-select>
@@ -98,7 +98,7 @@ export default ui({
         router.replace(`/admin/hr/personal/service/${id}`);
       }
     }
-    
+
     const op = (e) => {
       console.log(e);
       router.replace(`/admin/hr/personal/${oRef.value.personal}`);
