@@ -23,7 +23,7 @@
           <label>Organo:</label>
           <v-select v-model="o.organo" required>
             <option value="">Select One...</option>
-            <v-options :data="organ" value-field="name"></v-options>
+            <v-options store="organ" display-field="name" value-field="code"></v-options>
           </v-select>
           <label>Unidad Organica:</label>
           <v-select v-model="o.unidadOrganica" required :disabled="!o.organo">
