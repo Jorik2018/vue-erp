@@ -51,10 +51,10 @@
               {{ pad(index + 1, 2) }}
             </td>
             <td header="Tipo" class="center" width="160">
-              {{ row.estado }}
+              {{ row.tipo }}
             </td>
             <td header="Cod. Patrimonial" class="center" width="160">
-              {{ row.estado }}
+              {{ row.codpatrimonio }}
             </td>
             <td header="Estado" class="center" width="160">
               {{ row.estado }}
