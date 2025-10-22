@@ -26,7 +26,10 @@
             <v-options :data="organ" value-field="name"></v-options>
           </v-select>
           <label>Unidad Organica:</label>
-          <input v-model="o.unidad_organica" />
+          <v-select v-model="o.unidadOrganica" required :disabled="!o.organo">
+            <option value="">Select One...</option>
+            <v-options store="unidad" display-field="name" value-field="code"></v-options>
+          </v-select>
           <label>Cargo:</label>
           <input v-model="o.cargo" />
           <label>Fecha Inicio Contrato:</label>
