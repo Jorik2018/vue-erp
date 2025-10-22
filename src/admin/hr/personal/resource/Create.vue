@@ -14,6 +14,7 @@
           {{ o.dni || '---' }}: {{ o.apellidosNombres || '---' }}
         </a>
       </div>
+      <label>Tipo:</label>
       <v-select v-model="o.tipo" required>
           <option value="">Select One...</option>
           <v-options store="typeResource" display-field="name" value-field="code" />
@@ -84,7 +85,7 @@ export default ui({
         router.replace(`/admin/hr/personal/resource/${id}`);
       }
     }
-    
+
     const op = (e) => {
       console.log(e);
       router.replace(`/admin/hr/personal/${oRef.value.personal}`);
