@@ -51,7 +51,7 @@
               {{ pad(index + 1, 2) }}
             </td>
             <td header="Tipo" class="center" width="160">
-              {{ row.tipo }}
+              {{ row.type_name }}
             </td>
             <td header="Cod. Patrimonial" class="center" width="160">
               {{ row.codpatrimonio }}
