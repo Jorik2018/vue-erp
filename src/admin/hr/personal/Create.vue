@@ -41,12 +41,12 @@
           <label>Clasificador Gasto Contrato:</label>
           <input v-model="o.clasificadorDeGastoContrato" />
           <label>Sistema Pensión:</label>
-          <v-radio-group v-model="o.afpOnp">
-            <v-radio value="ONP"></v-radio>
-            <v-radio value="AFP"></v-radio>
-          </v-radio-group>
+          <v-select v-model="o.afpOnp">
+              <option value="">Select One...</option>
+              <v-options :data="afp_onp"></v-options>
+          </v-select>
           <label>CUSPP:</label>
-          <input v-model="o.n_cuspp" />
+          <input v-model="o.nCuspp" />
         </v-fieldset>
       </div>
       <center>
