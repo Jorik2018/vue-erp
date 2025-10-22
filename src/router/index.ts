@@ -171,9 +171,17 @@ const routes: Array<RouteRecordRaw> = [
         path: 'hr/personal/:id/:action/resource', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
       },
-            {
+      {
         path: 'hr/personal/service/:id/edit', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/service/Create.vue')
+      },
+      {
+        path: 'hr/personal/service/:id', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
+        component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/service/Create.vue')
+      },
+      {
+        path: 'hr/personal/resource/:id', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
+        component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
       },
       {
         path: 'hr/personal/resource/:id/edit', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
