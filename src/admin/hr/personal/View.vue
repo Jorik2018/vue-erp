@@ -119,19 +119,19 @@
             <td header="Numero Celular" width="120">
               {{ row.numeroCelular }}
             </td>
-            <td header="Numero Anexo" width="120">
+            <td header="Numero Anexo" width="120" class="center">
               {{ row.numeroAnexo }}
             </td>
-            <td header="IP" width="120">
+            <td header="IP" width="120" class="center">
               {{ row.ip }}
             </td>
-            <td header="VPN Anydesk" width="120">
+            <td header="VPN Anydesk" width="120" class="center">
               {{ row.vpnAnydesk }}
             </td>
-            <td header="Certificado Digital" width="120">
+            <td header="Certificado Digital" width="120" class="center">
               {{ row.certificadoDigital }}
             </td>
-            <td header="AC Compartido" width="120">
+            <td header="AC Compartido" width="120" class="center">
               {{ row.acCompartido }}
             </td>
             <td header="Otros Recursos" width="120">
