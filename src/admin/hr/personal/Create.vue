@@ -21,12 +21,12 @@
           <label>Apellidos Nombres:</label>
           <v-textarea v-model="o.apellidosNombres" maxlength="200" />
           <label>Organo:</label>
-          <v-select v-model="o.organo" required>
+          <v-select v-model="o.organoId" required @input="$refs.unidad.load({ code: o.organoId })">
             <option value="">Select One...</option>
             <v-options store="organ" display-field="name" value-field="code"></v-options>
           </v-select>
           <label>Unidad Organica:</label>
-          <v-select v-model="o.unidadOrganica" required :disabled="!o.organo">
+          <v-select v-model="o.unidadId" required :disabled="!o.organoId" ref="unidad">
             <option value="">Select One...</option>
             <v-options store="unidad" display-field="name" value-field="code"></v-options>
           </v-select>
