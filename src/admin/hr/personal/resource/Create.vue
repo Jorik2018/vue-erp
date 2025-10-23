@@ -16,8 +16,8 @@
       </div>
       <label>Tipo:</label>
       <v-select v-model="o.tipo" required>
-          <option value="">Select One...</option>
-          <v-options store="typeResource" display-field="name" value-field="code" />
+        <option value="">Select One...</option>
+        <v-options store="typeResource" display-field="name" value-field="code" />
       </v-select>
       <label>Codigo Patrimonial:</label>
       <input v-model="o.codpatrimonio" />
@@ -31,8 +31,16 @@
       <input v-model="o.observaciones" />
       <label>Fecha Asignación:</label>
       <v-calendar v-model="o.fechaAsignacion" />
+      <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER && o.editable">
+        <v-uploader icon="fa-file" ref="uploader" style="margin-top: 10px" value="Adjuntar documento"
+          :click="uploaderClick" v-on:input="changeImage($event)"></v-uploader>
+      </div>
       <label>Fecha Devolución:</label>
       <v-calendar v-model="o.fechaDevolucion" />
+      <div class="right" style="margin-top: 10px" v-if="perms.EMED_REGISTER && o.editable">
+        <v-uploader icon="fa-file" ref="uploader" style="margin-top: 10px" value="Adjuntar documento"
+          :click="uploaderClick" v-on:input="changeImage($event)"></v-uploader>
+      </div>
     </div>
 
     <center>
@@ -94,7 +102,7 @@ export default ui({
   },
   methods: {
     process(o) {
-      if(o.id===0){
+      if (o.id === 0) {
         delete o.id;
       }
       return o;
