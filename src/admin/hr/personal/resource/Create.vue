@@ -95,14 +95,14 @@ export default ui({
         router.replace(`/admin/hr/personal/resource/${id}`);
       }
     }
-    const changeImage(result) => {
+    const changeImage = (result) => {
       console.log(result);
     }
     const op = (e) => {
       console.log(e);
       router.replace(`/admin/hr/personal/${oRef.value.personal}`);
     };
-    return { o: oRef, close, op };
+    return { o: oRef, close, op, changeImage };
   },
   methods: {
     process(o) {
