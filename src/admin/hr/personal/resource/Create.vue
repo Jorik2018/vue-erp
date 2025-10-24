@@ -33,14 +33,14 @@
       <v-calendar v-model="o.fechaAsignacion" />
 
       <div class="right" style="margin-top: 10px" v-if="o.fechaAsignacion && o.id">
-        <v-uploader icon="fa-file" ref="uploader" style="margin-top: 10px" value="Adjuntar documento"
+        <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px" value="Adjuntar documento"
           :click="uploaderClick" v-on:input="changeImage($event)"></v-uploader>
       </div>
       <label>Fecha Devolución:</label>
       <v-calendar v-model="o.fechaDevolucion" />
 
       <div class="right" style="margin-top: 10px" v-if="o.fechaDevolucion && o.id">
-        <v-uploader icon="fa-file" ref="uploader" style="margin-top: 10px" value="Adjuntar documento"
+        <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px" value="Adjuntar documento"
           :click="uploaderClick" v-on:input="changeImage($event)"></v-uploader>
       </div>
     </div>
