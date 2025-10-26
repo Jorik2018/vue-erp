@@ -188,6 +188,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
       },
       {
+        path: 'hr/resource', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
+        component: () => import(/* webpackChunkName: "personal" */'../admin/hr/resource/List.vue')
+      },
+      {
         path: 'hr/employee',
         component: () => import('../admin/hr/employee/List.vue')
       },
