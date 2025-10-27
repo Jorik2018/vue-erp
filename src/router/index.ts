@@ -148,6 +148,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../Blank.vue')
       },
       {
+        path: 'hr/movement',
+        component: () => import('../admin/hr/movement/List.vue')
+      },
+      {
         path: 'hr/personal',
         component: () => import('../admin/hr/personal/List.vue')
       },

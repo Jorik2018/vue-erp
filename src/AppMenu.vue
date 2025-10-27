@@ -73,6 +73,7 @@
         <v-item v-if="perms.CANCER_READ" icon="fa-table" href="/admin/desarrollo-social/cancer" label="Cancer" />
         <v-item v-if="perms.HR_PERSONAL_READ" icon="fa-table" href="/admin/hr/personal" label="Personal" />
         <v-item v-if="perms.HR_PERSONAL_READ" icon="fa-table" href="/admin/hr/resource" label="Recursos" />
+        <v-item v-if="perms.HR_PERSONAL_READ" icon="fa-table" href="/admin/hr/movement" label="Movimientos" />
         <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/hr/employee" label="Empleados" />
         <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/chd"
           label="Constancia de Pago de Haberes y Descuentos" />
