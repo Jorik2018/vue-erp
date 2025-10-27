@@ -1,5 +1,5 @@
 <template>
-  <v-page action="/api/hr/personal/resource" store="personal_resource" :class="o.id < 0 || (o.tmpId && !o.synchronized)
+  <v-page action="/api/hr/resource" store="personal_resource" :class="o.id < 0 || (o.tmpId && !o.synchronized)
     ? 'yellow'
     : o.tmpId
       ? 'green'
