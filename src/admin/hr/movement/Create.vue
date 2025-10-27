@@ -68,7 +68,7 @@
 import { ui, pad } from 'isobit-ui'
 import axios from 'axios'
 import { onMounted, ref } from 'vue';
-import { contract_type, afp_onp, organ } from './constants';
+import { contract_type, afp_onp, organ } from '../personal/constants';
 
 export default ui({
   props: ["id"],

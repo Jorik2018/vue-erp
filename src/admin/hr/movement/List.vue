@@ -93,7 +93,7 @@
 </template>
 <script>
 import { ui } from 'isobit-ui'
-import { contract_type, afp_onp, organ } from './constants';
+import { contract_type, afp_onp, organ } from '../personal/constants';
 export default ui({
     setup() {
         const rowClass = (row) => {
