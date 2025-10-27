@@ -2,7 +2,7 @@
     <ion-page>
         <v-form header="Movimiento" action="/admin/hr/movement">
             <v-table :selectable="true" :row-style-class="rowClass" store="emed" :scrollable="true" rowKey="id"
-                :pagination="20" @updated="bindLinks($el)" :filters="filters" src="/api/hr/personal">
+                :pagination="20" @updated="bindLinks($el)" :filters="filters" src="/api/hr/movement">
                 <template v-slot:header>
                     <v-button value="Enviar" v-if="app.connected && perms.HR_PERSONAL_REGISTER" icon="fa-save"
                         :disabled="!rowSelectedCount" @click.prevent="sync"></v-button>
