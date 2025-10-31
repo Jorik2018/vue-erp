@@ -111,7 +111,7 @@ export default ui({
     },
     methods: {
         view(o) {
-            this.open('/admin/hr/personal/' + (o.tmpId ? (-o.tmpId) : o.id));
+            this.open('/admin/hr/resource/' + (o.tmpId ? (-o.tmpId) : o.id));
         }
     }
 });
