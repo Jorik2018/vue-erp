@@ -47,11 +47,19 @@
                         </v-filter>
                         {{ row.codigo }}
                     </td>
-                    <td width="160" header="Modelo" >
+                    <td width="160" header="Modelo" class="center">
                         <v-filter>
                             <input v-model="filters.modelo" />
                         </v-filter>
                         {{ row.modelo }}
+                    </td>
+                    <td width="260" header="Usuario" >
+                        <v-filter>
+                            <input v-model="filters.user" />
+                        </v-filter>
+                        <template v-if="row.dni">
+                            {{ row.dni }}: {{ row.apellidosNombres }}
+                        </template>
                     </td>
                 </template>
             </v-table>
