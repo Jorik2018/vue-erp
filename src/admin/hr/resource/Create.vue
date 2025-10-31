@@ -80,7 +80,7 @@ export default ui({
           });
         });
       } else if (Number(id)) {
-        axios.get(`/api/hr/personal/resource/${id}`)
+        axios.get(`/api/hr/resource/${id}`)
           .then(({ data }) => {
             oRef.value = data;
           });
