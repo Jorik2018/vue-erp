@@ -194,10 +194,10 @@ export default ui({
       oRef.value = o;
     }
     const updateResource = () => {
-      const {id, ...resource} =oRef.value.resource;
+      const {id, ...resource} = oRef.value.resource;
       resource.resourceId = id;
       oRef.value.resources.push(resource);
-      resourceAutocomplete.remove();
+      oRef.value.resource = null;
     }
     return { o: oRef, close, resourceAutocomplete, updateResource }
   },
