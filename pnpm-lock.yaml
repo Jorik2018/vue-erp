@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  isobit-ui: link:C:/Users/USER/AppData/Local/pnpm/global/5/node_modules/isobit-ui
+  isobit-ui: link:../isobit-ui
 
 importers:
 
@@ -72,8 +72,8 @@ importers:
         specifier: ^7.0.0
         version: 7.4.0
       isobit-ui:
-        specifier: link:C:/Users/USER/AppData/Local/pnpm/global/5/node_modules/isobit-ui
-        version: link:C:/Users/USER/AppData/Local/pnpm/global/5/node_modules/isobit-ui
+        specifier: link:../isobit-ui
+        version: link:../isobit-ui
       ol:
         specifier: ^10.4.0
         version: 10.6.1

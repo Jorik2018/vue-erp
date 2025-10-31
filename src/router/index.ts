@@ -149,15 +149,27 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'hr/movement',
-        component: () => import('../admin/hr/movement/List.vue')
+        component: () => import(/* webpackChunkName: "personal" */'../admin/hr/movement/List.vue')
+      },
+      {
+        path: 'hr/movement/create',
+        component: () => import(/* webpackChunkName: "personal" */'../admin/hr/movement/Create.vue')
+      },
+            {
+        path: 'hr/movement/:id',props: true,
+        component: () => import(/* webpackChunkName: "personal" */'../admin/hr/movement/Create.vue')
+      },
+            {
+        path: 'hr/movement/:id/edit',props: true,
+        component: () => import(/* webpackChunkName: "personal" */'../admin/hr/movement/Create.vue')
       },
       {
         path: 'hr/personal',
-        component: () => import('../admin/hr/personal/List.vue')
+        component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/List.vue')
       },
       {
         path: 'hr/personal/create',
-        component: () => import('../admin/hr/personal/Create.vue')
+        component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/Create.vue')
       },
       {
         path: 'hr/personal/:id/edit', props: true,
@@ -187,6 +199,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'hr/personal/resource/:id', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
       },
+            {
+        path: 'hr/resource/:id', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
+        component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
+      },
+      
       {
         path: 'hr/personal/resource/:id/edit', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')

@@ -62,7 +62,7 @@ app
   .use(IsobitUI);
 
 router.isReady().then(() => {
-  initDB(27, [
+  initDB(30, [
     ["region", { src: "/api/directory/region/0/0" }],
     ["province", { keyPath: "code", src: "/api/directory/province/0/0" }],
     ["district", { keyPath: "code", src: "/api/directory/district/0/0" }],
@@ -72,6 +72,8 @@ router.isReady().then(() => {
     ["people", { keyPath: "tmpId" }],
     ["pregnant", { keyPath: "tmpId" }],
     ["vea-materno", { keyPath: "tmpId" }],
+    ["personal_resource", { keyPath: "tmpId" }],
+    
     ["pregnant_visit", { keyPath: "tmpId" }],
     ["agreement", { keyPath: "tmpId" }],
     ["red", { keyPath: "code", src: "/api/desarrollo-social/red/0/0" }],
