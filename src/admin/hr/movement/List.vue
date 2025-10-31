@@ -100,7 +100,7 @@ export default ui({
     },
     methods: {
         view(o) {
-            this.open('/admin/hr/personal/' + (o.tmpId ? (-o.tmpId) : o.id));
+            this.open('/admin/hr/movement/' + (o.tmpId ? (-o.tmpId) : o.id));
         }
     }
 });
