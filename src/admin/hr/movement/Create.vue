@@ -204,6 +204,7 @@ export default ui({
   methods: {
     process(o) {
       delete o.resource;
+      o.active = true;
       return o;
     }
   },
