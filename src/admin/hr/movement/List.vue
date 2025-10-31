@@ -21,29 +21,11 @@
                         </v-filter>
                         {{ pad(row.id, 4) }}
                     </td>
-                    <td width="80" class="center" header="Secuencia Funcional">
-                        <v-filter>
-                            <input v-model="filters.secuenciaFuncional" />
-                        </v-filter>
-                        {{ row.secuenciaFuncional }}
-                    </td>
-                    <td width="120" class="center" header="Actividad">
-                        <v-filter>
-                            <input v-model="filters.actividad" />
-                        </v-filter>
-                        {{ row.actividad }}
-                    </td>
                     <td width="80" class="center" header="DNI">
                         <v-filter>
                             <input v-model="filters.dni" />
                         </v-filter>
                         {{ row.dni }}
-                    </td>
-                    <td width="120" header="AIRHSP" class="center">
-                        <v-filter>
-                            <input v-model="filters.codigoAirhsp" />
-                        </v-filter>
-                        {{ row.codigoAirhsp }}
                     </td>
                     <td width="220" header="Apellidos Nombres" >
                         <v-filter>
@@ -65,24 +47,6 @@
                             <input v-model="filters.unidadOrganica" />
                         </v-filter>
                         {{ row.unidadOrganica }}
-                    </td>
-                    <td width="220" header="Cargo" >
-                        <v-filter>
-                            <input v-model="filters.cargo" />
-                        </v-filter>
-                        {{ row.cargo }}
-                    </td>
-                    <td width="90" header="Fecha Inicio Contrato" class="center">
-                        <v-filter>
-                            <input v-model="filters.fechaDeInicioContrato" />
-                        </v-filter>
-                        {{ row.fechaDeInicioContrato }}
-                    </td>
-                    <td width="90" header="Fecha Inicio Ofis" class="center">
-                        <v-filter>
-                            <input v-model="filters.fechaDeInicioOfis" />
-                        </v-filter>
-                        {{ row.fechaDeInicioOfis }}
                     </td>
                 </template>
             </v-table>
