@@ -50,6 +50,11 @@
           </v-select>
           <label>CUSPP:</label>
           <input v-model="o.nCuspp" />
+          <label>Estado:</label>
+          <v-select v-model="o.estado">
+              <option value="">Select One...</option>
+              <v-options :data="estado" display-field="name" value-field="id"></v-options>
+          </v-select>
         </v-fieldset>
       </div>
       <center>
@@ -68,14 +73,14 @@
 import { ui, pad } from 'isobit-ui'
 import axios from 'axios'
 import { onMounted, ref } from 'vue';
-import { contract_type, afp_onp, organ } from './constants';
+import { contract_type, afp_onp, organ, estado } from './constants';
 
 export default ui({
   props: ["id"],
   data() {
     return {
       red: [],
-      contract_type, afp_onp, organ
+      contract_type, afp_onp, organ, estado
     };
   },
   computed: {
