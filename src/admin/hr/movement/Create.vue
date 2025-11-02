@@ -15,7 +15,7 @@
             emptyMessage="Buscar por nombre (2 caracteres min.)" size="20" v-model="o.personal"
             src="/api/hr/personal">
             <template v-if="o.personal" v-slot:label="{ selected }">{{ selected.dni }}: {{
-              selected.apellidosNombres }}bbb</template>
+              selected.apellidosNombres }}</template>
             <template v-slot="{ row }">
               {{ row.dni }}: {{ row.apellidosNombres }}
             </template>
