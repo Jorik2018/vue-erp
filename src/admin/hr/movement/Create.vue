@@ -20,6 +20,13 @@
               {{ row.dni }}: {{ row.apellidosNombres }}
             </template>
           </v-autocomplete>
+          <label>Fecha Asignación:</label>
+          <v-calendar v-model="o.fechaAsignacion" />
+          <label>Documento:</label>
+          <div class="right" style="margin-top: 10px">
+            <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px" value="Adjuntar documento"
+              :click="uploaderClick" v-on:input="changeImage($event)"></v-uploader>
+          </div>
         </v-fieldset>
         <v-fieldset legend="Recursos">
           <label>Recurso:</label>
