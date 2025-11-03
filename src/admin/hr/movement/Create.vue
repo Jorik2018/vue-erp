@@ -14,8 +14,8 @@
           <v-autocomplete queryEvent="enter" placeholder="Ingrese mas de 2 letras y presione ENTER" minQueryLength="3"
             emptyMessage="Buscar por nombre (2 caracteres min.)" size="20" v-model="o.personal"
             src="/api/hr/personal">
-            <template v-if="o.personal" v-slot:label="{ selected }">{{ selected.dni }}: {{
-              selected.apellidosNombres }}</template>
+            <template v-if="o.personal" v-slot:label="{ selected }">
+              {{ selected.dni }}: {{selected.apellidosNombres }}</template>
             <template v-slot="{ row }">
               {{ row.dni }}: {{ row.apellidosNombres }}
             </template>
@@ -71,9 +71,6 @@
               </td>
               <td header="Observaciones" width="160">
                 {{ row.observaciones }}
-              </td>
-              <td header="Marca" class="center" width="160">
-                {{ row.marca }}
               </td>
               <td header="Fecha Asignación" class="center" width="160">
                 {{ row.fechaAsignacion }}
