@@ -120,6 +120,12 @@
                         </v-filter>
                         {{ row.nCuspp }}
                     </td>
+                    <td width="120" header="Estado" class="center" >
+                        <v-filter>
+                            <input v-model="filters.estado" />
+                        </v-filter>
+                        {{ row.estado }}
+                    </td>
                     <td width="120" header="Inserted" class="center">
                         <v-filter>
                             <input v-model="filters.insertDate" />
