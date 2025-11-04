@@ -23,8 +23,8 @@
           <label>Fecha Asignación:</label>
           <v-calendar v-model="o.fechaAsignacion" />
           <label>Documento:</label>
-          <v-calendar v-model="o.actaAsignacion" />
-          <div style="margin-top: 10px">
+          <input v-model="o.actaAsignacion" />
+          <div style="margin-top: 10px; border: 1px solid gray">
             {{o.tempFile}} {{o.tempFile}}
           </div>
           <div class="right" style="margin-top: 10px">
