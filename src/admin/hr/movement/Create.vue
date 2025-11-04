@@ -208,7 +208,7 @@ export default ui({
       oRef.value.resource = null;
     }
     const changeImage = (res) => {
-      console.log('======',res);
+      oRef.value = { ...oRef.value, ...res};
     }
     return { o: oRef, close, resourceAutocomplete, updateResource, changeImage }
   },
