@@ -98,7 +98,8 @@ export const estado = [{id:"1", name:'Activo'},{id:"0", name:'Inactivo'}]
 export const contract_type = [
     'INDETERMINADO',
     'TRANSITORIO',
-    'DESIGNACION'
+    'DESIGNACION',
+    'LOCADOR'
 ]
 
 export const afp_onp = [
