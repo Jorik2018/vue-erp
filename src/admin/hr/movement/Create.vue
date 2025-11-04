@@ -23,6 +23,10 @@
           <label>Fecha Asignación:</label>
           <v-calendar v-model="o.fechaAsignacion" />
           <label>Documento:</label>
+          <v-calendar v-model="o.actaAsignacion" />
+          <div style="margin-top: 10px">
+            {{o.tempFile}} {{o.tempFile}}
+          </div>
           <div class="right" style="margin-top: 10px">
             <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px" value="Adjuntar documento"
               :click="uploaderClick" v-on:input="changeImage($event)"></v-uploader>
@@ -203,7 +207,10 @@ export default ui({
       oRef.value.resources.push(resource);
       oRef.value.resource = null;
     }
-    return { o: oRef, close, resourceAutocomplete, updateResource }
+    const changeImage = (res) => {
+      console.log('======',res);
+    }
+    return { o: oRef, close, resourceAutocomplete, updateResource, changeImage }
   },
   methods: {
     process(o) {
