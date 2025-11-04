@@ -25,7 +25,7 @@
           <label>Documento:</label>
           <input v-model="o.actaAsignacion" />
           <div style="margin-top: 10px; border: 1px solid gray">
-            {{o.tempFile}} {{o.tempFile}}
+            {{o.filename}} {{o.tempFile}}
           </div>
           <div class="right" style="margin-top: 10px">
             <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px" value="Adjuntar documento"
@@ -208,7 +208,7 @@ export default ui({
       oRef.value.resource = null;
     }
     const changeImage = (res) => {
-      oRef.value = { ...oRef.value, ...res};
+      oRef.value = { ...oRef.value, ...res, actaAsignacion: res.filename};
     }
     return { o: oRef, close, resourceAutocomplete, updateResource, changeImage }
   },
