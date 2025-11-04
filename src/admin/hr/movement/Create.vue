@@ -24,7 +24,7 @@
           <v-calendar v-model="o.fechaAsignacion" />
           <label>Documento:</label>
           <input v-model="o.actaAsignacion" />
-          <div style="margin-top: 5px; border: 1px solid gray;padding:5px" v-if="o.filename">
+          <div style="margin-top: 5px; border: 1px solid gray;padding:5px;border-radius: 8px;" v-if="o.filename">
             {{o.filename}} {{o.tempFile}}
           </div>
           <div class="right" style="margin: 5px 0px">
