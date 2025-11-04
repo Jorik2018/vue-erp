@@ -27,7 +27,7 @@
           <div style="margin-top: 10px; border: 1px solid gray;padding:5px" v-if="o.filename">
             {{o.filename}} {{o.tempFile}}
           </div>
-          <div class="right" style="margin-top: 10px">
+          <div class="right" style="margin: 10px 0px">
             <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px" value="Adjuntar documento"
               :click="uploaderClick" v-on:input="changeImage($event)"></v-uploader>
           </div>
