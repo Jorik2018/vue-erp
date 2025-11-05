@@ -192,13 +192,16 @@ export default ui({
     onMounted(() => {
       changeRoute();
     })
-    const close = ({ data: { id, tmpId, uploaded, filename, resources }, success }) => {
+    const close = ({ data: { id, tmpId, uploaded, uploadedDev, filename, resources, filenameDev }, success }) => {
       let o = oRef.value;
       const _id = o.id;
       if (success === true) {
-        o = { ...o, id, tmpId, filename, tempFile: null, resources }
+        o = { ...o, id, tmpId, filename, filenameDev, resources }
         if (uploaded) {
           delete o.tempFile;
+        }
+        if (uploadedDev) {
+          delete o.tempFileDev;
         }
       }
       let nid = o.tmpId ? -o.tmpId : o.id;
