@@ -25,8 +25,8 @@
           <label>Documento:</label>
           <input v-model="o.actaAsignacion" />
           <div style="margin-top: 5px; border: 1px solid gray;padding:5px;border-radius: 8px;" v-if="o.filename">
-            <a v-if="o.tempFile" :href="`/wp-content/uploads/movements/${o.filename}`">Ver Documento</a>
-            <a v-else :href="`/wp-content/uploads/temps/${o.tempFile}`">Ver Documento</a>
+            <a v-if="o.tempFile" :href="`/wp-content/uploads/movements/${o.tempFile}`">Ver Documento</a>
+            <a v-else :href="`/wp-content/uploads/temps/${o.filename}`">Ver Documento</a>
           </div>
           <div class="right" style="margin: 5px 0px">
             <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px" value="Adjuntar documento"
