@@ -33,20 +33,29 @@
                         </v-filter>
                         {{ row.apellidosNombres }}
                     </td>
-                    <td width="220" header="Organo" :title="'==='+filters.organo">
+                    <td width="220" header="Fecha Asignación">
                         <v-filter>
-                            <v-select v-model="filters.organo">
-                                <option value="">Select One...</option>
-                                <v-options :data="organ" value-field="name"></v-options>
-                            </v-select>
+                            <input v-model="filters.fechaAsignacion" />
                         </v-filter>
-                        {{ row.organo }}
+                        {{ row.fechaAsignacion }}
                     </td>
-                    <td width="220" header="Unidad Organica" >
+                    <td width="220" header="Acta Asignación">
                         <v-filter>
-                            <input v-model="filters.unidadOrganica" />
+                            <input v-model="filters.actaAsignacion" />
                         </v-filter>
-                        {{ row.unidadOrganica }}
+                        <a :href="`/wp-content/uploads/movements/${o.filename}`" target="_"></a>{{ row.actaAsignacion }}</a>
+                    </td>
+                    <td width="220" header="Fecha Devolución">
+                        <v-filter>
+                            <input v-model="filters.fechaDevolucion" />
+                        </v-filter>
+                        {{ row.fechaDevolucion }}
+                    </td>
+                    <td width="220" header="Acta Devolución">
+                        <v-filter>
+                            <input v-model="filters.actaDevolucion" />
+                        </v-filter>
+                        <a :href="`/wp-content/uploads/movements/${row.filenameDev}`" target="_">{{ row.actaDevolucion }}</a>
                     </td>
                 </template>
             </v-table>
