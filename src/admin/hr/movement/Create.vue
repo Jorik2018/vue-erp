@@ -12,10 +12,9 @@
         <v-fieldset legend="Datos generales" class="v-form">
           <label>Usuario:</label>
           <v-autocomplete queryEvent="enter" placeholder="Ingrese mas de 2 letras y presione ENTER" minQueryLength="3"
-            emptyMessage="Buscar por nombre (2 caracteres min.)" size="20" v-model="o.personal"
-            src="/api/hr/personal">
+            emptyMessage="Buscar por nombre (2 caracteres min.)" size="20" v-model="o.personal" src="/api/hr/personal">
             <template v-if="o.personal" v-slot:label="{ selected }">
-              {{ selected.dni }}: {{selected.apellidosNombres }}</template>
+              {{ selected.dni }}: {{ selected.apellidosNombres }}</template>
             <template v-slot="{ row }">
               {{ row.dni }}: {{ row.apellidosNombres }}
             </template>
@@ -24,7 +23,8 @@
           <v-calendar v-model="o.fechaAsignacion" />
           <label>Documento:</label>
           <input v-model="o.actaAsignacion" />
-          <div style="margin-top: 5px; border: 1px solid gray;padding:5px;border-radius: 8px;" :style="{background:o.tempFile?'yellow':''}" v-if="o.filename">
+          <div style="margin-top: 5px; border: 1px solid gray;padding:5px;border-radius: 8px;"
+            :style="{ background: o.tempFile ? 'yellow' : '' }" v-if="o.filename">
             <i class="fa-plus"></i>
             <a v-if="o.tempFile" :href="`/wp-content/uploads/temp/${o.tempFile}`" target="_">Ver Documento</a>
             <a v-else :href="`/wp-content/uploads/movements/${o.filename}`" target="_">Ver Documento</a>
@@ -33,25 +33,41 @@
             <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px" value="Adjuntar documento"
               :click="uploaderClick" v-on:input="changeImage($event)"></v-uploader>
           </div>
+
+          <v-fieldset legend="Devolución" class="v-form">
+            <label>Fecha:</label>
+            <v-calendar v-model="o.fechaDevolucion" />
+            <label>Documento:</label>
+            <input v-model="o.actaDevolucion" />
+            <div style="margin-top: 5px; border: 1px solid gray;padding:5px;border-radius: 8px;"
+              :style="{ background: o.tempFileDev ? 'yellow' : '' }" v-if="o.filenameDev">
+              <i class="fa-plus"></i>
+              <a v-if="o.tempFileDev" :href="`/wp-content/uploads/temp/${o.tempFileDev}`" target="_">Ver</a>
+              <a v-else :href="`/wp-content/uploads/movements/${o.filenameDev}`" target="_">Ver</a>
+            </div>
+            <div class="right" style="margin: 5px 0px">
+              <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px"
+                value="Adjuntar documento" :click="uploaderClick" v-on:input="changeImage($event, true)"></v-uploader>
+            </div>
+          </v-fieldset>
         </v-fieldset>
         <v-fieldset legend="Recursos">
           <label>Recurso:</label>
           <v-autocomplete queryEvent="enter" ref="resourceAutocomplete"
             placeholder="Ingrese mas de 2 letras y presione ENTER" minQueryLength="3"
-            emptyMessage="Buscar por nombre (2 caracteres min.)" size="20" v-model="o.resource"
-            src="/api/hr/resource">
-            <template v-slot:label="{ selected }" v-if="o.resource">{{ selected.codpatrimonio }} - {{ selected.codigo }}: {{ selected.marca }}
+            emptyMessage="Buscar por nombre (2 caracteres min.)" size="20" v-model="o.resource" src="/api/hr/resource">
+            <template v-slot:label="{ selected }" v-if="o.resource">{{ selected.codpatrimonio }} - {{ selected.codigo
+              }}: {{ selected.marca }}
               {{ selected.modelo }}</template>
             <template v-slot="{ row }">
-              {{ row.codpatrimonio }}-{{row.codigo}}: {{ row.marca }} {{ row.modelo }}
+              {{ row.codpatrimonio }}-{{ row.codigo }}: {{ row.marca }} {{ row.modelo }}
             </template>
           </v-autocomplete>
           <div style="padding:10px 0px;text-align:right">
             <v-button value="Agregar" icon="fa-plus" @click="updateResource" />
           </div>
           <v-table autoload="false" :scrollable="true" :style="{ maxHeight: maxHeight }" :value="o.resources"
-            row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')"
-            row-key="resourceId"
+            row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" row-key="resourceId"
             @row-select="selections.resource = $event.current">
             <template v-slot:default="{ row, index }">
               <td header="N°" class="center" width="40">
@@ -136,7 +152,7 @@ export default ui({
     }
   },
   setup({ id, router }) {
-    const oRef = ref({ resources: [], personal:null, resource: null });
+    const oRef = ref({ resources: [], personal: null, resource: null });
     const resourceAutocomplete = ref();
     const changeRoute = () => {
       let o = oRef.value;
@@ -176,11 +192,11 @@ export default ui({
     onMounted(() => {
       changeRoute();
     })
-    const close = ({ data: { id, tmpId, uploaded, filename }, success }) => {
+    const close = ({ data: { id, tmpId, uploaded, filename, resources }, success }) => {
       let o = oRef.value;
       const _id = o.id;
       if (success === true) {
-        o = { ...o, id, tmpId, filename, tempFile:null  }
+        o = { ...o, id, tmpId, filename, tempFile: null, resources }
         if (uploaded) {
           delete o.tempFile;
         }
@@ -192,13 +208,17 @@ export default ui({
       oRef.value = o;
     }
     const updateResource = () => {
-      const {id, ...resource} = oRef.value.resource;
+      const { id, ...resource } = oRef.value.resource;
       resource.resourceId = id;
       oRef.value.resources.push(resource);
       oRef.value.resource = null;
     }
-    const changeImage = (res) => {
-      oRef.value = { ...oRef.value, ...res, actaAsignacion: res.filename};
+    const changeImage = ({filename, tempFile}, devolucion) => {
+      if(devolucion){
+        oRef.value = { ...oRef.value, actaDevolucion: filename, filenameDev: filename, tempFileDev: tempFile };
+      }else{
+        oRef.value = { ...oRef.value, actaAsignacion: filename, filename, tempFile };
+      }
     }
     return { o: oRef, close, resourceAutocomplete, updateResource, changeImage }
   },
