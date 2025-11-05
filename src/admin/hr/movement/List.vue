@@ -33,7 +33,7 @@
                         </v-filter>
                         {{ row.apellidosNombres }}
                     </td>
-                    <td width="220" header="Fecha Asignación">
+                    <td width="110" header="Fecha Asignación" class="center">
                         <v-filter>
                             <input v-model="filters.fechaAsignacion" />
                         </v-filter>
@@ -45,7 +45,7 @@
                         </v-filter>
                         <a :href="`/wp-content/uploads/movements/${row.filename}`" target="_">{{ row.actaAsignacion }}</a>
                     </td>
-                    <td width="220" header="Fecha Devolución">
+                    <td width="110" header="Fecha Devolución" class="center">
                         <v-filter>
                             <input v-model="filters.fechaDevolucion" />
                         </v-filter>
