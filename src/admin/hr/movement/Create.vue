@@ -188,11 +188,11 @@ export default ui({
     onMounted(() => {
       changeRoute();
     })
-    const close = ({ data: { id, tmpId, uploaded }, success }) => {
+    const close = ({ data: { id, tmpId, uploaded, filename }, success }) => {
       let o = oRef.value;
       const _id = o.id;
       if (success === true) {
-        o = { ...o, id, tmpId }
+        o = { ...o, id, tmpId, filename, tempFile:null  }
         if (uploaded) {
           delete o.tempFile;
         }
