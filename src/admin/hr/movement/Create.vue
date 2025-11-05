@@ -78,18 +78,6 @@
               <td header="Observaciones" width="160">
                 {{ row.observaciones }}
               </td>
-              <td header="Fecha Asignación" class="center" width="160">
-                {{ row.fechaAsignacion }}
-              </td>
-              <td header="Fecha Devolución" class="center" width="160">
-                {{ row.fechaDevolucion }}
-              </td>
-              <td width="120" header="Creado" class="center">
-                {{ date(row.insertDate) }}
-              </td>
-              <td width="120" header="Editado" class="center">
-                {{ date(row.updateDate) }}
-              </td>
             </template>
           </v-table>
           <div class="right" style="margin-top: 10px" v-if="perms.HR_PERSONAL_REGISTER && o.editable">
