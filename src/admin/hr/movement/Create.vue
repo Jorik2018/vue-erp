@@ -42,8 +42,8 @@
             <div style="margin-top: 5px; border: 1px solid gray;padding:5px;border-radius: 8px;"
               :style="{ background: o.tempFileDev ? 'yellow' : '' }" v-if="o.filenameDev">
               <i class="fa-plus"></i>
-              <a v-if="o.tempFileDev" :href="`/wp-content/uploads/temp/${o.tempFileDev}`" target="_">Ver</a>
-              <a v-else :href="`/wp-content/uploads/movements/${o.filenameDev}`" target="_">Ver</a>
+              <a v-if="o.tempFileDev" :href="`/wp-content/uploads/temp/${o.tempFileDev}`" target="_">Ver Documento</a>
+              <a v-else :href="`/wp-content/uploads/movements/${o.filenameDev}`" target="_">Ver Documento</a>
             </div>
             <div class="right" style="margin: 5px 0px">
               <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px"
