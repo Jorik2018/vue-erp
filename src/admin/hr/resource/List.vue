@@ -33,12 +33,6 @@
                         </v-filter>
                         {{ row.codpatrimonio }}
                     </td>
-                    <td width="160" class="center" header="Estado">
-                        <v-filter>
-                            <input v-model="filters.estado" />
-                        </v-filter>
-                        {{ row.estado }}
-                    </td>
                     <td width="120" header="Codigo" class="center">
                         <v-filter>
                             <input v-model="filters.codigo" />
