@@ -76,12 +76,12 @@
             </td>
           </template>
         </v-table>
-        <div class="right" style="margin-top: 10px" v-if="perms.HR_PERSONAL_REGISTER && o.editable">
+        <!--div class="right" style="margin-top: 10px" v-if="perms.HR_PERSONAL_REGISTER && o.editable">
           <v-button icon="fa-trash" :disabled="!selections.resource" @click="destroy"
             v-if="perms.HR_PERSONAL_ADMIN"></v-button>
           <v-button icon="fa-pen" :disabled="!selections.resource" @click="edit"></v-button>
           <v-button icon="fa-plus" @click="add('resource', o)"></v-button>
-        </div>
+        </div-->
       </v-fieldset>
       <v-fieldset legend="Servicios">
         <v-table autoload="false" class="visit" src="/api/hr/personal/service/0/0" :style="{ maxHeight: maxHeight }"
