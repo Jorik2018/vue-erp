@@ -43,7 +43,7 @@
                         <v-filter>
                             <input v-model="filters.actaAsignacion" />
                         </v-filter>
-                        <a :href="`/wp-content/uploads/movements/${o.filename}`" target="_"></a>{{ row.actaAsignacion }}</a>
+                        <a :href="`/wp-content/uploads/movements/${o.filename}`" target="_">{{ row.actaAsignacion }}</a>
                     </td>
                     <td width="220" header="Fecha Devolución">
                         <v-filter>
