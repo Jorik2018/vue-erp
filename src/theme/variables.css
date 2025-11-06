@@ -17,7 +17,7 @@ ion-content::part(scroll) {
   }
 }
 @media (prefers-color-scheme: light) {
-  option {
+  option, select {
     color: black;
   }
 }
