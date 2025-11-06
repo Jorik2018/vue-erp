@@ -56,11 +56,10 @@
           <v-autocomplete queryEvent="enter" ref="resourceAutocomplete"
             placeholder="Ingrese mas de 2 letras y presione ENTER" minQueryLength="3"
             emptyMessage="Buscar por nombre (2 caracteres min.)" size="20" v-model="o.resource" src="/api/hr/resource">
-            <template v-slot:label="{ selected }" v-if="o.resource">{{ selected.codpatrimonio }} - {{ selected.codigo
-              }}: {{ selected.marca }}
+            <template v-slot:label="{ selected }" v-if="o.resource">{{ selected.codpatrimonio }}: {{ row.typeName }} {{ selected.marca }} {{ row.modelo }} {{ row.codigo }}
               {{ selected.modelo }}</template>
             <template v-slot="{ row }">
-              {{ row.codpatrimonio }}-{{ row.codigo }}: {{ row.marca }} {{ row.modelo }}
+              {{ row.codpatrimonio }}: {{ row.typeName }} {{ row.marca }} {{ row.modelo }} {{ row.codigo }}
             </template>
           </v-autocomplete>
           <div style="padding:10px 0px;text-align:right">
