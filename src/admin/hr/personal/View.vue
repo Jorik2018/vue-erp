@@ -68,9 +68,6 @@
             <td header="Observaciones" width="160">
               {{ row.observaciones }}
             </td>
-            <td header="Marca" class="center" width="160">
-              {{ row.marca }}
-            </td>
           </template>
         </v-table>
         <!--div class="right" style="margin-top: 10px" v-if="perms.HR_PERSONAL_REGISTER && o.editable">
