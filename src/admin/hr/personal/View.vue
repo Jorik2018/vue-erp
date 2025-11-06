@@ -56,9 +56,6 @@
             <td header="Cod. Patrimonial" class="center" width="160">
               {{ row.codpatrimonio }}
             </td>
-            <td header="Estado" class="center" width="160">
-              {{ row.estado }}
-            </td>
             <td header="Codigo" class="center" width="160">
               {{ row.codigo }}
             </td>
