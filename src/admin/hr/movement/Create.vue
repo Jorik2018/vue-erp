@@ -11,7 +11,7 @@
         <div>{{ pad(o.id || 0, 4) }}</div>
         <v-fieldset legend="Datos generales" class="v-form">
           <label>Usuario:</label>
-          <v-autocomplete queryEvent="enter" placeholder="Ingrese mas de 2 letras y presione ENTER" minQueryLength="3"
+          <v-autocomplete queryEvent="enter" required="true" placeholder="Ingrese mas de 2 letras y presione ENTER" minQueryLength="3"
             emptyMessage="Buscar por nombre (2 caracteres min.)" size="20" v-model="o.personal" src="/api/hr/personal">
             <template v-if="o.personal" v-slot:label="{ selected }">
               {{ selected.dni }}: {{ selected.apellidosNombres }}</template>
