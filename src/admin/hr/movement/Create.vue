@@ -73,6 +73,13 @@
               <td header="N°" class="center" width="40">
                 {{ pad(index + 1, 2) }}
               </td>
+              <td header="X" class="center" width="40">
+                <FontAwesomeIcon
+            :icon="['fas', 'trash']"
+            class="cursor-pointer text-red-500"
+            @click="deleteItem(index)"
+          />
+              </td>
               <td header="Tipo" class="center" width="160">
                 {{ row.typeName }}
               </td>
@@ -96,12 +103,12 @@
               </td>
             </template>
           </v-table>
-          <div class="right" style="margin-top: 10px" v-if="perms.HR_PERSONAL_REGISTER && o.editable">
+          <!--div class="right" style="margin-top: 10px" v-if="perms.HR_PERSONAL_REGISTER && o.editable">
             <v-button icon="fa-trash" :disabled="!selections.resource" @click="destroy"
               v-if="perms.HR_PERSONAL_ADMIN"></v-button>
             <v-button icon="fa-pen" :disabled="!selections.resource" @click="edit"></v-button>
             <v-button icon="fa-plus" @click="add('resource', o)"></v-button>
-          </div>
+          </div-->
         </v-fieldset>
       </div>
       <center>
@@ -122,7 +129,13 @@ import axios from 'axios'
 import { onMounted, ref } from 'vue';
 import { contract_type, afp_onp, organ } from '../personal/constants';
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
+
+library.add(faTrash);
 export default ui({
+  components: { FontAwesomeIcon },
   props: ["id"],
   data() {
     return {
