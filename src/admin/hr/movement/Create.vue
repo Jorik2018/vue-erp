@@ -54,6 +54,7 @@
         <v-fieldset legend="Recursos">
           <label>Recurso:</label>
           <v-autocomplete queryEvent="enter" ref="resourceAutocomplete"
+          :params="{personal:'<NONE>'}"
             placeholder="Ingrese mas de 2 letras y presione ENTER" minQueryLength="3"
             emptyMessage="Buscar por nombre (2 caracteres min.)" size="20" v-model="o.resource" src="/api/hr/resource">
             <template v-slot:label="{ selected }" v-if="o.resource">{{ selected.codpatrimonio }}: {{ selected.typeName }} {{ selected.marca }} {{ selected.modelo }} {{ selected.codigo }}
