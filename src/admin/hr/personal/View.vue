@@ -41,7 +41,7 @@
         <label>CUSPP:</label>
         <div>{{ o.nCuspp || '---' }}</div>
       </v-fieldset>
-      <v-fieldset legend="Recursos">
+      <!--v-fieldset legend="Recursos">
         <v-table autoload="false" :scrollable="true" :style="{ maxHeight: maxHeight }"
           src="/api/hr/personal/resource/0/0" :value="o.damage_salud" store="personal_resource"
           row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" ref="resource" :filters="filters"
@@ -68,15 +68,16 @@
             <td header="Observaciones" width="160">
               {{ row.observaciones }}
             </td>
+
           </template>
         </v-table>
-        <!--div class="right" style="margin-top: 10px" v-if="perms.HR_PERSONAL_REGISTER && o.editable">
+        <div class="right" style="margin-top: 10px" v-if="perms.HR_PERSONAL_REGISTER && o.editable">
           <v-button icon="fa-trash" :disabled="!selections.resource" @click="destroy"
             v-if="perms.HR_PERSONAL_ADMIN"></v-button>
           <v-button icon="fa-pen" :disabled="!selections.resource" @click="edit"></v-button>
           <v-button icon="fa-plus" @click="add('resource', o)"></v-button>
-        </div-->
-      </v-fieldset>
+        </div>
+      </v-fieldset-->
       <v-fieldset legend="Servicios">
         <v-table autoload="false" class="visit" src="/api/hr/personal/service/0/0" :style="{ maxHeight: maxHeight }"
           :scrollable="true" :value="o.damagesIPRESS" store="personal_service"
