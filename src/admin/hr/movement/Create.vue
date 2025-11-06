@@ -206,7 +206,8 @@ export default ui({
       }
       let nid = o.tmpId ? -o.tmpId : o.id;
       if (_id != nid) {
-        router.replace("/admin/hr/movement/" + nid);
+        //router.replace("/admin/hr/movement/" + nid);
+        router.replace("/admin/hr/movement");
       }
       oRef.value = o;
     }

@@ -83,7 +83,8 @@ export default ui({
     const close = ({ data: { id, tmpId }, success }) => {
       if (success === true) {
         oRef.value = { ...oRef.value, id, tmpId }
-        router.replace(`/admin/hr/resource/${id}`);
+        //router.replace(`/admin/hr/resource/${id}`);
+        router.replace(`/admin/hr/resource`);
       }
     }
     const changeImage = (result) => {
