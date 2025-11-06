@@ -66,7 +66,7 @@
           <div style="padding:10px 0px;text-align:right">
             <v-button value="Agregar" icon="fa-plus" @click="updateResource" />
           </div>
-          <v-table autoload="false" :scrollable="true" :style="{ maxHeight: maxHeight }" :value="o.resources"
+          <v-table autoload="false" :scrollable="true" :style="{ maxHeight: maxHeight }" :value="filteredResources"
             row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" row-key="resourceId"
             @row-select="selections.resource = $event.current">
             <template v-slot:default="{ row, index }">
@@ -77,7 +77,7 @@
                 <FontAwesomeIcon
             :icon="['fas', 'trash']"
             class="cursor-pointer text-red-500"
-            @click="deleteItem(index)"
+            @click="deleteItem(row)"
           />
               </td>
               <td header="Tipo" class="center" width="160">
@@ -126,7 +126,7 @@
 <script>
 import { ui, pad } from 'isobit-ui'
 import axios from 'axios'
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed  } from 'vue';
 import { contract_type, afp_onp, organ } from '../personal/constants';
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -167,6 +167,11 @@ export default ui({
   setup({ id, router }) {
     const oRef = ref({ resources: [], personal: null, resource: null });
     const resourceAutocomplete = ref();
+
+    const filteredResources = computed(() =>
+  oRef.value.resources.filter(r => !r.deleted)
+);
+
     const changeRoute = () => {
       let o = oRef.value;
       if (id < 0) {
@@ -237,7 +242,11 @@ export default ui({
         oRef.value = { ...oRef.value, actaAsignacion: filename, filename, tempFile };
       }
     }
-    return { o: oRef, close, resourceAutocomplete, updateResource, changeImage }
+function deleteItem(resource) {
+  const r = oRef.value.resources.find(r => r.resourceId === resource.resourceId);
+  if (r) r.deleted = true;
+}
+    return { o: oRef, close, resourceAutocomplete, updateResource, changeImage, deleteItem, filteredResources }
   },
   methods: {
     process(o) {
