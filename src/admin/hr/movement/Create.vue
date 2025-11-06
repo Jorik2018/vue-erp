@@ -169,7 +169,7 @@ export default ui({
     const resourceAutocomplete = ref();
 
     const filteredResources = computed(() =>
-  oRef.value.resources.filter(r => !r.deleted)
+  oRef.value.resources.filter(r => !r.delete)
 );
 
     const changeRoute = () => {
@@ -243,8 +243,16 @@ export default ui({
       }
     }
 function deleteItem(resource) {
-  const r = oRef.value.resources.find(r => r.resourceId === resource.resourceId);
-  if (r) r.deleted = true;
+  if (resource.id) {
+    // Registro existente: marcar como eliminado
+    const r = oRef.value.resources.find(r => r.resourceId === resource.resourceId);
+    if (r) r.delete = true;
+  } else {
+    // Registro temporal: eliminar del arreglo
+    oRef.value.resources = oRef.value.resources.filter(
+      r => r.resourceId !== resource.resourceId
+    );
+  }
 }
     return { o: oRef, close, resourceAutocomplete, updateResource, changeImage, deleteItem, filteredResources }
   },
