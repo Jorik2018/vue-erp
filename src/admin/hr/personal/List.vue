@@ -51,12 +51,12 @@
                         </v-filter>
                         {{ row.apellidosNombres }}
                     </td>
-                    <td width="220" header="Organo" :title="'==='+filters.organo">
+                    <td width="220" header="Organo">
                         <v-filter>
-                            <v-select v-model="filters.organo">
-                                <option value="">Select One...</option>
-                                <v-options :data="organ" value-field="name"></v-options>
-                            </v-select>
+                                      <v-select v-model="filters.organo" input="$refs.unidad.load({ organo: o.organoId })">
+                                        <option value="">Select One...</option>
+                                        <v-options store="organ" display-field="name" value-field="code"></v-options>
+                                      </v-select>
                         </v-filter>
                         {{ row.organo }}
                     </td>
