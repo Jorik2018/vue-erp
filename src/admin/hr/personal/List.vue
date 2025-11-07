@@ -122,7 +122,6 @@
                     </td>
                     <td width="120" header="Estado" class="center" >
                         <v-filter>
-                            <input v-model="filters.estado" />
                                       <v-select v-model="filters.estado">
               <option value="">Select One...</option>
               <v-options :data="estado" display-field="name" value-field="id"></v-options>
