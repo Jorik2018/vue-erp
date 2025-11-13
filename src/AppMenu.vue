@@ -73,11 +73,11 @@
         <v-item v-if="perms.CANCER_READ" icon="fa-table" href="/admin/desarrollo-social/cancer" label="Cancer" />
         <v-item v-if="perms.HR_PERSONAL_READ" icon="fa-table" href="/admin/hr/personal" label="Personal" />
         <v-item v-if="perms.HR_PERSONAL_READ" icon="fa-table" href="/admin/hr/resource" label="Recursos" >
-          <v-item v-if="perms.HR_PERSONAL_READ" icon="fa-plus" href="/admin/hr/resource/create"
+          <v-item v-if="perms.HR_PERSONAL_REGISTER" icon="fa-plus" href="/admin/hr/resource/create"
             label="Agregar" />
         </v-item>
         <v-item v-if="perms.HR_PERSONAL_READ" icon="fa-table" href="/admin/hr/movement" label="Movimientos" >
-          <v-item v-if="perms.HR_PERSONAL_READ" icon="fa-plus" href="/admin/hr/movement/create"
+          <v-item v-if="perms.HR_PERSONAL_REGISTER" icon="fa-plus" href="/admin/hr/movement/create"
             label="Agregar" />
         </v-item>
         <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/hr/employee" label="Empleados" />

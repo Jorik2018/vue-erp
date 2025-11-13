@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <center>
+    <center v-if="perms.HR_PERSONAL_REGISTER">
       <v-button value="Grabar" icon="fa-save" v-on:click.prevent="save"></v-button>
     </center>
   </v-page>

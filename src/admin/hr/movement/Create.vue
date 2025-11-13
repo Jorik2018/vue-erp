@@ -111,7 +111,7 @@
           </div-->
         </v-fieldset>
       </div>
-      <center>
+      <center v-if="perms.HR_PERSONAL_REGISTER">
         <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
         <v-button style="margin-left: 10px" value="Ver" :disabled="!o.id" icon="fa-eye" class="blue" @click.prevent="
           $router.replace(
