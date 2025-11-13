@@ -29,7 +29,7 @@
             <a v-if="o.tempFile" :href="`/wp-content/uploads/temp/${o.tempFile}`" target="_">Ver Documento</a>
             <a v-else :href="`/wp-content/uploads/movements/${o.filename}`" target="_">Ver Documento</a>
           </div>
-          <div class="right" style="margin: 5px 0px">
+          <div class="right" style="margin: 5px 0px" v-if="perms.HR_PERSONAL_REGISTER">
             <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px" value="Adjuntar documento"
               :click="uploaderClick" v-on:input="changeImage($event)"></v-uploader>
           </div>
@@ -45,14 +45,16 @@
               <a v-if="o.tempFileDev" :href="`/wp-content/uploads/temp/${o.tempFileDev}`" target="_">Ver Documento</a>
               <a v-else :href="`/wp-content/uploads/movements/${o.filenameDev}`" target="_">Ver Documento</a>
             </div>
-            <div class="right" style="margin: 5px 0px">
+            <div class="right" style="margin: 5px 0px" v-if="perms.HR_PERSONAL_REGISTER">
               <v-uploader icon="fa-file" ref="uploader" domain="alter" style="margin-top: 10px"
                 value="Adjuntar documento" :click="uploaderClick" v-on:input="changeImage($event, true)"></v-uploader>
             </div>
           </v-fieldset>
         </v-fieldset>
         <v-fieldset legend="Recursos">
-          <label>Recurso:</label>
+
+          <v-template v-if="perms.HR_PERSONAL_REGISTER">
+          <label>Buscar Recurso:</label>
           <v-autocomplete queryEvent="enter" ref="resourceAutocomplete"
           :params="{personal:'<NONE>'}"
             placeholder="Ingrese mas de 2 letras y presione ENTER" minQueryLength="3"
@@ -66,6 +68,7 @@
           <div style="padding:10px 0px;text-align:right">
             <v-button value="Agregar" icon="fa-plus" @click="updateResource" />
           </div>
+</v-template>
           <v-table autoload="false" :scrollable="true" :style="{ maxHeight: maxHeight }" :value="filteredResources"
             row-style-class="row.synchronized?'green':(row.tmpId>0?'yellow':'')" row-key="resourceId"
             @row-select="selections.resource = $event.current">
