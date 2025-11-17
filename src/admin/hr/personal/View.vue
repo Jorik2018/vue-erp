@@ -30,7 +30,7 @@
         <div>{{ o.cargo || '---' }}</div>
         <label>Fecha Inicio Contrato:</label>
         <div>{{ o.fechaDeInicioContrato || '---' }}</div>
-        <label>Fecha Inicio OFIS:</label>
+        <label>Fecha Fin Contrato:</label>
         <div>{{ o.fechaDeInicioOfis || '---' }}</div>
         <label>Tipo Contrato:</label>
         <div>{{ o.tipoDeContrato || '---' }}</div>
