@@ -13,6 +13,7 @@
                     <v-button value="Eliminar" v-if="perms.HR_PERSONAL_ADMIN" icon="fa-trash" @click.prevent="destroy"
                         :disabled="!rowSelectedCount"></v-button>
                     <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh"></v-button>
+                    <v-button title="Descargar" icon="fa-download" @click.prevent="saveAss('/api/hr/personal',filters)"></v-button>
                 </template>
                 <template v-slot="{ row }">
                     <td width="80" class="center" header="ID">
