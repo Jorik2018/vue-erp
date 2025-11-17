@@ -34,7 +34,7 @@
           <input v-model="o.cargo" />
           <label>Fecha Inicio Contrato:</label>
           <v-calendar v-model="o.fechaDeInicioContrato" />
-          <label>Fecha Inicio OFIS:</label>
+          <label>Fecha Fin Contrato:</label>
           <v-calendar v-model="o.fechaDeInicioOfis" />
           <label>Tipo Contrato:</label>
           <v-select v-model="o.tipoDeContrato" required>

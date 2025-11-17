@@ -78,7 +78,7 @@
                         </v-filter>
                         {{ row.fechaDeInicioContrato }}
                     </td>
-                    <td width="90" header="Fecha Inicio Ofis" class="center">
+                    <td width="90" header="Fecha Fin Contrato" class="center">
                         <v-filter>
                             <input v-model="filters.fechaDeInicioOfis" />
                         </v-filter>
