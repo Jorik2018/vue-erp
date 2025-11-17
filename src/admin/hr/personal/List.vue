@@ -1,6 +1,7 @@
 <template>
     <ion-page>
         <v-form header="Personal" action="/admin/hr/personal">
+        
             <v-table :selectable="true" :row-style-class="rowClass" store="emed" :scrollable="true" rowKey="id"
                 :pagination="20" @updated="bindLinks($el)" :filters="filters" src="/api/hr/personal">
                 <template v-slot:header>
