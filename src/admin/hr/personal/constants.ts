@@ -93,7 +93,14 @@ export const organ = [
     }
 ]
 
-export const estado = [{id:"1", name:'Activo'},{id:"0", name:'Inactivo'}]
+export const estado = [
+    {id:"ACTIVO", name:'ACTIVO'},
+    {id:"VACACION", name:'VACACION'},
+    {id:"LICENCIA", name:'LICENCIA'},
+    {id:"RENUNCIA", name:'RENUNCIA'},
+    {id:"INACTIVO", name:'INACTIVO'},
+    {id:"BAJA", name:'BAJA'}
+]
 
 export const contract_type = [
     'INDETERMINADO',
