@@ -90,13 +90,13 @@
             <td header="Usuario Red" class="center" width="120">
               {{ row.usuarioDeRed }}
             </td>
-            <td header="Usuario Red" class="center" width="120">
+            <td header="Usuario SGD" class="center" width="120">
               {{ row.usuarioDeSgd }}
             </td>
-            <td header="Usuario Red" class="center" width="120">
+            <td header="Usuario SIAF" class="center" width="120">
               {{ row.usuarioDeSiaf }}
             </td>
-            <td header="Usuario Red" class="center" width="120">
+            <td header="Usuario SIGA" class="center" width="120">
               {{ row.usuarioDeSiga }}
             </td>
             <td header="Correo Institucional" width="220">
