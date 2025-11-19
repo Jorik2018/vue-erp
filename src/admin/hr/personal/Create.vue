@@ -12,8 +12,11 @@
         <v-fieldset legend="Datos generales" class="v-form">
           <label>Secuencia Funcional:</label>
           <input v-model="o.secuenciaFuncional" />
-          <label>Actividad:</label>
-          <v-textarea v-model="o.actividad" maxlength="100" />
+          <label>Unidad Ejecutora:</label>
+          <v-select v-model="o.actividad">
+              <option value="">Select One...</option>
+              <v-options :data="actividad"></v-options>
+          </v-select>
           <label>DNI:</label>
           <input v-model="o.dni" />
           <label>AIRHSP:</label>
@@ -73,14 +76,14 @@
 import { ui, pad } from 'isobit-ui'
 import axios from 'axios'
 import { onMounted, ref } from 'vue';
-import { contract_type, afp_onp, organ, estado } from './constants';
+import { contract_type, afp_onp, organ, estado, actividad } from './constants';
 
 export default ui({
   props: ["id"],
   data() {
     return {
       red: [],
-      contract_type, afp_onp, organ, estado
+      contract_type, afp_onp, organ, estado, actividad
     };
   },
   computed: {

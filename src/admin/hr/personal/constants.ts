@@ -110,6 +110,11 @@ export const contract_type = [
     'LOCADOR'
 ]
 
+export const actividad = [
+    'UE-1768',
+    'UE-1777'
+]
+
 export const afp_onp = [
     'ONP',
     'INTEGRA',

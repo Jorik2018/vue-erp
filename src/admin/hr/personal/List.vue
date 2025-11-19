@@ -1,7 +1,7 @@
 <template>
     <ion-page>
         <v-form header="Personal" action="/admin/hr/personal">
-        
+
             <v-table :selectable="true" :row-style-class="rowClass" store="emed" :scrollable="true" rowKey="id"
                 :pagination="20" @updated="bindLinks($el)" :filters="filters" src="/api/hr/personal">
                 <template v-slot:header>
@@ -14,7 +14,8 @@
                     <v-button value="Eliminar" v-if="perms.HR_PERSONAL_ADMIN" icon="fa-trash" @click.prevent="destroy"
                         :disabled="!rowSelectedCount"></v-button>
                     <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh"></v-button>
-                    <v-button title="Descargar" icon="fa-download" @click.prevent="saveAs('/api/hr/personal/download',filters)"></v-button>
+                    <v-button title="Descargar" icon="fa-download"
+                        @click.prevent="saveAs('/api/hr/personal/download', filters)"></v-button>
                 </template>
                 <template v-slot="{ row }">
                     <td width="80" class="center" header="ID">
@@ -29,9 +30,12 @@
                         </v-filter>
                         {{ row.secuenciaFuncional }}
                     </td>
-                    <td width="120" class="center" header="Actividad">
+                    <td width="120" class="center" header="Unidad Ejecutora">
                         <v-filter>
-                            <input v-model="filters.actividad" />
+                            <v-select v-model="filters.actividad">
+                                <option value="">Select One...</option>
+                                <v-options :data="actividad"></v-options>
+                            </v-select>
                         </v-filter>
                         {{ row.actividad }}
                     </td>
@@ -47,7 +51,7 @@
                         </v-filter>
                         {{ row.codigoAirhsp }}
                     </td>
-                    <td width="220" header="Apellidos Nombres" >
+                    <td width="220" header="Apellidos Nombres">
                         <v-filter>
                             <input v-model="filters.apellidosNombres" />
                         </v-filter>
@@ -55,20 +59,20 @@
                     </td>
                     <td width="220" header="Organo">
                         <v-filter>
-                                      <v-select v-model="filters.organoId" input="$refs.unidad.load({ organo: o.organoId })">
-                                        <option value="">Select One...</option>
-                                        <v-options store="organ" display-field="name" value-field="code"></v-options>
-                                      </v-select>
+                            <v-select v-model="filters.organoId" input="$refs.unidad.load({ organo: o.organoId })">
+                                <option value="">Select One...</option>
+                                <v-options store="organ" display-field="name" value-field="code"></v-options>
+                            </v-select>
                         </v-filter>
                         {{ row.organo }}
                     </td>
-                    <td width="220" header="Unidad Organica" >
+                    <td width="220" header="Unidad Organica">
                         <v-filter>
                             <input v-model="filters.unidadOrganica" />
                         </v-filter>
                         {{ row.unidadOrganica }}
                     </td>
-                    <td width="220" header="Cargo" >
+                    <td width="220" header="Cargo">
                         <v-filter>
                             <input v-model="filters.cargo" />
                         </v-filter>
@@ -86,7 +90,7 @@
                         </v-filter>
                         {{ row.fechaDeInicioOfis }}
                     </td>
-                    <td width="128" header="Tipo Contrato" class="center" >
+                    <td width="128" header="Tipo Contrato" class="center">
                         <v-filter>
                             <v-select v-model="filters.tipoDeContrato">
                                 <option value="">Select One...</option>
@@ -95,19 +99,19 @@
                         </v-filter>
                         {{ row.tipoDeContrato }}
                     </td>
-                    <td width="120" header="Clasificador Gasto Contrato"  class="center" >
+                    <td width="120" header="Clasificador Gasto Contrato" class="center">
                         <v-filter>
                             <input v-model="filters.clasificadorDeGastoContrato" />
                         </v-filter>
                         {{ row.clasificadorDeGastoContrato }}
                     </td>
-                    <td width="120" header="Clasificador Gasto Contrato" class="center" >
+                    <td width="120" header="Clasificador Gasto Contrato" class="center">
                         <v-filter>
                             <input v-model="filters.clasificadorDeGastoContrato" />
                         </v-filter>
                         {{ row.clasificadorDeGastoContrato }}
                     </td>
-                    <td width="80" header="Sistema Pensión" class="center" >
+                    <td width="80" header="Sistema Pensión" class="center">
                         <v-filter>
                             <v-select v-model="filters.afpOnp">
                                 <option value="">Select One...</option>
@@ -116,18 +120,18 @@
                         </v-filter>
                         {{ row.afpOnp }}
                     </td>
-                    <td width="120" header="CUSPP" class="center" >
+                    <td width="120" header="CUSPP" class="center">
                         <v-filter>
                             <input v-model="filters.nCuspp" />
                         </v-filter>
                         {{ row.nCuspp }}
                     </td>
-                    <td width="120" header="Estado" class="center" >
+                    <td width="120" header="Estado" class="center">
                         <v-filter>
-                                      <v-select v-model="filters.estado">
-              <option value="">Select One...</option>
-              <v-options :data="estado" display-field="name" value-field="id"></v-options>
-          </v-select>
+                            <v-select v-model="filters.estado">
+                                <option value="">Select One...</option>
+                                <v-options :data="estado" display-field="name" value-field="id"></v-options>
+                            </v-select>
                         </v-filter>
                         {{ row.estado }}
                     </td>
@@ -150,7 +154,7 @@
 </template>
 <script>
 import { ui } from 'isobit-ui'
-import { contract_type, afp_onp, organ, estado } from './constants';
+import { contract_type, afp_onp, organ, estado,actividad } from './constants';
 export default ui({
     setup() {
         const rowClass = (row) => {
@@ -160,7 +164,7 @@ export default ui({
         return { rowClass };
     },
     data() {
-        return { data: [], mode: 0, query: null, contract_type, afp_onp, organ, estado }
+        return { data: [], mode: 0, query: null, contract_type, afp_onp, organ, estado, actividad }
     },
     created() {
         //const me = this;
@@ -190,7 +194,7 @@ export default ui({
     computed: {
         editable() {
             const selected = this.getSelected()[0];
-            return selected ? 1 * /*selected.editable : null*/1:0;
+            return selected ? 1 * /*selected.editable : null*/1 : 0;
         }
     },
     methods: {
