@@ -111,7 +111,7 @@
             <td header="Numero Anexo" width="120" class="center">
               {{ row.numeroAnexo }}
             </td>
-            <td header="IP" width="120" class="center">
+            <td header="IP MAC" width="120" class="center">
               {{ row.ip }}
             </td>
             <td header="VPN Anydesk" width="120" class="center">
