@@ -32,7 +32,7 @@
                     </td>
                     <td width="120" class="center" header="Unidad Ejecutora">
                         <v-filter>
-                            <v-select v-model="filters.actividad">
+                            <v-select v-model="filters.actividad" input="$refs.organo.load({ ue: o.actividad })">
                                 <option value="">Select One...</option>
                                 <v-options :data="actividad"></v-options>
                             </v-select>
@@ -59,7 +59,7 @@
                     </td>
                     <td width="220" header="Organo">
                         <v-filter>
-                            <v-select v-model="filters.organoId" input="$refs.unidad.load({ organo: o.organoId })">
+                            <v-select v-model="filters.organoId" input="$refs.unidad.load({ organo: o.organoId })" ref="organo">
                                 <option value="">Select One...</option>
                                 <v-options store="organ" display-field="name" value-field="code"></v-options>
                             </v-select>
