@@ -24,7 +24,7 @@
           <label>Apellidos Nombres:</label>
           <v-textarea v-model="o.apellidosNombres" maxlength="200" />
           <label>Organo:</label>
-          <v-select v-model="o.organoId" required @input="$refs.unidad.load({ organo: o.organoId })" ref=""organo>
+          <v-select v-model="o.organoId" required @input="$refs.unidad.load({ organo: o.organoId })" ref="organo">
             <option value="">Select One...</option>
             <v-options store="organ" display-field="name" value-field="code"></v-options>
           </v-select>
