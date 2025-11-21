@@ -30,7 +30,7 @@
       <input v-model="o.numeroCelular" />
       <label>Numero Anexo:</label>
       <input v-model="o.numeroAnexo" />
-      <label>IP MAC:</lbabel>
+      <label>IP MAC:</label>
       <input v-model="o.ip" />
       <label>VPN Anydesk:</label>
       <input v-model="o.vpnAnydesk" />
