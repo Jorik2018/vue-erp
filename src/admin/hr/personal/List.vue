@@ -111,7 +111,7 @@
                         </v-filter>
                         {{ row.clasificadorDeGastoContrato }}
                     </td>
-                    <td width="80" header="Sistema Pensión" class="center">
+                    <td width="84" header="Sistema Pensión" class="center">
                         <v-filter>
                             <v-select v-model="filters.afpOnp">
                                 <option value="">Select One...</option>
