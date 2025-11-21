@@ -30,7 +30,7 @@
                         </v-filter>
                         {{ row.secuenciaFuncional }}
                     </td>
-                    <td width="100" class="center" header="Unidad Ejecutora">
+                    <td width="110" class="center" header="Unidad Ejecutora">
                         <v-filter>
                             <v-select v-model="filters.actividad" input="$refs.organo.load({ ue: o.actividad })">
                                 <option value="">Select One...</option>
