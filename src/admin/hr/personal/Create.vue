@@ -13,7 +13,7 @@
           <label>Secuencia Funcional:</label>
           <input v-model="o.secuenciaFuncional" />
           <label>Unidad Ejecutora:</label>
-          <v-select v-model="o.actividad" @input="$refs.organo.load({ ue: o.actividad })">
+          <v-select v-model="o.actividad" required @input="$refs.organo.load({ ue: o.actividad })">
               <option value="">Select One...</option>
               <v-options :data="actividad"></v-options>
           </v-select>
