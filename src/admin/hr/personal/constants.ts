@@ -115,6 +115,10 @@ export const actividad = [
     'UE-1777'
 ]
 
+export const service_equipment = [
+    'INSTITUCIONAL', 'ALQUILADO', 'PERSONAL'
+]
+
 export const afp_onp = [
     'ONP',
     'INTEGRA',

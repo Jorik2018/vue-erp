@@ -24,8 +24,11 @@
       <input v-model="o.usuarioDeSiga" />
       <label>Correo Institucional:</label>
       <input v-model="o.correoInstitucional" />
-      <label>Correo Grupo:</label>
-      <input v-model="o.correoGrupo" />
+      <label>Equipo:</label>
+      <v-select v-model="o.correoGrupo">
+          <option value="">Select One...</option>
+          <v-options :data="service_equipment"></v-options>
+      </v-select>
       <label>Numero Celular:</label>
       <input v-model="o.numeroCelular" />
       <label>Numero Anexo:</label>
@@ -53,14 +56,15 @@
 import { ui } from 'isobit-ui'
 import axios from 'axios'
 import { onMounted, ref } from 'vue';
-import { digital_certified } from './../constants';
+import { digital_certified, service_equipment } from './../constants';
 
 export default ui({
   props: ["id", "action"],
   data() {
     return {
       o: {},
-      digital_certified
+      digital_certified,
+      service_equipment
     };
   },
   setup({ id, action, app, router }) {

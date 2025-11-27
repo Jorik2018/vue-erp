@@ -102,7 +102,7 @@
             <td header="Correo Institucional" width="220">
               {{ row.correoInstitucional }}
             </td>
-            <td header="Correo Grupo" width="220">
+            <td header="Equipo" width="220">
               {{ row.correoGrupo }}
             </td>
             <td header="Numero Celular" width="120">
