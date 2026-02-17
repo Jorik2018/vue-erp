@@ -50,7 +50,8 @@
                         <v-filter>
                             <input v-model="filters.marca" />
                         </v-filter>
-                        {{ row.marca }}
+                        {{ row.marca }} 
+
                     </td>
                     <td width="260" header="Usuario" >
                         <v-filter>
@@ -59,6 +60,13 @@
                         <template v-if="row.dni">
                             {{ row.dni }}: {{ row.apellidosNombres }}
                         </template>
+                    </td>
+                    <td width="160" header="Observaciones" class="center">
+                        <v-filter>
+                            <input v-model="filters.observaciones" />
+                        </v-filter>
+                        {{ row.observaciones }} 
+                        
                     </td>
                 </template>
             </v-table>
