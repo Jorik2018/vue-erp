@@ -15,6 +15,7 @@
                     <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh"></v-button>
                     <v-button title="Descargar" icon="fa-download" @click.prevent="saveAs('/api/hr/resource/download',filters)"></v-button>
                 </template>
+                
                 <template v-slot="{ row }">
                     <td width="80" class="center" header="ID">
                         <v-filter>
