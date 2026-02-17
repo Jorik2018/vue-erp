@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /gestiondeindicadores/
+  
+  # Evita redirigir archivos existentes
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  
+  # Redirige todo al index.html
+  RewriteRule ^.*$ index.html [L,QSA]
+</IfModule>

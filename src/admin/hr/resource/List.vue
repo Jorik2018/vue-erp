@@ -46,6 +46,12 @@
                         </v-filter>
                         {{ row.modelo }}
                     </td>
+                    <td width="160" header="Marca" class="center">
+                        <v-filter>
+                            <input v-model="filters.marca" />
+                        </v-filter>
+                        {{ row.marca }}
+                    </td>
                     <td width="260" header="Usuario" >
                         <v-filter>
                             <input v-model="filters.user" />
