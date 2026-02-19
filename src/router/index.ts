@@ -192,7 +192,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/service/Create.vue')
       },
       {
-        path: 'hr/personal/service/:id', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
+        path: 'hr/personal/service/:id', props: true, meta: { perm: 'HR_RESOURCE_READ' },
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/service/Create.vue')
       },
       {
@@ -200,23 +200,24 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
       },
             {
-        path: 'hr/resource/:id', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
+        path: 'hr/resource/:id', props: true, meta: { perm: 'HR_RESOURCE_READ' },
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
       },
                   {
-        path: 'hr/resource/:id/edit', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
+        path: 'hr/resource/:id/edit', props: true, meta: { perm: 'HR_RESOURCE_REGISTER' },
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
       },
       {
-        path: 'hr/personal/resource/:id/edit', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
+        path: 'hr/personal/resource/:id/edit', props: true, meta: { perm: 'HR_RESOURCE_REGISTER' },
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
       },
+
       {
-        path: 'hr/resource', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
+        path: 'hr/resource', props: true, meta: { perm: 'HR_RESOURCE_READ' },
         component: () => import(/* webpackChunkName: "resource" */'../admin/hr/resource/List.vue')
       },
       {
-        path: 'hr/resource/create', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
+        path: 'hr/resource/create', props: true, meta: { perm: 'HR_RESOURCE_REGISTER' },
         component: () => import(/* webpackChunkName: "resource" */'../admin/hr/resource/Create.vue')
       },
       {
