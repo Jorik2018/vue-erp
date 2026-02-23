@@ -72,17 +72,19 @@
           label="VEA Materno" />
         <v-item v-if="perms.CANCER_READ" icon="fa-table" href="/admin/desarrollo-social/cancer" label="Cancer" />
         <v-item v-if="perms.HR_PERSONAL_READ" icon="fa-table" href="/admin/hr/personal" label="Personal" />
-        <v-item v-if="perms.HR_RESOURCE_READ" icon="fa-table" href="/admin/hr/resource" label="Recursos" >
-          <v-item v-if="perms.HR_RESOURCE_REGISTER" icon="fa-plus" href="/admin/hr/resource/create"
-            label="Agregar" />
+        <v-item v-if="perms.HR_RESOURCE_READ" icon="fa-table" href="/admin/hr/resource" label="Recursos">
+          <v-item v-if="perms.HR_RESOURCE_REGISTER" icon="fa-plus" href="/admin/hr/resource/create" label="Agregar" />
         </v-item>
-        <v-item v-if="perms.HR_MOVEMENT_READ" icon="fa-table" href="/admin/hr/movement" label="Movimientos" >
-          <v-item v-if="perms.HR_MOVEMENT_REGISTER" icon="fa-plus" href="/admin/hr/movement/create"
-            label="Agregar" />
+        <v-item v-if="perms.HR_MOVEMENT_READ" icon="fa-table" href="/admin/hr/movement" label="Movimientos">
+          <v-item v-if="perms.HR_MOVEMENT_REGISTER" icon="fa-plus" href="/admin/hr/movement/create" label="Agregar" />
         </v-item>
         <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/hr/employee" label="Empleados" />
-        <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/chd"
-          label="Constancia de Pago de Haberes y Descuentos" />
+        <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll" label="Panillas">
+
+          <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/create" label="Crear" />
+          <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/chd"
+            label="Constancia de Pago de Haberes y Descuentos" />
+        </v-item>
         <v-item v-if="perms.PREGNANT_READ" icon="fa-person-pregnant" href="/admin/desarrollo-social/pregnant"
           label="Gestantes" />
         <v-item icon="fa-exclamation-triangle" style="display: flex;">

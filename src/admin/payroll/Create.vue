@@ -1,36 +1,18 @@
 <template>
   <v-form header="Registrar Montos Anuales" action="/api/hr/employee">
     <div class="v-form" style="display: flex;flex-direction: column;flex:1">
-      <label>Empleado:</label>
-      <v-autocomplete placeholder="Ingrese mas de 2 letras y presione ENTER" src="api/hr/employee" v-model="o.employee">
-        <template v-slot:label="{ selected }">
-          {{ selected.code }}: {{ selected.fullName }}
-        </template>
-        <template v-slot="{ row }">
-          <a v-bind:href="'/admin/directorio/' + row.id" onclick="return false">
-            <span>{{ row.code }}</span>:
-            {{ row.fullName ? row.fullName.toUpperCase() : null }}
-          </a>
-        </template>
-      </v-autocomplete>
-      <v-autocomplete v-show="current" :keySet="keySet" pagination="20" ref="concept" src="api/hr/concept"
-        :params="{ type: current ? current.type : '0' }" @input="selectConcept" @escape="escape" style="color:black"
-        v-model="o.data" id="concepto">
-        <template v-slot:label="{ selected }">
-          {{ selected.name }}
-        </template>
-        <template v-slot="{ row }">
-          {{ row.name }}
-        </template>
-      </v-autocomplete>
       <div style="display: flex;flex-direction: row;">
         <div style="width: 100px;padding-right: 10px;">
           <label>Año:</label>
           <v-number v-model="o.year" required="true" class="center" type="number" />
         </div>
+        <div style="width: 100px;padding-right: 10px;">
+          <label>Mes:</label>
+          <v-number v-model="o.month" required="true" class="center" type="number" />
+        </div>
         <div
           style="display: flex; flex-grow: 1; margin-bottom: 3px; justify-content: space-between; align-items: flex-end;">
-          <v-button icon="fa fa-refresh" @click="refresh" :disabled="!(o.employee && o.year)" />
+          <v-button icon="fa fa-refresh" @click="refresh2" :disabled="!(o.month && o.year)" />
           <div>
             <v-button icon="fa fa-download" @click="download" style="margin-right: 10px;"
               :disabled="!(o.employee && o.year)" />
@@ -38,83 +20,47 @@
           </div>
         </div>
       </div>
-      <v-table :value="items" ref="table" :key="tableKey"
-        style="flex: 1;width: 100%;margin-top: 10px;height: 0px;" selectable="false" 
-        groups="type" scrollable="true" height="100">
-        <template v-slot="{ row }">
-          <td header="Concepto" :key="tk" width="160" :style="{ color: row.conceptId ? '' : 'red' }" :type="row.type"
-            :flag="row.flag" @click="sele($event, row)">
-            <span style="padding: 5px;" v-if="!(current === row)">{{ row.concept }}</span>
-          </td>
-          <td header="ENE" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[1]" />
-          </td>
-          <td header="FEB" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[2]" />
-          </td>
-          <td header="MAR" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[3]" />
-          </td>
-          <td header="ABR" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[4]" />
-          </td>
-          <td header="MAY" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[5]" />
-          </td>
-          <td header="JUN" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[6]" />
-          </td>
-          <td header="JUL" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[7]" />
-          </td>
-          <td header="AGO" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[8]" />
-          </td>
-          <td header="SEP" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[9]" />
-          </td>
-          <td header="OCT" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[10]" />
-          </td>
-          <td header="NOV" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[11]" />
-          </td>
-          <td header="DIC" width="130">
-            <v-number v-if="row.concept" placeholder="-" v-model.number="row[12]" />
-          </td>
-        </template>
-        <template v-slot:footer-group="{ group }">
-          <td :type="group.name" style="text-align: left;padding: 0px 5px;background-color: #b31111;color:white">
 
-            <div style="display:flex;align-items:center;">
-              {{ groups[group.name] }}
-              <span style="margin-left:auto" @click="addItem(group)">
-                <i class="fa fa-plus"
-                  style="cursor:pointer;border-radius:50%;background-color:#e7e7e7;color:#000000;padding:3px"></i>
-              </span>
-            </div>
+      <div data-v-72883fb8="" class="v-datatable undefined" height="100"
+        style="flex: 1 1 0%; margin-top: 10px; height: 0px;" v--popup="1"><!----><!---->
+        <div class="v-widget-header v-datatable-scrollable-header" style="position: relative; margin-right: 0px;">
+          <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
+            <table class="v-cloned-header v-table"><!---->
+              <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
+                <th v-for="(cell, colIndex) in row" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
+                  :rowspan="cell.rowspan"
+                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {}, backgroundColor: cell.backgroundColor, color: cell.color }">
+                  {{ cell.title }}
+                </th>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="v-datatable-scrollable-body" style="overflow-y: auto; flex: 1 1 0%;" @scroll="horizontalScroll">
+          <table class="v-table" style="width: 1720px;">
+            <tbody class="v-datatable-data"><!---->
 
-          </td>
-          <td v-for="n in 12" :key="n" style="padding: 0px 20px ">{{ group.values.sum(n).toFixed(2) }}</td>
+              <tr v-for="item in items" class=""><!---->
+                <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
+                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
 
+                  <v-number v-if="typeof cell.index === 'number'" placeholder="-"
+                    v-model.number="item.values[cell.index]" />
 
+                  <!-- STRING -->
+                  <input v-else type="text" v-model="item[cell.index]" class="v-input" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-        </template>
-        <template v-slot:extra-group="{ group, groups }">
-          <tr v-if="group.name == 2 || group.name == 5"
-            style="background-color: #585858 !important;color:white;font-weight: bolder; text-align: right;">
-            <td :type="group.name" class="center">TOTAL PAGO</td>
-            <td v-for="n in 12" :key="n" style="padding: 0px 20px ">
-              {{ (findGroup(groups, group.name - 1).values.sum(n) - group.values.sum(n)).toFixed(2) }}</td>
-          </tr>
-        </template>
-
-      </v-table>
     </div>
   </v-form>
 </template>
 <script>
-import { ui} from 'isobit-ui';
+import { ui } from 'isobit-ui';
 import axios from 'axios';
 const groups = {
   1: "INGRESOS",
@@ -126,31 +72,261 @@ const groups = {
 };
 export default ui({
   props: ["id"],
+  watch: {
+    items2: {
+      deep: true,
+      handler(val) {
+        const daysMonth = 30;
+        const headers = this.columnsHeaders;
+        val.forEach(row => {
+          const v = row.values;
+          //if (!row.manual[3]) 
+          v[2] = Math.trunc(
+            ((Number(v[0]) || 0) * (Number(v[1]) || 0) / daysMonth) * 100
+          ) / 100;
+
+          //if (!row.manual[4]) 
+          v[4] = Math.trunc(
+            ((Number(v[0]) || 0) * (Number(v[3]) || 0) / daysMonth) * 100
+          ) / 100;
+
+          v[6] = Math.trunc(
+            ((Number(v[0]) || 0) * (Number(v[5]) || 0) / daysMonth) * 100
+          ) / 100;
+
+          v[8] = Math.trunc(
+            ((Number(v[0]) || 0) * (Number(v[7]) || 0) / daysMonth) * 100
+          ) / 100;
+
+          v[10] = Math.trunc(
+            ((Number(v[0]) || 0) * (Number(v[9]) || 0) / daysMonth) * 100
+          ) / 100;
+
+          v[12] = Math.trunc(
+            ((Number(v[0]) || 0) * (Number(v[11]) || 0) / daysMonth) * 100
+          ) / 100;
+
+
+          v[16] = Math.trunc(
+            headers.reduce((acc, h, i) => {
+              if (h.type === 1) {
+                acc += Number(v[i]) || 0;
+              }
+              return acc;
+            }, 0) * 100
+          ) / 100;
+          v[21] = Math.trunc(
+            headers.reduce((acc, h, i) => {
+              if (h.type === 2) {
+                acc += Number(v[i]) || 0;
+              }
+              return acc;
+            }, 0) * 100
+          ) / 100;
+          v[23] = Math.trunc(
+            (v[21] + v[22]) * 100
+          ) / 100;
+          v[24] = Math.trunc(
+            (v[16] - v[21]) * 100
+          ) / 100;
+          v[25] = Math.trunc(
+            (v[16] - v[23] + v[23]) * 100
+          ) / 100;
+          v[32] = Math.trunc(
+            headers.reduce((acc, h, i) => {
+              if (h.type === 3) {
+                acc += Number(v[i]) || 0;
+              }
+              return acc;
+            }, 0) * 100
+          ) / 100;
+        });
+      }
+    }
+  },
   data() {
+
     return {
       tk: 0,
       keySet: 0,
       current: null,
       groups: groups,
       tableKey: 0,
-      items: this.completedata([]),
+      items: [],//this.completedata([]),
+      headers: [],
       o: {
         data: null,
         id: null,
         employee: null,
-        year: new Date().getFullYear()
+        year: new Date().getFullYear(),
+        month: new Date().getMonth() + 1,
       },
     };
   },
+  computed: {
+    headerRows() {
+      // Función para calcular profundidad máxima, ignorando headers que empiezan con '_'
+      const maxDepth = (headers) => {
+        return headers.reduce((max, h) => {
+          if (h.title.startsWith('_')) return max; // ignorar
+          if (h.children) {
+            return Math.max(max, 1 + maxDepth(h.children));
+          }
+          return Math.max(max, 1);
+        }, 0);
+      };
+
+      const depth = maxDepth(this.headers);
+
+      const rows = Array.from({ length: depth }, () => []);
+
+      const fillRows = (headers, level = 0) => {
+        headers.forEach(h => {
+          if (h.title.startsWith('_')) return; // ignorar
+          const hasChildren = h.children && h.children.some(c => !c.title.startsWith('_'));
+          const cell = {
+            title: h.title,
+            colspan: hasChildren ? h.children.filter(c => !c.title.startsWith('_')).length : 1,
+            rowspan: hasChildren ? 1 : depth - level,
+            width: hasChildren ? undefined : (h.width || 80),
+            backgroundColor: h.backgroundColor,
+            color: h.color,
+            index: h.index
+          };
+          rows[level].push(cell);
+          if (hasChildren) fillRows(h.children, level + 1);
+        });
+      };
+
+      fillRows(this.headers);
+
+      return rows;
+    },
+
+    visibleHeaders() {
+      const leaves = [];
+
+      const collect = (headers) => {
+        headers.forEach(h => {
+          if (h.children) {
+            collect(h.children);
+          } else {
+            if (!h.title.startsWith('_')) {
+              leaves.push(h);
+            }
+          }
+        });
+      };
+      collect(this.headers);
+      return leaves;
+    },
+
+    columnsHeaders() {
+      const leaves = [];
+
+      const collect = (headers) => {
+        headers.forEach(h => {
+          if (h.children) {
+            collect(h.children);
+          } else {
+            leaves.push(h);
+          }
+        });
+      };
+
+      collect(this.headers);
+      return leaves;
+    }
+
+  },
   mounted() {
     const me = this;
-    me.$el.addEventListener('click', (event) => {
+    /*me.$el.addEventListener('click', (event) => {
       if (!me.$refs.concept.$el.contains(event.target)) {
         me.current = null
       }
-    });
+    });*/
+    me.items = [];
+    me.handler(me.items);
   },
   methods: {
+    handler(val) {
+      const daysMonth = 30;
+      const headers = this.columnsHeaders;
+      val.forEach(row => {
+        const v = row.values;
+        //if (!row.manual[3]) 
+        v[2] = Math.trunc(
+          ((Number(v[0]) || 0) * (Number(v[1]) || 0) / daysMonth) * 100
+        ) / 100;
+
+        //if (!row.manual[4]) 
+        v[4] = Math.trunc(
+          ((Number(v[0]) || 0) * (Number(v[3]) || 0) / daysMonth) * 100
+        ) / 100;
+
+        v[6] = Math.trunc(
+          ((Number(v[0]) || 0) * (Number(v[5]) || 0) / daysMonth) * 100
+        ) / 100;
+
+        v[8] = Math.trunc(
+          ((Number(v[0]) || 0) * (Number(v[7]) || 0) / daysMonth) * 100
+        ) / 100;
+
+        v[10] = Math.trunc(
+          ((Number(v[0]) || 0) * (Number(v[9]) || 0) / daysMonth) * 100
+        ) / 100;
+
+        v[12] = Math.trunc(
+          ((Number(v[0]) || 0) * (Number(v[11]) || 0) / daysMonth) * 100
+        ) / 100;
+
+
+        v[16] = Math.trunc(
+          headers.reduce((acc, h) => {
+            if (h.type === 1) {
+              acc += Number(v[h.index]) || 0;
+            }
+            return acc;
+          }, 0) * 100
+        ) / 100;
+        v[21] = Math.trunc(
+          headers.reduce((acc, h) => {
+            if (h.type === 2) {
+              acc += Number(v[h.index]) || 0;
+            }
+            return acc;
+          }, 0) * 100
+        ) / 100;
+        v[23] = Math.trunc(
+          (v[21] + v[22]) * 100
+        ) / 100;
+        v[24] = Math.trunc(
+          (v[16] - v[21]) * 100
+        ) / 100;
+        v[25] = Math.trunc(
+          (v[16] - v[23] + v[23]) * 100
+        ) / 100;
+        v[32] = Math.trunc(
+          headers.reduce((acc, h) => {
+            if (h.type === 3) {
+              acc += Number(v[h.index]) || 0;
+            }
+            return acc;
+          }, 0) * 100
+        ) / 100;
+        v[39] = Math.trunc(
+          ((v[23] || 0) + (v[32] || 0) + (v[38] || 0)) * 100
+        ) / 100;
+        v[41] = Math.trunc(
+          ((v[16] || 0) - (v[39] || 0) + (v[40] || 0)) * 100
+        ) / 100;
+      });
+    },
+    horizontalScroll(e) {
+      const horizontal = e.target.scrollLeft;
+      this.$refs.header.style.transform = "translateX(-" + horizontal + "px)";
+    },
     escape() {
       const me = this;
       const concepto = this.$refs.concept.$el.querySelector('input');
@@ -184,7 +360,7 @@ export default ui({
     download() {
       const me = this;
       //me.saveAs('/api/payroll/chd', me.o);
-      
+
       axios.post('/api/payroll/chd', me.o).then(({ data }) => {
         const fo = new FormData();
         fo.append(
@@ -222,20 +398,19 @@ export default ui({
       return result;
     },
 
-    refresh() {
+    refresh2() {
       const me = this;
-      axios.post('/api/payroll/people', { ...this.o }).then(({ data }) => {
-        me.items = me.completedata(data);
-        me.tableKey++;
+      const o = me.o;
+      axios.get('/api/payroll/period', { params: o }).then(({ data }) => {
+        me.items = data.data;
+        me.headers = data.headers;
+        me.handler(me.items);
       });
     },
 
     save() {
-      const me=this;
-      console.log(this.o);
-      console.log(this.items);
+      const me = this;
       axios.post('/api/payroll/people', { ...this.o, items: this.items }).then(({ data }) => {
-        console.log(data);
         me.refresh();
       });
     },
@@ -318,10 +493,6 @@ export default ui({
 
 .v-datatable>.v-datatable-scrollable-body {
   flex: 1 !important;
-}
-
-.v-datatable>.v-widget-header {
-  height: 70px !important;
 }
 
 .v-datatable>.v-datatable-scrollable-body {

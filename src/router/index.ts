@@ -233,7 +233,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../admin/payroll/chd.vue')
       },
       {
-        path: 'payroll/people',
+        path: 'payroll/create',
         component: () => import('../admin/payroll/Create.vue')
       },
       {
