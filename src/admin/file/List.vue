@@ -83,14 +83,14 @@ export default ui({
         send(item) {
             const me = this;
             if (item.type == 'D') {
-                axios.post('http://38.250.135.118/api/obresec/file', { folder: item.path }, {
+                axios.post('/api/obresec/file', { folder: item.path }, {
                     headers: { authorization: "" }
                 }).then(({ data }) => {
                     me.o.files = data.data;
                     me.o.current = item.path;
                 });
             } else {
-                axios.post('http://38.250.135.118/api/obresec/file/download',
+                axios.post('/api/obresec/file/download',
                     { folder: item.path },
                     {
                         headers: { authorization: "" },

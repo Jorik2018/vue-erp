@@ -478,7 +478,7 @@ const router = createRouter({
   routes
 });
 
-(axios as any).VITE_LOGIN_PATH = '/simple-jwt-login/v1/auth';//import.meta.env.VITE_LOGIN_PATH;
+(axios as any).VITE_LOGIN_PATH = import.meta.env.VITE_LOGIN_PATH;//'/simple-jwt-login/v1/auth';//
 
 router.beforeEach((to, from, next) => {
   const pinia = getActivePinia();

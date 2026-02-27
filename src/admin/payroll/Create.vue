@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="v-datatable-scrollable-body" style="overflow-y: auto; flex: 1 1 0%;" @scroll="horizontalScroll">
-          <table class="v-table" style="width: 1720px;">
+          <table class="v-table" style="width: 0px;">
             <tbody class="v-datatable-data"><!---->
 
               <tr v-for="item in items" class=""><!---->
