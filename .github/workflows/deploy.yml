@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env
           echo "VITE_BASE=${{ secrets.VITE_BASE }}" >> .env
-          echo "VITE_LOGIN_PATH=${{ secrets.VITE_LOGIN_PATH }}" >> .env
+          echo "VITE_LOGIN_PATH=/simple-jwt-login/v1/auth" >> .env
           echo "VITE_REMOTE_PATH=${{ secrets.VITE_REMOTE_PATH }}" >> .env
           npm run build
 
