@@ -251,7 +251,7 @@ export default ui({
   },
   methods: {
     handler(val) {
-      const daysMonth = 30;
+      /*const daysMonth = 30;
       const headers = this.columnsHeaders;
       val.forEach(row => {
         const v = row.values;
@@ -321,7 +321,7 @@ export default ui({
         v[41] = Math.trunc(
           ((v[16] || 0) - (v[39] || 0) + (v[40] || 0)) * 100
         ) / 100;
-      });
+      });*/
     },
     horizontalScroll(e) {
       const horizontal = e.target.scrollLeft;
