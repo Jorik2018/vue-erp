@@ -79,7 +79,7 @@ export default ui({
         const daysMonth = 30;
         const headers = this.columnsHeaders;
         val.forEach(row => {
-          const v = row.values;
+          /*const v = row.values;
           //if (!row.manual[3]) 
           v[2] = Math.trunc(
             ((Number(v[0]) || 0) * (Number(v[1]) || 0) / daysMonth) * 100
@@ -139,7 +139,7 @@ export default ui({
               }
               return acc;
             }, 0) * 100
-          ) / 100;
+          ) / 100;*/
         });
       }
     }
