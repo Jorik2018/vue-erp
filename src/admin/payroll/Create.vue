@@ -44,7 +44,7 @@
                 <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
                   :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
 
-                  <v-number v-if="typeof cell.index === 'number'" placeholder="-"
+                  <v-number v-if="typeof cell.index === 'number'" placeholder="-" :title="'index='+cell.index"
                     v-model.number="item.values[cell.index]" />
 
                   <!-- STRING -->
