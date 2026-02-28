@@ -1,5 +1,5 @@
 <template>
-  <v-form header="Registrar Montos Anuales" action="/api/hr/employee">
+  <v-form header="Planilla de Pago" action="/api/hr/employee">
     <div class="v-form" style="display: flex;flex-direction: column;flex:1">
       <div style="display: flex;flex-direction: row;">
         <div style="width: 100px;padding-right: 10px;">
