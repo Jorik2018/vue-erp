@@ -14,6 +14,7 @@
           style="display: flex; flex-grow: 1; margin-bottom: 3px; justify-content: space-between; align-items: flex-end;">
           <v-button icon="fa fa-refresh" @click="refresh2" :disabled="!(o.month && o.year)" />
           <v-button icon="fa fa-person-circle-plus" @click="addPerson" :disabled="!(o.month && o.year)" />
+          <v-button icon="fa fa-square-plus" @click="addConcept" :disabled="!(o.month && o.year)" />
           <div>
             <v-button icon="fa fa-download" @click="download" style="margin-right: 10px;"
               :disabled="!(o.employee && o.year)" />
@@ -60,8 +61,8 @@
     </div>
   </v-form>
   <div style="display:none">
-    <v-dialog id="addPersonDlg" width="460">
-      <div v-if="showAddPersonModal" class="v-form">
+    <v-dialog id="addPerson" width="460">
+      <div v-if="showAddPerson" class="v-form">
         <div style="margin-bottom: 10px;"><input></div>
         <v-table :selectable="true" :scrollable="true" ref="personal" rowKey="id" :pagination="20" :filters="filters"
           src="/api/hr/personal">
@@ -80,6 +81,25 @@
             </td>
             <td width="220" header="Cargo">
               {{ row.cargo }}
+            </td>
+          </template>
+        </v-table>
+      </div>
+    </v-dialog>
+    <v-dialog id="addConcept" width="460">
+      <div v-if="showAddConcept" class="v-form">
+        <div style="margin-bottom: 10px;"><input></div>
+        <v-table :selectable="true" :scrollable="true" ref="concept" rowKey="id" :pagination="20" :filters="filters"
+          src="/api/payroll/concept">
+          <template v-slot="{ row }">
+            <td width="80" class="center" header="DNI">
+              {{ row.type }}
+            </td>
+            <td width="220" header="Nombre">
+              {{ row.name }}
+            </td>
+            <td width="220" header="Unidad Organica">
+              {{ row.unidadOrganica }}
             </td>
           </template>
         </v-table>
@@ -181,7 +201,8 @@ export default ui({
       groups: groups,
       tableKey: 0,
       items: [],//this.completedata([]),
-      showAddPersonModal: false,
+      showAddPerson: false,
+      showAddConcept: false,
       headers: [],
       o: {
         data: null,
@@ -281,8 +302,8 @@ export default ui({
   methods: {
     addPerson() {
       const me = this;
-      me.showAddPersonModal = true;
-      MsgBox(document.querySelector('#addPersonDlg'), (b) => {
+      me.showAddPerson = true;
+      MsgBox(document.querySelector('#addPerson'), (b) => {
         if (b == 1) {
           const persons = me.$refs.personal.load.selected.value;
           if (persons.length) {
@@ -291,6 +312,23 @@ export default ui({
             });
           } else {
             MsgBox("Debe seleccionar algun empleado de la lista");
+            return false;
+          }
+        }
+      }, ['Cancelar', 'Agregar']);
+    },
+    addConcept() {
+      const me = this;
+      me.showAddConcept = true;
+      MsgBox(document.querySelector('#addConcept'), (b) => {
+        if (b == 1) {
+          const persons = me.$refs.concept.load.selected.value;
+          if (persons.length) {
+            axios.post('/api/payroll/add-concept', { persons }).then(({ data }) => {
+              me.refresh2();
+            });
+          } else {
+            MsgBox("Debe seleccionar algun concept de la lista");
             return false;
           }
         }
