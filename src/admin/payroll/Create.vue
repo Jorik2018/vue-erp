@@ -64,7 +64,7 @@
     <v-dialog id="addPerson" width="460">
       <div v-if="showAddPerson" class="v-form">
         <div style="margin-bottom: 10px;"><input></div>
-        <v-table :selectable="true" :scrollable="true" ref="personal" rowKey="id" :pagination="20" :filters="filters"
+        <v-table :selectable="true" :scrollable="true" ref="personal" style="height:400px" rowKey="id" :pagination="20" :filters="filters"
           src="/api/hr/personal">
           <template v-slot="{ row }">
             <td width="80" class="center" header="DNI">
@@ -89,7 +89,7 @@
     <v-dialog id="addConcept" width="460">
       <div v-if="showAddConcept" class="v-form">
         <div style="margin-bottom: 10px;"><input></div>
-        <v-table :selectable="true" :scrollable="true" ref="concept" rowKey="id" :pagination="20" :filters="filters"
+        <v-table :selectable="true" :scrollable="true" ref="concept" style="height:400px" rowKey="id" :pagination="20" :filters="filters"
           src="/api/payroll/concept">
           <template v-slot="{ row }">
             <td width="80" class="center" header="DNI">
