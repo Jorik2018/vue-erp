@@ -11,7 +11,110 @@ mock.onGet('/api/users').reply(200, [
   { id: 2, name: 'Lucy' }
 ])
 
-mock.onPost('/simple-jwt-login/v1/auth').reply(config => {
+mock.onGet(/\/api\/hr\/personal\/\d+\/\d+/).reply(200, {
+    "data": [
+        {
+            "n": "1",
+            "secuenciaFuncional": null,
+            "actividad": "UE-1768",
+            "dni": "09689938",
+            "codigoAirhsp": null,
+            "apellidosNombres": "Cuya Camacho Adler Joel",
+            "organoId": "10",
+            "organo": "Direcci\u00f3n de Sistemas de Informaci\u00f3n Social",
+            "unidadId": "20",
+            "unidadOrganica": "Subdirecci\u00f3n de Sistemas de Informaci\u00f3n e Innovaci\u00f3n",
+            "cargo": "Subdirector (e)",
+            "fechaDeInicioContrato": null,
+            "fechaDeInicioOfis": null,
+            "tipoDeContrato": null,
+            "clasificadorDeGastoContrato": null,
+            "afpOnp": null,
+            "nCuspp": null,
+            "estado": "ACTIVO",
+            "insertDate": null,
+            "updatedDate": null,
+            "id": "1"
+        },
+        {
+            "n": "2",
+            "secuenciaFuncional": null,
+            "actividad": "UE-1768",
+            "dni": "22196399",
+            "codigoAirhsp": null,
+            "apellidosNombres": "Huaman Ayala Alejandro Fernando",
+            "organoId": "8",
+            "organo": "Direcci\u00f3n de Desarrollo de Capacidades y Despliegue Territorial",
+            "unidadId": "16",
+            "unidadOrganica": "Subdirecci\u00f3n de Despliegue Territorial",
+            "cargo": "Coordinador Territorial - Regi\u00f3n Ica de la Unidad Central de Focalizaci\u00f3n",
+            "fechaDeInicioContrato": null,
+            "fechaDeInicioOfis": null,
+            "tipoDeContrato": null,
+            "clasificadorDeGastoContrato": null,
+            "afpOnp": null,
+            "nCuspp": null,
+            "estado": "ACTIVO",
+            "insertDate": null,
+            "updatedDate": null,
+            "id": "2"
+        },
+        {
+            "n": "3",
+            "secuenciaFuncional": null,
+            "actividad": "UE-1768",
+            "dni": "06785645",
+            "codigoAirhsp": null,
+            "apellidosNombres": "De La Cruz Uca\u00f1an Alejandro Manuel",
+            "organoId": "12",
+            "organo": "Direcci\u00f3n de Relacionamiento y Comunicaci\u00f3n Social",
+            "unidadId": "27",
+            "unidadOrganica": "Subdirecci\u00f3n de Atenci\u00f3n al Ciudadano y Gesti\u00f3n de Solicitudes",
+            "cargo": "Especialista Legal",
+            "fechaDeInicioContrato": null,
+            "fechaDeInicioOfis": null,
+            "tipoDeContrato": null,
+            "clasificadorDeGastoContrato": null,
+            "afpOnp": null,
+            "nCuspp": null,
+            "estado": "ACTIVO",
+            "insertDate": null,
+            "updatedDate": null,
+            "id": "3"
+        },
+        {
+            "n": "20",
+            "secuenciaFuncional": null,
+            "actividad": "UE-1768",
+            "dni": "45487031",
+            "codigoAirhsp": null,
+            "apellidosNombres": "Gavilan Sanchez Cindy Atenas",
+            "organoId": "7",
+            "organo": "Oficina de Administraci\u00f3n",
+            "unidadId": "9",
+            "unidadOrganica": "Oficina de Administraci\u00f3n",
+            "cargo": "Jefa",
+            "fechaDeInicioContrato": null,
+            "fechaDeInicioOfis": null,
+            "tipoDeContrato": null,
+            "clasificadorDeGastoContrato": null,
+            "afpOnp": null,
+            "nCuspp": null,
+            "estado": "ACTIVO",
+            "insertDate": null,
+            "updatedDate": null,
+            "id": "20"
+        }
+    ],
+    "size": "148"
+})
+
+mock.onPost('/api/payroll/add-person').reply(config => {
+  console.log(config);
+  return [200, {}]
+});
+
+mock.onPost('/api/auth').reply(config => {
   const { username } = JSON.parse(config.data)
   return [200, {
     "success": true,

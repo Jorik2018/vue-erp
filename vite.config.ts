@@ -46,7 +46,6 @@ export default () => {
       vue(),
       legacy()
     ],
-
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),

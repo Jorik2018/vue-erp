@@ -13,6 +13,7 @@
         <div
           style="display: flex; flex-grow: 1; margin-bottom: 3px; justify-content: space-between; align-items: flex-end;">
           <v-button icon="fa fa-refresh" @click="refresh2" :disabled="!(o.month && o.year)" />
+          <v-button icon="fa fa-person-circle-plus" @click="addPerson" :disabled="!(o.month && o.year)" />
           <div>
             <v-button icon="fa fa-download" @click="download" style="margin-right: 10px;"
               :disabled="!(o.employee && o.year)" />
@@ -29,7 +30,7 @@
               <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
                 <th v-for="(cell, colIndex) in row" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
                   :rowspan="cell.rowspan"
-                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan>1?{width:'0px',textOverflow: 'ellipsis'}:{}), backgroundColor: cell.backgroundColor, color: cell.color }">
+                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
                   {{ cell.title }}
                 </th>
               </tr>
@@ -44,7 +45,7 @@
                 <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
                   :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
 
-                  <v-number v-if="typeof cell.index === 'number'" placeholder="-" :title="'index='+cell.index"
+                  <v-number v-if="typeof cell.index === 'number'" placeholder="-" :title="'index=' + cell.index"
                     v-model.number="item.values[cell.index]" />
 
                   <!-- STRING -->
@@ -58,9 +59,36 @@
 
     </div>
   </v-form>
+  <div style="display:none">
+    <v-dialog id="addPersonDlg" width="460">
+      <div v-if="showAddPersonModal" class="v-form">
+        <div style="margin-bottom: 10px;"><input></div>
+        <v-table :selectable="true" :scrollable="true" ref="personal" rowKey="id" :pagination="20" :filters="filters"
+          src="/api/hr/personal">
+          <template v-slot="{ row }">
+            <td width="80" class="center" header="DNI">
+              {{ row.dni }}
+            </td>
+            <td width="220" header="Apellidos Nombres">
+              {{ row.apellidosNombres }}
+            </td>
+            <td width="220" header="Organo">
+              {{ row.organo }}
+            </td>
+            <td width="220" header="Unidad Organica">
+              {{ row.unidadOrganica }}
+            </td>
+            <td width="220" header="Cargo">
+              {{ row.cargo }}
+            </td>
+          </template>
+        </v-table>
+      </div>
+    </v-dialog>
+  </div>
 </template>
 <script>
-import { ui } from 'isobit-ui';
+import { ui, MsgBox } from 'isobit-ui';
 import axios from 'axios';
 const groups = {
   1: "INGRESOS",
@@ -153,6 +181,7 @@ export default ui({
       groups: groups,
       tableKey: 0,
       items: [],//this.completedata([]),
+      showAddPersonModal: false,
       headers: [],
       o: {
         data: null,
@@ -250,6 +279,23 @@ export default ui({
     me.handler(me.items);
   },
   methods: {
+    addPerson() {
+      const me = this;
+      me.showAddPersonModal = true;
+      MsgBox(document.querySelector('#addPersonDlg'), (b) => {
+        if (b == 1) {
+          const persons = me.$refs.personal.load.selected.value;
+          if (persons.length) {
+            axios.post('/api/payroll/add-person', { persons }).then(({ data }) => {
+              me.refresh2();
+            });
+          } else {
+            MsgBox("Debe seleccionar algun empleado de la lista");
+            return false;
+          }
+        }
+      }, ['Cancelar', 'Agregar']);
+    },
     handler(val) {
       /*const daysMonth = 30;
       const headers = this.columnsHeaders;
