@@ -21,3 +21,21 @@ ion-content::part(scroll) {
     color: black;
   }
 }
+
+@media (max-width: 700px) {
+    .v-overlay {
+        padding: 40px 0px !important;
+    }
+    .v-msgbox {
+        margin: auto;
+    }
+}
+
+@media (min-width: 700px) {
+    .v-overlay {
+        padding: 40px;
+    }
+    .v-overlay > .v-msgbox {
+        margin: auto;
+    }
+}
