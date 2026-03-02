@@ -586,4 +586,7 @@ export default ui({
 .v-datatable .v-row {
   background-color: red !important;
 }
+.v-overlay > .v-dialog {
+  margin:auto !important;
+}
 </style>
