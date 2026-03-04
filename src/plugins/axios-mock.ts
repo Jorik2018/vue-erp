@@ -58,55 +58,35 @@ mock.onGet(/\/api\/hr\/personal\/\d+\/\d+/).reply(200, {
             "insertDate": null,
             "updatedDate": null,
             "id": "2"
-        },
-        {
-            "n": "3",
-            "secuenciaFuncional": null,
-            "actividad": "UE-1768",
-            "dni": "06785645",
-            "codigoAirhsp": null,
-            "apellidosNombres": "De La Cruz Uca\u00f1an Alejandro Manuel",
-            "organoId": "12",
-            "organo": "Direcci\u00f3n de Relacionamiento y Comunicaci\u00f3n Social",
-            "unidadId": "27",
-            "unidadOrganica": "Subdirecci\u00f3n de Atenci\u00f3n al Ciudadano y Gesti\u00f3n de Solicitudes",
-            "cargo": "Especialista Legal",
-            "fechaDeInicioContrato": null,
-            "fechaDeInicioOfis": null,
-            "tipoDeContrato": null,
-            "clasificadorDeGastoContrato": null,
-            "afpOnp": null,
-            "nCuspp": null,
-            "estado": "ACTIVO",
-            "insertDate": null,
-            "updatedDate": null,
-            "id": "3"
-        },
-        {
-            "n": "20",
-            "secuenciaFuncional": null,
-            "actividad": "UE-1768",
-            "dni": "45487031",
-            "codigoAirhsp": null,
-            "apellidosNombres": "Gavilan Sanchez Cindy Atenas",
-            "organoId": "7",
-            "organo": "Oficina de Administraci\u00f3n",
-            "unidadId": "9",
-            "unidadOrganica": "Oficina de Administraci\u00f3n",
-            "cargo": "Jefa",
-            "fechaDeInicioContrato": null,
-            "fechaDeInicioOfis": null,
-            "tipoDeContrato": null,
-            "clasificadorDeGastoContrato": null,
-            "afpOnp": null,
-            "nCuspp": null,
-            "estado": "ACTIVO",
-            "insertDate": null,
-            "updatedDate": null,
-            "id": "20"
         }
     ],
     "size": "148"
+})
+
+mock.onGet(/\/api\/payroll\/concept\/\d+\/\d+/).reply(200, {
+    "data": [
+        {
+            "id": "21",
+            "name": "JUDICIAL \/ COACTIVO",
+            "abbreviation": null,
+            "type_id": "6",
+            "weight": "184",
+            "pdt_code": null,
+            "description": null,
+            "created_date": "2026-02-28 11:56:53"
+        },
+        {
+            "id": "20",
+            "name": "ESSALUD + VIDA",
+            "abbreviation": null,
+            "type_id": "6",
+            "weight": "182",
+            "pdt_code": null,
+            "description": null,
+            "created_date": "2026-02-28 11:56:53"
+        }
+    ],
+    "size": 21
 })
 
 mock.onPost('/api/payroll/add-person').reply(config => {
@@ -154,6 +134,8 @@ const assignLeafIndexes = (headers) => {
   walk(headers);
   return headers;
 }
+
+
 
 function generarNombreCompleto() {
   const consonantes = 'bcdfghjklmnpqrstvwxyz';

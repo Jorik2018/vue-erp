@@ -128,19 +128,19 @@
                         <v-filter>
                             <input v-model="filters.equipo_tecnico" />
                         </v-filter>
-                        {{ row.equipo_tecnico }}
+                        {{ row.equipoTecnico }}
                     </td>
                     <td width="120" header="Creador" class=center>
                         <v-filter>
-                            <input v-model="filters.uid_insert" />
+                            <input v-model="filters.uidInsert" />
                         </v-filter>
-                        {{ row.uid_insert }}
+                        {{ row.uidInsert }}
                     </td>
                     <td width="120" header="Fecha Insert" class=center>
                         <v-filter>
-                            <input v-model="filters.insert_date" />
+                            <input v-model="filters.insertDate" />
                         </v-filter>
-                        {{ row.insert_date }}
+                        {{ row.insertDate }}
                     </td>
                 </template>
             </v-table>

@@ -86,25 +86,24 @@
         </v-table>
       </div>
     </v-dialog>
-    <v-dialog id="addConcept" width="460">
+    <v-panel header="Agregar Concepto" id="addConcept" width="460">
       <div v-if="showAddConcept" class="v-form">
-        <div style="margin-bottom: 10px;"><input></div>
-        <v-table :selectable="true" :scrollable="true" ref="concept" style="height:400px" rowKey="id" :pagination="20" :filters="filters"
+        <label>Concepto:</label>
+        <v-table :selectable="true" :scrollable="true" ref="concept" style="height:300px" rowKey="id" :pagination="20" :filters="filters"
           src="/api/payroll/concept">
           <template v-slot="{ row }">
-            <td width="80" class="center" header="DNI">
-              {{ row.type }}
+            <td width="80" class="center" header="Tipo">
+              {{ row.type_id }}
             </td>
             <td width="220" header="Nombre">
               {{ row.name }}
             </td>
-            <td width="220" header="Unidad Organica">
-              {{ row.unidadOrganica }}
-            </td>
           </template>
         </v-table>
+        <label>Valor:</label>
+        <v-number v-model="concept.amount"/>
       </div>
-    </v-dialog>
+    </v-panel>
   </div>
 </template>
 <script>
@@ -196,6 +195,7 @@ export default ui({
 
     return {
       tk: 0,
+      concept:{amount:null},
       keySet: 0,
       current: null,
       groups: groups,
@@ -585,8 +585,5 @@ export default ui({
 
 .v-datatable .v-row {
   background-color: red !important;
-}
-.v-overlay > .v-dialog {
-  margin:auto !important;
 }
 </style>
