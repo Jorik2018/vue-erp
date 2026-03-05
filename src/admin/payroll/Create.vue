@@ -64,8 +64,8 @@
     <v-dialog id="addPerson" width="460">
       <div v-if="showAddPerson" class="v-form">
         <div style="margin-bottom: 10px;"><input></div>
-        <v-table :selectable="true" :scrollable="true" ref="personal" style="height:400px" rowKey="id" :pagination="20" :filters="filters"
-          src="/api/hr/personal">
+        <v-table :selectable="true" :scrollable="true" ref="personal" style="height:400px" rowKey="id" :pagination="20"
+          :filters="filters" src="/api/hr/personal">
           <template v-slot="{ row }">
             <td width="80" class="center" header="DNI">
               {{ row.dni }}
@@ -88,20 +88,18 @@
     </v-dialog>
     <v-panel header="Agregar Concepto" id="addConcept" width="460">
       <div v-if="showAddConcept" class="v-form">
+        <label>Tipo:</label>
+        <v-select v-model="o.type" name="event" required>
+          <option value="">Select One...</option>
+          <v-options :data="conceptType" value-field="name"></v-options>
+        </v-select>
         <label>Concepto:</label>
-        <v-table :selectable="true" :scrollable="true" ref="concept" style="height:300px" rowKey="id" :pagination="20" :filters="filters"
-          src="/api/payroll/concept">
-          <template v-slot="{ row }">
-            <td width="80" class="center" header="Tipo">
-              {{ row.type_id }}
-            </td>
-            <td width="220" header="Nombre">
-              {{ row.name }}
-            </td>
-          </template>
-        </v-table>
+        <v-select ref="concept" :disabled="!o.type" v-model="o.concept">
+          <option value="">Select One...</option>
+          <v-options name="concept" store="concept" value-field="id" display-field="name" />
+        </v-select>
         <label>Valor:</label>
-        <v-number v-model="concept.amount"/>
+        <v-number v-model="concept.amount" />
       </div>
     </v-panel>
   </div>
@@ -195,7 +193,13 @@ export default ui({
 
     return {
       tk: 0,
-      concept:{amount:null},
+      concept: { amount: null },
+      conceptType: [
+        { id: 1, name: 'INGRESOS' },
+        { id: 2, name: 'INGRESOS' },
+        { id: 3, name: 'EGRESOS QUE AFECTAN LA BASE IMPONIBLE' },
+        { id: 4, name: 'INGRESOS' }
+      ],
       keySet: 0,
       current: null,
       groups: groups,
@@ -324,7 +328,7 @@ export default ui({
         if (b == 1) {
           const concepts = me.$refs.concept.load.selected.value;
           if (concepts.length) {
-            const data = { concepts, amount: me.concept.amount, type: 'PN', targetId: 1};
+            const data = { concepts, amount: me.concept.amount, type: 'PN', targetId: 1 };
             console.log(data);
             axios.post('/api/payroll/add-concept', data).then(({ data }) => {
               me.refresh2();
