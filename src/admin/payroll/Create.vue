@@ -322,9 +322,11 @@ export default ui({
       me.showAddConcept = true;
       MsgBox(document.querySelector('#addConcept'), (b) => {
         if (b == 1) {
-          const persons = me.$refs.concept.load.selected.value;
-          if (persons.length) {
-            axios.post('/api/payroll/add-concept', { persons }).then(({ data }) => {
+          const concepts = me.$refs.concept.load.selected.value;
+          if (concepts.length) {
+            const data = { concepts, amount: me.concept.amount };
+            console.log(data);
+            axios.post('/api/payroll/add-concept', data).then(({ data }) => {
               me.refresh2();
             });
           } else {
