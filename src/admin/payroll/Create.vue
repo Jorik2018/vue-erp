@@ -324,7 +324,7 @@ export default ui({
         if (b == 1) {
           const concepts = me.$refs.concept.load.selected.value;
           if (concepts.length) {
-            const data = { concepts, amount: me.concept.amount };
+            const data = { concepts, amount: me.concept.amount, type: 'PN', targetId: 1};
             console.log(data);
             axios.post('/api/payroll/add-concept', data).then(({ data }) => {
               me.refresh2();
