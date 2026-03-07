@@ -63,6 +63,59 @@ mock.onGet(/\/api\/hr\/personal\/\d+\/\d+/).reply(200, {
     "size": "148"
 })
 
+mock.onGet(/\/api\/payroll\/\d+\/personal/).reply(200, {
+    "data": [
+        {
+            "n": "1",
+            "secuenciaFuncional": null,
+            "actividad": "UE-1768",
+            "code": "09689938",
+            "codigoAirhsp": null,
+            "fullName": "Cuya Camacho Adler Joel",
+            "organoId": "10",
+            "organo": "Direcci\u00f3n de Sistemas de Informaci\u00f3n Social",
+            "unidadId": "20",
+            "unidadOrganica": "Subdirecci\u00f3n de Sistemas de Informaci\u00f3n e Innovaci\u00f3n",
+            "cargo": "Subdirector (e)",
+            "fechaDeInicioContrato": null,
+            "fechaDeInicioOfis": null,
+            "tipoDeContrato": null,
+            "clasificadorDeGastoContrato": null,
+            "afpOnp": null,
+            "nCuspp": null,
+            "estado": "ACTIVO",
+            "insertDate": null,
+            "updatedDate": null,
+            "id": "1"
+        },
+        {
+            "n": "2",
+            "secuenciaFuncional": null,
+            "actividad": "UE-1768",
+            "code": "22196399",
+            "codigoAirhsp": null,
+            "fullName": "Huaman Ayala Alejandro Fernando",
+            "organoId": "8",
+            "organo": "Direcci\u00f3n de Desarrollo de Capacidades y Despliegue Territorial",
+            "unidadId": "16",
+            "unidadOrganica": "Subdirecci\u00f3n de Despliegue Territorial",
+            "cargo": "Coordinador Territorial - Regi\u00f3n Ica de la Unidad Central de Focalizaci\u00f3n",
+            "fechaDeInicioContrato": null,
+            "fechaDeInicioOfis": null,
+            "tipoDeContrato": null,
+            "clasificadorDeGastoContrato": null,
+            "afpOnp": null,
+            "nCuspp": null,
+            "estado": "ACTIVO",
+            "insertDate": null,
+            "updatedDate": null,
+            "id": "2"
+        }
+    ],
+    "size": "148"
+})
+
+
 mock.onGet(/\/api\/payroll\/concept\/\d+\/\d+/).reply(200, {
     "data": [
         {

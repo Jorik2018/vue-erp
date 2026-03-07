@@ -97,12 +97,16 @@
         <label>Tipo:</label>
         <v-select v-model="o.type" name="event" required>
           <option value="">Select One...</option>
-          <v-options :data="conceptType" value-field="name"></v-options>
+          <v-options :data="conceptType" value-field="id" display-field="name"></v-options>
         </v-select>
         <label>Persona:</label>
         <v-select v-model="o.target" name="event" required>
           <option value="">Select One...</option>
-          <v-options value-field="name" src="/api/payroll/1/personal"></v-options>
+          <v-options value-field="code" src="/api/payroll/1/personal">
+            <template #default="{ item }">
+              👤 {{ item.code }}, {{ item.fullName }}
+            </template>
+          </v-options>
         </v-select>
         <label>Concepto:</label>
         <v-select ref="concept" :disabled="!o.type" v-model="o.concept">
@@ -608,5 +612,17 @@ export default ui({
 
 .v-datatable .v-row {
   background-color: red !important;
+}
+</style>
+<style>
+.v-msgbox > div > div > .v-panel-titlebar {
+  background: unset !important;
+    color: black;
+    border: none;
+}
+.v-msgbox > div> div> .v-panel-titlebar > span {
+    margin: 0px 0px 20px !important;
+    padding: 0px !important;
+    font-size: 120%;
 }
 </style>
