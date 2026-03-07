@@ -88,17 +88,28 @@
     </v-dialog>
     <v-panel header="Agregar Concepto" id="addConcept" width="460">
       <div v-if="showAddConcept" class="v-form">
+        <label>Tipo Destino:</label>
+        <v-select v-model="o.targetType" name="event" required>
+          <option value="">Select One...</option>
+          <v-options :data="targetType" value-field="id" display-field="name"></v-options>
+        </v-select>
+
         <label>Tipo:</label>
         <v-select v-model="o.type" name="event" required>
           <option value="">Select One...</option>
           <v-options :data="conceptType" value-field="name"></v-options>
+        </v-select>
+        <label>Persona:</label>
+        <v-select v-model="o.target" name="event" required>
+          <option value="">Select One...</option>
+          <v-options value-field="name" src="/api/payroll/1/personal"></v-options>
         </v-select>
         <label>Concepto:</label>
         <v-select ref="concept" :disabled="!o.type" v-model="o.concept">
           <option value="">Select One...</option>
           <v-options name="concept" store="concept" value-field="id" display-field="name" />
         </v-select>
-        <label>Valor:</label>
+        <label>Monto:</label>
         <v-number v-model="concept.amount" />
       </div>
     </v-panel>
@@ -199,6 +210,12 @@ export default ui({
         { id: 2, name: 'INGRESOS' },
         { id: 3, name: 'EGRESOS QUE AFECTAN LA BASE IMPONIBLE' },
         { id: 4, name: 'INGRESOS' }
+      ],
+      targetType: [
+        { id: 'TP', name: 'TIPO PLANILLA' },
+        { id: 'NR', name: 'NIVEL REMUNERATIVO' },
+        { id: 'PE', name: 'PERSONAL' },
+        { id: 'SP', name: 'SISTEMA DE PENSION' }
       ],
       keySet: 0,
       current: null,
