@@ -88,19 +88,14 @@
     </v-dialog>
     <v-panel header="Agregar Concepto" id="addConcept" width="460">
       <div v-if="showAddConcept" class="v-form">
-        <label>Tipo Destino:</label>
-        <v-select v-model="o.targetType" name="event" required>
+        <v-fieldset legend="Destino">
+        <label>Tipo:</label>
+        <v-select v-model="concept.targetType" name="event" required>
           <option value="">Select One...</option>
           <v-options :data="targetType" value-field="id" display-field="name"></v-options>
         </v-select>
-
-        <label>Tipo:</label>
-        <v-select v-model="o.type" name="event" required>
-          <option value="">Select One...</option>
-          <v-options :data="conceptType" value-field="id" display-field="name"></v-options>
-        </v-select>
         <label>Persona:</label>
-        <v-select v-model="o.target" name="event" required>
+        <v-select v-model="concept.target" name="event" required>
           <option value="">Select One...</option>
           <v-options value-field="code" src="/api/payroll/1/personal">
             <template #default="{ item }">
@@ -108,11 +103,19 @@
             </template>
           </v-options>
         </v-select>
+      </v-fieldset>
+      <v-fieldset legend="Concepto">
+        <label>Tipo:</label>
+        <v-select v-model="concept.type" name="event" required>
+          <option value="">Select One...</option>
+          <v-options :data="conceptType" value-field="id" display-field="name"></v-options>
+        </v-select>
         <label>Concepto:</label>
-        <v-select ref="concept" :disabled="!o.type" v-model="o.concept">
+        <v-select ref="concept" :disabled="!concept.type" v-model="concept.concept">
           <option value="">Select One...</option>
           <v-options name="concept" store="concept" value-field="id" display-field="name" />
         </v-select>
+        </v-fieldset>
         <label>Monto:</label>
         <v-number v-model="concept.amount" />
       </div>
@@ -208,7 +211,7 @@ export default ui({
 
     return {
       tk: 0,
-      concept: { amount: null },
+      concept: { },
       conceptType: [
         { id: 1, name: 'INGRESOS' },
         { id: 2, name: 'INGRESOS' },
@@ -345,17 +348,13 @@ export default ui({
     addConcept() {
       const me = this;
       me.showAddConcept = true;
-      MsgBox(document.querySelector('#addConcept'), (b) => {
+      MsgBox(document.querySelector('#addConcept'), async (b) => {
         if (b == 1) {
-          const concepts = me.$refs.concept.load.selected.value;
-          if (concepts.length) {
-            const data = { concepts, amount: me.concept.amount, type: 'PN', targetId: 1 };
-            console.log(data);
-            axios.post('/api/payroll/add-concept', data).then(({ data }) => {
-              me.refresh2();
-            });
-          } else {
-            MsgBox("Debe seleccionar algun concept de la lista");
+          try {
+            const { data } = await axios.post('/api/payroll/add-concept', me.concept);
+            me.refresh2();
+          } catch (e) {
+            console.error(e);
             return false;
           }
         }
