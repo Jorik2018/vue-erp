@@ -44,7 +44,8 @@
 
               <tr v-for="item in items" class=""><!---->
                 <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
-                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
+                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
+                  :class="cell.class">
 
                   <v-number v-if="typeof cell.index === 'number'" placeholder="-" :title="'index=' + cell.index"
                     v-model.number="item.values[cell.index]" />
@@ -97,7 +98,7 @@
         <label>Persona:</label>
         <v-select v-model="concept.target" name="event" required>
           <option value="">Select One...</option>
-          <v-options value-field="code" src="/api/payroll/1/personal">
+          <v-options value-field="id" src="/api/payroll/1/personal">
             <template #default="{ item }">
               👤 {{ item.code }}, {{ item.fullName }}
             </template>
