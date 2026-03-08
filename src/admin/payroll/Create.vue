@@ -23,8 +23,9 @@
         </div>
       </div>
 
-      <div data-v-72883fb8="" class="v-datatable undefined" height="100"
-        style="flex: 1 1 0%; margin-top: 10px; height: 0px;" v--popup="1"><!----><!---->
+      <div style="display:flex;flex-direction:row;height: -webkit-fill-available;">
+      <div data-v-72883fb8="" class="v-datatable undefined" 
+        style="width:300px;flex:0 0 300px; margin-top: 10px; height: 400px;min-width: unset;min-height: -webkit-fill-available;" v--popup="1"><!----><!---->
         <div class="v-widget-header v-datatable-scrollable-header" style="position: relative; margin-right: 0px;">
           <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
             <table class="v-cloned-header v-table"><!---->
@@ -38,7 +39,42 @@
             </table>
           </div>
         </div>
-        <div class="v-datatable-scrollable-body" style="overflow-y: auto; flex: 1 1 0%;" @scroll="horizontalScroll">
+        <div class="v-datatable-scrollable-body" ref="body1" style="overflow-y: auto; flex: 1 1 0%;" @scroll="onScrolling($event,1)">
+          <table class="v-table" style="width: 0px;">
+            <tbody class="v-datatable-data"><!---->
+
+              <tr v-for="item in items" class=""><!---->
+                <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
+                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
+                  :class="cell.class">
+
+                  <v-number v-if="typeof cell.index === 'number'" placeholder="-" :title="'index=' + cell.index"
+                    v-model.number="item.values[cell.index]" />
+
+                  <!-- STRING -->
+                  <input v-else type="text" v-model="item[cell.index]" class="v-input" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div data-v-72883fb8="" class="v-datatable undefined" 
+        style="flex: 1; margin-top: 10px; height: 400px;min-width: unset;min-height: -webkit-fill-available;" v--popup="1"><!----><!---->
+        <div class="v-widget-header v-datatable-scrollable-header" style="position: relative; margin-right: 0px;">
+          <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
+            <table class="v-cloned-header v-table"><!---->
+              <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
+                <th v-for="(cell, colIndex) in row" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
+                  :rowspan="cell.rowspan"
+                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
+                  {{ cell.title }}
+                </th>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="v-datatable-scrollable-body" ref="body2" style="overflow-y: auto; flex: 1 1 0%;" @scroll="onScrolling($event,2)">
           <table class="v-table" style="width: 0px;">
             <tbody class="v-datatable-data"><!---->
 
@@ -59,6 +95,9 @@
         </div>
       </div>
 
+ </div>
+
+ 
     </div>
   </v-form>
   <div style="display:none">
@@ -210,7 +249,7 @@ export default ui({
   },
   data() {
 
-    return {
+    return {syncingScroll:false,
       tk: 0,
       concept: { },
       conceptType: [
@@ -434,10 +473,29 @@ export default ui({
         ) / 100;
       });*/
     },
-    horizontalScroll(e) {
-      const horizontal = e.target.scrollLeft;
-      this.$refs.header.style.transform = "translateX(-" + horizontal + "px)";
-    },
+onScrolling(e, tableId) {
+
+    const body = e.target
+
+    // horizontal header sync
+    const horizontal = body.scrollLeft
+    const header = body.previousElementSibling.children[0]
+    header.style.transform = "translateX(-" + horizontal + "px)"
+
+    // prevent infinite loop
+    if (this.syncingScroll) return
+    this.syncingScroll = true
+
+    const other = tableId === 1 ? this.$refs.body2 : this.$refs.body1
+
+    if (other) {
+      other.scrollTop = body.scrollTop
+    }
+
+    requestAnimationFrame(()=>{
+      this.syncingScroll = false
+    })
+  },
     escape() {
       const me = this;
       const concepto = this.$refs.concept.$el.querySelector('input');
