@@ -15,6 +15,8 @@
           <v-button icon="fa fa-refresh" @click="refresh2" :disabled="!(o.month && o.year)" />
           <v-button icon="fa fa-person-circle-plus" @click="addPerson" :disabled="!(o.month && o.year)" />
           <v-button icon="fa fa-square-plus" @click="addConcept" :disabled="!(o.month && o.year)" />
+                              <v-button title="Descargar" icon="fa-download"
+                        @click.prevent="saveAs('/api/payroll/download', filters)"></v-button>
           <div>
             <v-button icon="fa fa-download" @click="download" style="margin-right: 10px;"
               :disabled="!(o.employee && o.year)" />
