@@ -24,78 +24,99 @@
       </div>
 
       <div style="display:flex;flex-direction:row;height: -webkit-fill-available;">
-      <div data-v-72883fb8="" class="v-datatable undefined" 
-        style="width:300px;flex:0 0 300px; margin-top: 10px; height: 400px;min-width: unset;min-height: -webkit-fill-available;" v--popup="1"><!----><!---->
-        <div class="v-widget-header v-datatable-scrollable-header" style="position: relative; margin-right: 0px;">
-          <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
-            <table class="v-cloned-header v-table"><!---->
-              <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
-                <th v-for="(cell, colIndex) in row" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
-                  :rowspan="cell.rowspan"
-                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
-                  {{ cell.title }}
-                </th>
-              </tr>
+        <div data-v-72883fb8="" class="v-datatable undefined" 
+          style="width:300px;flex:0 0 300px; margin-top: 10px; height: 400px;min-width: unset;min-height: -webkit-fill-available;" v--popup="1"><!----><!---->
+          <div class="v-widget-header v-datatable-scrollable-header" style="position: relative; margin-right: 0px;">
+            <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
+              <table class="v-cloned-header v-table"><!---->
+                
+                <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
+                    <th style="width:30px; min-width: 30px" rowspan="2">
+  <input
+    type="checkbox"
+   
+    @click.stop
+    @change="toggleCheckbox(-1,$event)"
+  >
+</th>
+                  <th v-for="(cell, colIndex) in row" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
+                    :rowspan="cell.rowspan"
+                    :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
+                    {{ cell.title }}
+                  </th>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="v-datatable-scrollable-body" ref="body1" style="overflow-y: auto; flex: 1 1 0%;" @scroll="onScrolling($event,1)">
+            <table class="v-table" style="width: 0px;">
+              <tbody class="v-datatable-data"><!---->
+
+                <tr v-for="(item,rowIndex) in items"
+  :key="rowIndex"
+  :class="{ 'v-selected': selectedRows.has(rowIndex) }"
+  @click="toggleRow(rowIndex)">
+    <td style="width:30px">
+  <input
+    type="checkbox"
+   :checked="selectedRows.has(rowIndex)"
+    @click.stop
+    @change="toggleCheckbox(rowIndex,$event)"
+  >
+</td>
+                  <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
+                    :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
+                    :class="cell.class">
+
+                    <v-number v-if="typeof cell.index === 'number'" placeholder="-" :title="'index=' + cell.index"
+                      v-model.number="item.values[cell.index]" />
+
+                    <!-- STRING -->
+                    <input v-else type="text" v-model="item[cell.index]" class="v-input" />
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
-        <div class="v-datatable-scrollable-body" ref="body1" style="overflow-y: auto; flex: 1 1 0%;" @scroll="onScrolling($event,1)">
-          <table class="v-table" style="width: 0px;">
-            <tbody class="v-datatable-data"><!---->
+        <div data-v-72883fb8="" class="v-datatable undefined" 
+          style="flex: 1; margin-top: 10px; height: 400px;min-width: unset;min-height: -webkit-fill-available;" v--popup="1"><!----><!---->
+          <div class="v-widget-header v-datatable-scrollable-header" style="position: relative; margin-right: 0px;">
+            <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
+              <table class="v-cloned-header v-table"><!---->
+                <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
+                  <th v-for="(cell, colIndex) in row" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
+                    :rowspan="cell.rowspan"
+                    :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
+                    {{ cell.title }}
+                  </th>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="v-datatable-scrollable-body" ref="body2" style="overflow-y: auto; flex: 1 1 0%;" @scroll="onScrolling($event,2)">
+            <table class="v-table" style="width: 0px;">
+              <tbody class="v-datatable-data"><!---->
 
-              <tr v-for="item in items" class=""><!---->
-                <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
-                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
-                  :class="cell.class">
+                <tr v-for="(item,rowIndex) in items" :key="rowIndex"
+  :class="{ 'v-selected': selectedRows.has(rowIndex) }" @click="toggleRow(rowIndex)">
 
-                  <v-number v-if="typeof cell.index === 'number'" placeholder="-" :title="'index=' + cell.index"
-                    v-model.number="item.values[cell.index]" />
+                  <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
+                    :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
+                    :class="cell.class">
 
-                  <!-- STRING -->
-                  <input v-else type="text" v-model="item[cell.index]" class="v-input" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div data-v-72883fb8="" class="v-datatable undefined" 
-        style="flex: 1; margin-top: 10px; height: 400px;min-width: unset;min-height: -webkit-fill-available;" v--popup="1"><!----><!---->
-        <div class="v-widget-header v-datatable-scrollable-header" style="position: relative; margin-right: 0px;">
-          <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
-            <table class="v-cloned-header v-table"><!---->
-              <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
-                <th v-for="(cell, colIndex) in row" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
-                  :rowspan="cell.rowspan"
-                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
-                  {{ cell.title }}
-                </th>
-              </tr>
+                    <v-number v-if="typeof cell.index === 'number'" placeholder="-" :title="'index=' + cell.index"
+                      v-model.number="item.values[cell.index]" />
+
+                    <!-- STRING -->
+                    <input v-else type="text" v-model="item[cell.index]" class="v-input" />
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
-        <div class="v-datatable-scrollable-body" ref="body2" style="overflow-y: auto; flex: 1 1 0%;" @scroll="onScrolling($event,2)">
-          <table class="v-table" style="width: 0px;">
-            <tbody class="v-datatable-data"><!---->
-
-              <tr v-for="item in items" class=""><!---->
-                <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
-                  :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
-                  :class="cell.class">
-
-                  <v-number v-if="typeof cell.index === 'number'" placeholder="-" :title="'index=' + cell.index"
-                    v-model.number="item.values[cell.index]" />
-
-                  <!-- STRING -->
-                  <input v-else type="text" v-model="item[cell.index]" class="v-input" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
-
- </div>
 
  
     </div>
@@ -250,7 +271,7 @@ export default ui({
   data() {
 
     return {syncingScroll:false,
-      tk: 0,
+      tk: 0,selectedRows: new Set(),
       concept: { },
       conceptType: [
         { id: 1, name: 'INGRESOS' },
@@ -367,7 +388,25 @@ export default ui({
     me.items = [];
     me.handler(me.items);
   },
-  methods: {
+  methods: {  toggleRow(index) {
+    this.selectedRows.clear()
+  this.selectedRows.add(index)
+  },
+  toggleCheckbox(index, event){
+    if(index==-1){
+      if(event.target.checked){
+        this.selectedRows = new Set(this.items.map((_, i) => i))
+      }else{
+        this.selectedRows.clear();
+      }
+        }else{
+      if(event.target.checked){
+        this.selectedRows.add(index)
+      }else{
+        this.selectedRows.delete(index)
+      }
+    }
+    },
     addPerson() {
       const me = this;
       me.showAddPerson = true;
@@ -682,5 +721,9 @@ onScrolling(e, tableId) {
     margin: 0px 0px 20px !important;
     padding: 0px !important;
     font-size: 120%;
+}
+.v-selected input:not(:focus) {
+  background: unset;
+  color: white;
 }
 </style>
