@@ -31,7 +31,7 @@
               <table class="v-cloned-header v-table"><!---->
                 
                 <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
-                    <th style="width:30px; min-width: 30px" rowspan="2">
+                    <th v-if="!rowIndex" style="width:30px; min-width: 30px" rowspan="2">
   <input
     type="checkbox"
    
@@ -85,7 +85,7 @@
             <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
               <table class="v-cloned-header v-table"><!---->
                 <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
-                  <th v-for="(cell, colIndex) in row" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
+                  <th v-for="(cell, colIndex) in rowIndex?row:row.slice(2)" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
                     :rowspan="cell.rowspan"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
                     {{ cell.title }}
@@ -98,10 +98,9 @@
             <table class="v-table" style="width: 0px;">
               <tbody class="v-datatable-data"><!---->
 
-                <tr v-for="(item,rowIndex) in items" :key="rowIndex"
-  :class="{ 'v-selected': selectedRows.has(rowIndex) }" @click="toggleRow(rowIndex)">
+                <tr v-for="(item,rowIndex) in items" :key="rowIndex" :class="{ 'v-selected': selectedRows.has(rowIndex) }" @click="toggleRow(rowIndex)">
 
-                  <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
+                  <td v-for="(cell) in visibleHeaders.slice(2)" :width="cell.width || 80"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
                     :class="cell.class">
 
