@@ -13,6 +13,7 @@
         <div
           style="display: flex; flex-grow: 1; margin-bottom: 3px; justify-content: space-between; align-items: flex-end;">
           <v-button icon="fa fa-refresh" @click="refresh2" :disabled="!(o.month && o.year)" />
+          <v-button icon="fa fa-gear" @click="process" :disabled="!(o.month && o.year)" />
           <v-button icon="fa fa-person-circle-plus" @click="addPerson" :disabled="!(o.month && o.year)" />
           <v-button icon="fa fa-square-plus" @click="addConcept" :disabled="!(o.month && o.year)" />
                               <v-button title="Descargar" icon="fa-download"
@@ -389,24 +390,25 @@ export default ui({
     me.items = [];
     me.handler(me.items);
   },
-  methods: {  toggleRow(index) {
-    this.selectedRows.clear()
-  this.selectedRows.add(index)
-  },
-  toggleCheckbox(index, event){
-    if(index==-1){
-      if(event.target.checked){
-        this.selectedRows = new Set(this.items.map((_, i) => i))
-      }else{
-        this.selectedRows.clear();
-      }
+  methods: {
+    toggleRow(index) {
+      this.selectedRows.clear()
+      this.selectedRows.add(index)
+    },
+    toggleCheckbox(index, event){
+      if(index==-1){
+        if(event.target.checked){
+          this.selectedRows = new Set(this.items.map((_, i) => i))
         }else{
-      if(event.target.checked){
-        this.selectedRows.add(index)
-      }else{
-        this.selectedRows.delete(index)
+          this.selectedRows.clear();
+        }
+          }else{
+        if(event.target.checked){
+          this.selectedRows.add(index)
+        }else{
+          this.selectedRows.delete(index)
+        }
       }
-    }
     },
     addPerson() {
       const me = this;
@@ -513,29 +515,29 @@ export default ui({
         ) / 100;
       });*/
     },
-onScrolling(e, tableId) {
+    onScrolling(e, tableId) {
 
-    const body = e.target
+      const body = e.target
 
-    // horizontal header sync
-    const horizontal = body.scrollLeft
-    const header = body.previousElementSibling.children[0]
-    header.style.transform = "translateX(-" + horizontal + "px)"
+      // horizontal header sync
+      const horizontal = body.scrollLeft
+      const header = body.previousElementSibling.children[0]
+      header.style.transform = "translateX(-" + horizontal + "px)"
 
-    // prevent infinite loop
-    if (this.syncingScroll) return
-    this.syncingScroll = true
+      // prevent infinite loop
+      if (this.syncingScroll) return
+      this.syncingScroll = true
 
-    const other = tableId === 1 ? this.$refs.body2 : this.$refs.body1
+      const other = tableId === 1 ? this.$refs.body2 : this.$refs.body1
 
-    if (other) {
-      other.scrollTop = body.scrollTop
-    }
+      if (other) {
+        other.scrollTop = body.scrollTop
+      }
 
-    requestAnimationFrame(()=>{
-      this.syncingScroll = false
-    })
-  },
+      requestAnimationFrame(()=>{
+        this.syncingScroll = false
+      })
+    },
     escape() {
       const me = this;
       const concepto = this.$refs.concept.$el.querySelector('input');
@@ -616,7 +618,15 @@ onScrolling(e, tableId) {
         me.handler(me.items);
       });
     },
-
+    process() {
+      const me = this;
+      const o = me.o;
+      axios.get('/api/payroll/process', { params: o }).then(({ data }) => {
+        me.items = data.data;
+        me.headers = data.headers;
+        me.handler(me.items);
+      });
+    },
     save() {
       const me = this;
       axios.post('/api/payroll/people', { ...this.o, items: this.items }).then(({ data }) => {
