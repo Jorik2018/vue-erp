@@ -621,7 +621,7 @@ export default ui({
     process() {
       const me = this;
       const o = me.o;
-      axios.get('/api/payroll/process', { params: o }).then(({ data }) => {
+      axios.POST('/api/payroll/process', o ).then(({ data }) => {
         me.items = data.data;
         me.headers = data.headers;
         me.handler(me.items);
