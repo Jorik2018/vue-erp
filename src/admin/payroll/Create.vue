@@ -105,7 +105,7 @@
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
                     :class="cell.class">
 
-                    <v-number v-if="cell.concept_id" placeholder="-" :title="'index=' + cell.concept_id"
+                    <v-number v-if="cell.concept_id" placeholder="-" :title="'concept_id=' + cell.concept_id"
                       v-model.number="item.values[cell.concept_id]" />
                     <!-- STRING -->
                     <input v-else type="text" v-model="item[cell.index]" class="v-input" />
