@@ -70,9 +70,10 @@
                   <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
                     :class="cell.class">
-
                     <v-number v-if="cell.concept_id" placeholder="-" :title="'index=' + cell.concept_id"
                       v-model.number="item.concepts[cell.concept_id]" />
+                    <v-number v-if="typeof cell.index === 'number'" placeholder="-" :title="'index=' + cell.index"
+                      v-model.number="item.values[cell.index]" />
 
                     <!-- STRING -->
                     <input v-else type="text" v-model="item[cell.index]" class="v-input" />
@@ -109,6 +110,8 @@
 
                     <v-number v-if="cell.concept_id" placeholder="-" :title="'index=' + cell.concept_id"
                       v-model.number="item.concepts[cell.concept_id]" />
+                    <v-number v-else-if="typeof cell.index === 'number'" placeholder="-" :title="'index=' + cell.index"
+                      v-model.number="item.values[cell.index]" />
 
                     <!-- STRING -->
                     <input v-else type="text" v-model="item[cell.index]" class="v-input" />
