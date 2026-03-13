@@ -202,18 +202,17 @@ export default ui({
 
         }
 
-         
         const view = (o) => {
             open('/admin/payroll/' + (o.value.tmpId ? (-o.value.tmpId) : o.value.id));
         }
     
-
         return {
             o,
             form,
             table,
             edit,
-            create
+            create,
+            view
         }
 
     }
