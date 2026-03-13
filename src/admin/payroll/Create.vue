@@ -67,7 +67,7 @@
     @change="toggleCheckbox(rowIndex,$event)"
   >
 </td>
-                  <td v-for="(cell) in visibleHeaders" :width="cell.width || 80"
+                  <td v-for="(cell) in visibleHeaders" :width="cell.width || 90"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
                     :class="cell.class">
                     <v-number v-if="cell.concept_id" placeholder="-" :title="'index=' + cell.concept_id"
@@ -101,7 +101,7 @@
 
                 <tr v-for="(item,rowIndex) in items" :key="rowIndex" :class="{ 'v-selected': selectedRows.has(rowIndex) }" @click="toggleRow(rowIndex)">
 
-                  <td v-for="(cell) in visibleHeaders.slice(2)" :width="cell.width || 80"
+                  <td v-for="(cell) in visibleHeaders.slice(2)" :width="cell.width || 90"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
                     :class="cell.class">
 
@@ -326,7 +326,7 @@ export default ui({
             title: h.title,
             colspan: hasChildren ? h.children.filter(c => !c.title.startsWith('_')).length : 1,
             rowspan: hasChildren ? 1 : depth - level,
-            width: hasChildren ? undefined : (h.width || 80),
+            width: hasChildren ? undefined : (h.width || 90),
             backgroundColor: h.backgroundColor,
             color: h.color,
             index: h.index
