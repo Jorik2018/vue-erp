@@ -83,6 +83,9 @@
                     <label>Fórmula:</label>
                     <input v-model="o.formula" />
                 </div>
+                      <center >
+        <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
+      </center>
             </v-form>
         </div>
     </ion-page>
@@ -105,7 +108,7 @@ export default ui({
 
             MsgBox(document.querySelector('#form'), (b) => {
                 if (b === 1) save()
-            }, ['Cancelar', 'Grabar'])
+            }, [])
         }
 
         /*const save = () => {
