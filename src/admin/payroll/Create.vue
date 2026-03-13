@@ -738,14 +738,14 @@ export default ui({
   color: white;
 }
 .p-green{
-  background: #95f75a;
-  color: black;
+  background: #95f75a !important;
+  color: black !important;
 }
 .p-wine{
-  background: #e51700;
+  background: #e51700 !important;
 }
 .p-sky{
-  background: #41d9ff;
-  color: black;
+  background: #41d9ff !important;
+  color: black !important;
 }
 </style>
