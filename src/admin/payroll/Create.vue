@@ -734,4 +734,15 @@ export default ui({
   background: unset;
   color: white;
 }
+.p-green{
+  background: #95f75a;
+  color: black;
+}
+.p-wine{
+  background: #e51700;
+}
+.p-sky{
+  background: #41d9ff;
+  color: black;
+}
 </style>
