@@ -102,7 +102,7 @@ export default ui({
         const form = ref(false)
         const openForm = () => {
             form.value = true
-            MsgBox(document.querySelector('#form'))
+            MsgBox(document.querySelector('#form'),[])
         }
         const edit = () => {
             o.value = { ...table.value.load.selected.value[0] }
