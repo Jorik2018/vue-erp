@@ -174,35 +174,26 @@ export default ui({
             form.value = true
 
             MsgBox(
-                document.querySelector('#form'),
-                (b) => {
-                    if (b === 1) save()
-                },
-                ['Cancelar', 'Grabar']
+                document.querySelector('#form'),[]
             )
 
         }
 
         const edit = () => {
-
             const selected = table.value.load.selected.value
-            if (!selected.length) return
-
             o.value = { ...selected[0] }
-
             openForm()
 
         }
 
         const create = () => {
-
             o.value = {}
-
             openForm()
-
         }
 
         const view = (o) => {
+            const selected = table.value.load.selected.value
+            o.value = { ...selected[0] }
             open('/admin/payroll/' + (o.value.tmpId ? (-o.value.tmpId) : o.value.id));
         }
     
