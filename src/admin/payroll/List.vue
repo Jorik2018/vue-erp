@@ -192,9 +192,7 @@ export default ui({
         }
 
         const view = (o) => {
-            const selected = table.value.load.selected.value
-            o.value = { ...selected[0] }
-            open('/admin/payroll/' + (o.value.tmpId ? (-o.value.tmpId) : o.value.id));
+            open('/admin/payroll/' + (o.tmpId ? (-o.tmpId) : o.id));
         }
     
         return {
