@@ -1,8 +1,8 @@
 <template>
     <ion-page>
         <v-form header="Conceptos" action="/admin/payroll/concept">
-            <v-table :selectable="true" :row-style-class="rowClass" ref="table" :scrollable="true" rowKey="id" :pagination="20"
-                :filters="filters" src="/api/payroll/concept">
+            <v-table :selectable="true" :row-style-class="rowClass" ref="table" :scrollable="true" rowKey="id"
+                :pagination="20" :filters="filters" src="/api/payroll/concept">
                 <template v-slot:header>
                     <v-button value="Crear" icon="fa-plus" class="on" @click.prevent="create"></v-button>
                     <v-button value="Editar" icon="fa-pen" @click.prevent="edit"
@@ -65,9 +65,9 @@
             </v-table>
         </v-form>
         <div style="display:none">
-            <v-form action="/api/payroll/concept" :header="o.id ? 'Editar' : 'Crear' + ' Concepto'" id="form" width="460">
+            <v-form action="/api/payroll/concept" :header="o.id ? 'Editar' : 'Crear' + ' Concepto'" id="form"
+                width="460">
                 <div v-if="form" class="v-form">
-
                     <label>Nombre:</label>
                     <input v-model="o.name" required />
                     <label>Abreviatura:</label>
@@ -83,9 +83,9 @@
                     <label>Fórmula:</label>
                     <input v-model="o.formula" />
                 </div>
-                      <center >
-        <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
-      </center>
+                <center>
+                    <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
+                </center>
             </v-form>
         </div>
     </ion-page>
@@ -93,43 +93,25 @@
 
 <script>
 import { ui, MsgBox } from 'isobit-ui'
-import axios from 'axios'
 import { ref } from 'vue'
 
 export default ui({
-    setup({save}) {
-
+    setup() {
         const o = ref({})
         const table = ref(null)
         const form = ref(false)
-
         const openForm = () => {
             form.value = true
-
-            MsgBox(document.querySelector('#form'), (b) => {
-                if (b === 1) save()
-            }, [])
+            MsgBox(document.querySelector('#form'))
         }
-
-        /*const save = () => {
-            axios.post('/api/payroll/concept', o.value).then(() => {
-                form.value = false
-                table.value.refresh()
-            })
-        }*/
-
         const edit = () => {
-            const selected = table.value.load.selected.value
-            if (!selected.length) return
-            o.value = { ...selected[0] }
+            o.value = { ...table.value.load.selected.value[0] }
             openForm()
         }
-
         const create = () => {
             o.value = {}
             openForm()
         }
-
         return {
             o,
             form,

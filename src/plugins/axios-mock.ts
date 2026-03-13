@@ -147,6 +147,11 @@ mock.onPost('/api/payroll/add-person').reply(config => {
   return [200, {}]
 });
 
+mock.onPost('/api/payroll/concept').reply(config => {
+  console.log(config);
+  return [200, {id:12}]
+});
+
 mock.onPost('/api/auth').reply(config => {
   const { username } = JSON.parse(config.data)
   return [200, {
