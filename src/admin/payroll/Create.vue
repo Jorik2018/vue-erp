@@ -326,6 +326,7 @@ export default ui({
           const hasChildren = h.children && h.children.some(c => !c.title.startsWith('_'));
           const cell = {
             title: h.title,
+            class: h.class,
             colspan: hasChildren ? h.children.filter(c => !c.title.startsWith('_')).length : 1,
             rowspan: hasChildren ? 1 : depth - level,
             width: hasChildren ? undefined : (h.width || 90),
