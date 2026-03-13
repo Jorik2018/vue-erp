@@ -44,6 +44,7 @@
 </th>
                   <th v-for="(cell, colIndex) in row" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
                     :rowspan="cell.rowspan"
+                    :class="cell.class"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
                     {{ cell.title }}
                   </th>
@@ -69,7 +70,7 @@
 </td>
                   <td v-for="(cell) in visibleHeaders" :width="cell.width || 90"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
-                    :class="cell.class">
+                   ">
                     <v-number v-if="cell.concept_id" placeholder="-" :title="'index=' + cell.concept_id"
                       v-model.number="item.values[cell.concept_id]" />
                     <!-- STRING -->
@@ -88,6 +89,7 @@
                 <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
                   <th v-for="(cell, colIndex) in rowIndex?row:row.slice(2)" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
                     :rowspan="cell.rowspan"
+                    :class="cell.class"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
                     {{ cell.title }}
                   </th>
@@ -103,7 +105,7 @@
 
                   <td v-for="(cell) in visibleHeaders.slice(2)" :width="cell.width || 90"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }"
-                    :class="cell.class">
+                   >
 
                     <v-number v-if="cell.concept_id" placeholder="-" :title="'concept_id=' + cell.concept_id"
                       v-model.number="item.values[cell.concept_id]" />
