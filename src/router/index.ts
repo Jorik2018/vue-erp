@@ -229,6 +229,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../admin/hr/employee/Create.vue')
       },
       {
+        path: 'payroll',
+        component: () => import('../admin/payroll/List.vue')
+      },
+      {
         path: 'payroll/chd',
         component: () => import('../admin/payroll/chd.vue')
       },
@@ -236,9 +240,13 @@ const routes: Array<RouteRecordRaw> = [
         path: 'payroll/create',
         component: () => import('../admin/payroll/Create.vue')
       },
-            {
+      {
         path: 'payroll/concept',
         component: () => import('../admin/payroll/concept/List.vue')
+      },
+      {
+        path: 'payroll/amount',
+        component: () => import('../admin/payroll/amount/List.vue')
       },
       {
         path: 'setting',

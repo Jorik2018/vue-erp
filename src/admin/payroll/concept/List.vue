@@ -65,7 +65,7 @@
             </v-table>
         </v-form>
         <div style="display:none">
-            <v-panel :header="o.id ? 'Editar' : 'Crear' + ' Concepto'" id="form" width="460">
+            <v-form action="/api/payroll/concept" :header="o.id ? 'Editar' : 'Crear' + ' Concepto'" id="form" width="460">
                 <div v-if="form" class="v-form">
 
                     <label>Nombre:</label>
@@ -83,7 +83,7 @@
                     <label>Fórmula:</label>
                     <input v-model="o.formula" />
                 </div>
-            </v-panel>
+            </v-form>
         </div>
     </ion-page>
 </template>

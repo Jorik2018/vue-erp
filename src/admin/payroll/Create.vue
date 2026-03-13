@@ -748,4 +748,8 @@ export default ui({
   background: #41d9ff !important;
   color: black !important;
 }
+.p-yellow{
+  background: yellow !important;
+  color: black !important;
+}
 </style>

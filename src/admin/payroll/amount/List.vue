@@ -1,12 +1,11 @@
 <template>
     <ion-page>
-
-        <v-form header="Planillas" action="/admin/payroll">
+        <v-form header="Montos de Planilla" action="/admin/payroll/amount">
 
             <v-table
                 ref="table"
                 rowKey="id"
-                src="/api/payroll"
+                src="/api/payroll/amount"
                 :pagination="20"
                 :filters="filters"
                 :selectable="true"
@@ -29,60 +28,60 @@
                         {{ row.id }}
                     </td>
 
-                    <td width="80" header="Año" class="center">
+                    <td width="140" header="Grupo Planilla" class="center">
                         <v-filter>
-                            <input v-model="filters.year"/>
+                            <input v-model="filters.payrollGroupId"/>
                         </v-filter>
-                        {{ row.year }}
+                        {{ row.payrollGroupId }}
                     </td>
 
-                    <td width="80" header="Número" class="center">
+                    <td width="140" header="Tipo Planilla" class="center">
                         <v-filter>
-                            <input v-model="filters.number"/>
+                            <input v-model="filters.payrollTypeId"/>
                         </v-filter>
-                        {{ row.number }}
+                        {{ row.payrollTypeId }}
                     </td>
 
-                    <td width="80" header="Mes" class="center">
+                    <td width="80" header="Tipo" class="center">
                         <v-filter>
-                            <input v-model="filters.month"/>
+                            <input v-model="filters.type"/>
                         </v-filter>
-                        {{ row.month }}
+                        {{ row.type }}
                     </td>
 
-                    <td width="120" header="Tipo" class="center">
+                    <td width="120" header="Target" class="center">
                         <v-filter>
-                            <input v-model="filters.typeId"/>
+                            <input v-model="filters.targetId"/>
                         </v-filter>
-                        {{ row.typeId }}
+                        {{ row.targetId }}
                     </td>
 
-                    <td width="160" header="Fuente Financ." class="center">
+                    <td width="120" header="Concepto" class="center">
                         <v-filter>
-                            <input v-model="filters.idFuenteFinanc"/>
+                            <input v-model="filters.conceptId"/>
                         </v-filter>
-                        {{ row.idFuenteFinanc }}
+                        {{ row.conceptId }}
                     </td>
 
-                    <td width="240" header="Comentarios">
+                    <td width="120" header="Inicio" class="center">
                         <v-filter>
-                            <input v-model="filters.comments"/>
+                            <input v-model="filters.iniDate"/>
                         </v-filter>
-                        {{ row.comments }}
+                        {{ row.iniDate }}
                     </td>
 
-                    <td width="120" header="Fecha Generación" class="center">
+                    <td width="120" header="Fin" class="center">
                         <v-filter>
-                            <input v-model="filters.generateDate"/>
+                            <input v-model="filters.endDate"/>
                         </v-filter>
-                        {{ row.generateDate }}
+                        {{ row.endDate }}
                     </td>
 
-                    <td width="80" header="Cerrado" class="center">
+                    <td width="120" header="Monto" class="center">
                         <v-filter>
-                            <input v-model="filters.closed"/>
+                            <input v-model="filters.amount"/>
                         </v-filter>
-                        {{ row.closed }}
+                        {{ row.amount }}
                     </td>
 
                     <td width="80" header="Cancelado" class="center">
@@ -92,63 +91,47 @@
                         {{ row.canceled }}
                     </td>
 
-                    <td width="120" header="Preparado por" class="center">
-                        <v-filter>
-                            <input v-model="filters.preparedBy"/>
-                        </v-filter>
-                        {{ row.preparedBy }}
-                    </td>
-
                 </template>
-
             </v-table>
 
         </v-form>
 
         <div style="display:none">
 
-            <v-form
-                action="/api/payroll"
-                :header="o.id ? 'Editar' : 'Crear' + ' Planilla'"
-                id="form"
-                width="480"
-            >
+            <v-panel :header="o.id ? 'Editar' : 'Crear' + ' Monto'" id="form" width="480">
 
                 <div v-if="form" class="v-form">
 
-                    <label>Año</label>
-                    <input type="number" v-model="o.year"/>
+                    <label>Grupo Planilla</label>
+                    <input v-model="o.payrollGroupId"/>
 
-                    <label>Número</label>
-                    <input type="number" v-model="o.number"/>
-
-                    <label>Mes</label>
-                    <input type="number" v-model="o.month"/>
+                    <label>Tipo Planilla</label>
+                    <input v-model="o.payrollTypeId"/>
 
                     <label>Tipo</label>
-                    <input v-model="o.typeId"/>
+                    <input v-model="o.type"/>
 
-                    <label>Fuente Financiamiento</label>
-                    <input v-model="o.idFuenteFinanc"/>
+                    <label>Target</label>
+                    <input v-model="o.targetId"/>
 
-                    <label>Comentarios</label>
-                    <textarea v-model="o.comments"/>
+                    <label>Concepto</label>
+                    <input v-model="o.conceptId"/>
 
-                    <label>Fecha Generación</label>
-                    <input type="datetime-local" v-model="o.generateDate"/>
+                    <label>Fecha Inicio</label>
+                    <input type="date" v-model="o.iniDate"/>
 
-                    <label>Cerrado</label>
-                    <input type="checkbox" v-model="o.closed"/>
+                    <label>Fecha Fin</label>
+                    <input type="date" v-model="o.endDate"/>
+
+                    <label>Monto</label>
+                    <input type="number" step="0.01" v-model="o.amount"/>
 
                     <label>Cancelado</label>
                     <input type="checkbox" v-model="o.canceled"/>
 
-                    <label>Preparado por</label>
-                    <input v-model="o.preparedBy"/>
-
                 </div>
 
-            </v-form>
+            </v-panel>
 
         </div>
 
@@ -157,6 +140,7 @@
 
 <script>
 import { ui, MsgBox } from 'isobit-ui'
+import axios from 'axios'
 import { ref } from 'vue'
 
 export default ui({
@@ -189,7 +173,6 @@ export default ui({
             o.value = { ...selected[0] }
 
             openForm()
-
         }
 
         const create = () => {
