@@ -148,7 +148,9 @@ mock.onGet(/\/api\/payroll\/amount\/\d+\/\d+/).reply(200, {
             "id": "1",
             "payrollGroupId": null,
             "payrollTypeId": null,
-            "type": "PL",
+            "payrollType": "TOTAS",
+
+            "type": "PT",
             "targetId": "0",
             "conceptId": "1",
             "iniDate": "2026-02-01",
@@ -159,8 +161,9 @@ mock.onGet(/\/api\/payroll\/amount\/\d+\/\d+/).reply(200, {
         {
             "id": "2",
             "payrollGroupId": null,
+            "payrollType": "TOTAS",
             "payrollTypeId": "1",
-            "type": "PL",
+            "type": "GR",
             "targetId": "0",
             "conceptId": "2",
             "iniDate": "2026-02-01",

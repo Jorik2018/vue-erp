@@ -97,7 +97,10 @@
         <hr style="background: #d5d5d5;margin-top: 10px;margin-bottom: 10px;">
         <v-item icon="fa-sign-out-alt" @click="app.logout" label="Cerrar Sessión" />
       </ul>
-      <div class="center" style="font-size: 10px;margin-top: 20px;">BUILT ON: {{ app.BUILT_ON }}</div>
+      <div class="center" style="font-size: 10px;margin: 20px;">
+        VERSION: {{ app.VERSION }} <br/>
+        BUILT ON: {{ app.BUILT_ON }}
+      </div>
     </ion-content>
   </ion-menu>
 </template>

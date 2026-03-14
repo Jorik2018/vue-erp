@@ -20,7 +20,7 @@
                         <v-filter>
                             <input v-model="filters.payrollTypeId" />
                         </v-filter>
-                        {{ row.payrollTypeId }}
+                        {{ row.payrollType }}
                     </td>
 
                     <td width="80" header="Tipo" class="center">

@@ -3,6 +3,7 @@
 import legacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+
 //import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
@@ -19,6 +20,8 @@ export default () => {
   const minutes = String(currentDate.getMinutes()).padStart(2, '0');
   const period = currentDate.getHours() >= 12 ? 'PM' : 'AM';
   process.env.VITE_APP_BUILT_ON = `${year}-${month}-${day} ${hours}:${minutes} ${period}`;
+  const pkg = require('./package.json')
+  process.env.VITE_APP_VERSION = pkg.version;
   //console.log('process.env.VITE_PUBLIC_PATH ', process.env.VITE_PUBLIC_PATH);
   console.log(
     Object.fromEntries(

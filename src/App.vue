@@ -32,6 +32,8 @@ export default ui({
     }
     Network.addListener("networkStatusChange", me.app.networkStatusChange);
     Network.getStatus().then(me.app.networkStatusChange);
+    me.app.BUILT_ON =   import.meta.env.VITE_APP_BUILT_ON;
+    me.app.VERSION =   import.meta.env.VITE_APP_VERSION;
     me.app.getAge = (birthDate) => {
       const today = new Date();
       birthDate = typeof birthDate == 'string' || typeof birthDate == 'number' ? new Date(birthDate) : birthDate;
