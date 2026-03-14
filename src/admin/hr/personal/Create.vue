@@ -68,7 +68,6 @@
           )
           "></v-button>
       </center>
-
     </v-form>
   </ion-page>
 </template>

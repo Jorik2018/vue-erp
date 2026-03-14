@@ -1,7 +1,6 @@
 <template>
     <ion-page>
-        <v-form header="Montos de Planilla" action="/admin/payroll/amount">
-
+        <v-form header="Montos" action="/admin/payroll/amount">
             <v-table
                 ref="table"
                 rowKey="id"
@@ -11,7 +10,6 @@
                 :selectable="true"
                 :scrollable="true"
             >
-
                 <template v-slot:header>
                     <v-button value="Crear" icon="fa-plus" class="on" @click.prevent="create"></v-button>
                     <v-button value="Editar" icon="fa-pen" @click.prevent="edit" :disabled="!rowSelectedCount"></v-button>
@@ -98,7 +96,7 @@
 
         <div style="display:none">
 
-            <v-panel :header="o.id ? 'Editar' : 'Crear' + ' Monto'" id="form" width="480">
+            <v-form :header="o.id ? 'Editar' : 'Crear' + ' Monto'" id="form" width="480">
 
                 <div v-if="form" class="v-form">
 
@@ -124,14 +122,12 @@
                     <input type="date" v-model="o.endDate"/>
 
                     <label>Monto</label>
-                    <input type="number" step="0.01" v-model="o.amount"/>
-
-                    <label>Cancelado</label>
-                    <input type="checkbox" v-model="o.canceled"/>
-
+                    <v-number v-model="o.amount"/>
                 </div>
-
-            </v-panel>
+                <center>
+                    <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
+                </center>
+            </v-form>
 
         </div>
 
@@ -152,35 +148,19 @@ export default ui({
         const form = ref(false)
 
         const openForm = () => {
-
             form.value = true
-
-            MsgBox(
-                document.querySelector('#form'),
-                (b) => {
-                    if (b === 1) save()
-                },
-                ['Cancelar', 'Grabar']
-            )
-
+            MsgBox(document.querySelector('#form'),[])
         }
 
         const edit = () => {
-
             const selected = table.value.load.selected.value
-            if (!selected.length) return
-
             o.value = { ...selected[0] }
-
             openForm()
         }
 
         const create = () => {
-
             o.value = {}
-
             openForm()
-
         }
 
         return {
