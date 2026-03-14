@@ -187,6 +187,8 @@
 <script>
 import { ui, MsgBox } from 'isobit-ui';
 import axios from 'axios';
+import { targetType } from './constants';
+
 const groups = {
   1: "INGRESOS",
   2: "EGRESOS",
@@ -280,12 +282,7 @@ export default ui({
         { id: 3, name: 'EGRESOS QUE AFECTAN LA BASE IMPONIBLE' },
         { id: 4, name: 'INGRESOS' }
       ],
-      targetType: [
-        { id: 'TP', name: 'TIPO PLANILLA' },
-        { id: 'NR', name: 'NIVEL REMUNERATIVO' },
-        { id: 'PE', name: 'PERSONAL' },
-        { id: 'SP', name: 'SISTEMA DE PENSION' }
-      ],
+      targetType,
       keySet: 0,
       current: null,
       groups: groups,
@@ -723,16 +720,7 @@ export default ui({
 }
 </style>
 <style>
-.v-msgbox > div > div > .v-panel-titlebar {
-  background: unset !important;
-    color: black;
-    border: none;
-}
-.v-msgbox > div> div> .v-panel-titlebar > span {
-    margin: 0px 0px 20px !important;
-    padding: 0px !important;
-    font-size: 120%;
-}
+
 .v-selected input:not(:focus) {
   background: unset;
   color: white;

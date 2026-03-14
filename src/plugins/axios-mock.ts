@@ -142,6 +142,36 @@ mock.onGet(/\/api\/payroll\/concept\/\d+\/\d+/).reply(200, {
     "size": 21
 })
 
+mock.onGet(/\/api\/payroll\/amount\/\d+\/\d+/).reply(200, {
+    "data": [
+  {
+            "id": "1",
+            "payrollGroupId": null,
+            "payrollTypeId": null,
+            "type": "PL",
+            "targetId": "0",
+            "conceptId": "1",
+            "iniDate": "2026-02-01",
+            "endDate": null,
+            "amount": "2500.00",
+            "canceled": "0"
+        },
+        {
+            "id": "2",
+            "payrollGroupId": null,
+            "payrollTypeId": "1",
+            "type": "PL",
+            "targetId": "0",
+            "conceptId": "2",
+            "iniDate": "2026-02-01",
+            "endDate": null,
+            "amount": "64.19",
+            "canceled": "0"
+        }
+    ],
+    "size": 21
+})
+      
 mock.onPost('/api/payroll/add-person').reply(config => {
   console.log(config);
   return [200, {}]

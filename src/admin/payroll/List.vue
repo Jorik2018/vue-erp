@@ -121,7 +121,7 @@
                     <label>Fuente Financiamiento</label>
                     <input v-model="o.idFuenteFinanc"/>
                     <label>Comentarios</label>
-                    <textarea v-model="o.comments"/>
+                    <v-textarea v-model="o.comments"/>
                     <label>Fecha Generación</label>
                     <input type="datetime-local" v-model="o.generateDate"/>
                     <label>Cerrado</label>

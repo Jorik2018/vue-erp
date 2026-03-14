@@ -1,94 +1,69 @@
 <template>
     <ion-page>
         <v-form header="Montos" action="/admin/payroll/amount">
-            <v-table
-                ref="table"
-                rowKey="id"
-                src="/api/payroll/amount"
-                :pagination="20"
-                :filters="filters"
-                :selectable="true"
-                :scrollable="true"
-            >
+            <v-table ref="table" rowKey="id" src="/api/payroll/amount" :pagination="20" :filters="filters"
+                :selectable="true" :scrollable="true">
                 <template v-slot:header>
                     <v-button value="Crear" icon="fa-plus" class="on" @click.prevent="create"></v-button>
-                    <v-button value="Editar" icon="fa-pen" @click.prevent="edit" :disabled="!rowSelectedCount"></v-button>
-                    <v-button value="Eliminar" icon="fa-trash" @click.prevent="destroy" :disabled="!rowSelectedCount"></v-button>
+                    <v-button value="Editar" icon="fa-pen" @click.prevent="edit"
+                        :disabled="!rowSelectedCount"></v-button>
+                    <v-button value="Eliminar" icon="fa-trash" @click.prevent="destroy"
+                        :disabled="!rowSelectedCount"></v-button>
                     <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh"></v-button>
                 </template>
 
                 <template v-slot="{ row }">
-
                     <td width="60" header="ID" class="center">
-                        <v-filter>
-                            <input v-model="filters.id"/>
-                        </v-filter>
-                        {{ row.id }}
+                        {{ pad(row.id, 4) }}
                     </td>
-
-                    <td width="140" header="Grupo Planilla" class="center">
-                        <v-filter>
-                            <input v-model="filters.payrollGroupId"/>
-                        </v-filter>
-                        {{ row.payrollGroupId }}
-                    </td>
-
                     <td width="140" header="Tipo Planilla" class="center">
                         <v-filter>
-                            <input v-model="filters.payrollTypeId"/>
+                            <input v-model="filters.payrollTypeId" />
                         </v-filter>
                         {{ row.payrollTypeId }}
                     </td>
 
                     <td width="80" header="Tipo" class="center">
                         <v-filter>
-                            <input v-model="filters.type"/>
+                            <input v-model="filters.type" />
                         </v-filter>
                         {{ row.type }}
                     </td>
 
                     <td width="120" header="Target" class="center">
                         <v-filter>
-                            <input v-model="filters.targetId"/>
+                            <input v-model="filters.targetId" />
                         </v-filter>
                         {{ row.targetId }}
                     </td>
 
                     <td width="120" header="Concepto" class="center">
                         <v-filter>
-                            <input v-model="filters.conceptId"/>
+                            <input v-model="filters.conceptId" />
                         </v-filter>
                         {{ row.conceptId }}
                     </td>
 
                     <td width="120" header="Inicio" class="center">
                         <v-filter>
-                            <input v-model="filters.iniDate"/>
+                            <input v-model="filters.iniDate" />
                         </v-filter>
                         {{ row.iniDate }}
                     </td>
 
                     <td width="120" header="Fin" class="center">
                         <v-filter>
-                            <input v-model="filters.endDate"/>
+                            <input v-model="filters.endDate" />
                         </v-filter>
                         {{ row.endDate }}
                     </td>
 
-                    <td width="120" header="Monto" class="center">
+                    <td width="120" header="Monto" class="right">
                         <v-filter>
-                            <input v-model="filters.amount"/>
+                            <input v-model="filters.amount" />
                         </v-filter>
                         {{ row.amount }}
                     </td>
-
-                    <td width="80" header="Cancelado" class="center">
-                        <v-filter>
-                            <input v-model="filters.canceled"/>
-                        </v-filter>
-                        {{ row.canceled }}
-                    </td>
-
                 </template>
             </v-table>
 
@@ -99,30 +74,56 @@
             <v-form :header="o.id ? 'Editar' : 'Crear' + ' Monto'" id="form" width="480">
 
                 <div v-if="form" class="v-form">
+                    <v-fieldset legend="Destino">
+                        <label>Tipo:</label>
+                        <v-select v-model="o.type" name="event" required>
+                            <option value="">Select One...</option>
+                            <v-options :data="targetType" value-field="id" display-field="name"></v-options>
+                        </v-select>
+                        <v-template v-if="o.type == 'PT'">
+                            <label>Tipo Planilla:</label>
+                            <input v-model="o.targetId" />
+                        </v-template>
+                        <v-template v-if="o.type == 'GR'">
+                            <label>Grupo:</label>
+                            <v-select v-model="o.targetId" required>
+                                <option value="">Select One...</option>
+                                <v-options :data="group" value-field="id" display-field="name"></v-options>
+                            </v-select>
+                        </v-template>
+                        <v-template v-if="o.type == 'PE'">
+                            <label>Persona:</label>
+                            <input v-model="o.targetId" />
+                        </v-template>
+                        <v-template v-if="o.type">
+                            <label>Tipo Planilla</label>
+                            <input v-model="o.payrollTypeId" />
+                        </v-template>
+                    </v-fieldset>
+                    <v-fieldset legend="Concepto">
+                        <label>Tipo:</label>
+                        <v-select v-model="o.conceptType" required
+                            @input="$refs.concept.load({ typeId: o.conceptType })">
+                            <option value="">Select One...</option>
+                            <v-options :data="conceptType">
+                                <template #default="{ item }">
+                                    {{ item.id }}: {{ item.name }}
+                                </template>
+                            </v-options>
+                        </v-select>
 
-                    <label>Grupo Planilla</label>
-                    <input v-model="o.payrollGroupId"/>
-
-                    <label>Tipo Planilla</label>
-                    <input v-model="o.payrollTypeId"/>
-
-                    <label>Tipo</label>
-                    <input v-model="o.type"/>
-
-                    <label>Target</label>
-                    <input v-model="o.targetId"/>
-
-                    <label>Concepto</label>
-                    <input v-model="o.conceptId"/>
-
-                    <label>Fecha Inicio</label>
-                    <input type="date" v-model="o.iniDate"/>
-
-                    <label>Fecha Fin</label>
-                    <input type="date" v-model="o.endDate"/>
-
-                    <label>Monto</label>
-                    <v-number v-model="o.amount"/>
+                        <label>Concepto:</label>
+                        <v-select ref="concept" v-model="o.concept">
+                            <option value="">Select One...</option>
+                            <v-options name="concept" store="concept" value-field="id" display-field="name" />
+                        </v-select>
+                    </v-fieldset>
+                    <label>Fecha Inicio:</label>
+                    <input type="date" v-model="o.iniDate" />
+                    <label>Fecha Fin:</label>
+                    <input type="date" v-model="o.endDate" />
+                    <label>Monto:</label>
+                    <v-number v-model="o.amount" />
                 </div>
                 <center>
                     <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
@@ -138,6 +139,7 @@
 import { ui, MsgBox } from 'isobit-ui'
 import axios from 'axios'
 import { ref } from 'vue'
+import { targetType, conceptType } from '../constants';
 
 export default ui({
 
@@ -149,7 +151,7 @@ export default ui({
 
         const openForm = () => {
             form.value = true
-            MsgBox(document.querySelector('#form'),[])
+            MsgBox(document.querySelector('#form'), [])
         }
 
         const edit = () => {
@@ -168,7 +170,9 @@ export default ui({
             form,
             table,
             edit,
-            create
+            create,
+            targetType,
+            conceptType
         }
 
     }
