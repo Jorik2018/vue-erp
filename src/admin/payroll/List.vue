@@ -1,8 +1,6 @@
 <template>
     <ion-page>
-
         <v-form header="Planillas" action="/admin/payroll">
-
             <v-table
                 ref="table"
                 rowKey="id"
@@ -12,7 +10,6 @@
                 :selectable="true"
                 :scrollable="true"
             >
-
                 <template v-slot:header>
                     <v-button value="Crear" icon="fa-plus" class="on" @click.prevent="create"></v-button>
                     <v-button value="Editar" icon="fa-pen" @click.prevent="edit" :disabled="!rowSelectedCount"></v-button>
@@ -37,35 +34,30 @@
                         </v-filter>
                         {{ row.year }}
                     </td>
-
-                    <td width="80" header="Número" class="center">
-                        <v-filter>
-                            <input v-model="filters.number"/>
-                        </v-filter>
-                        {{ row.number }}
-                    </td>
-
                     <td width="80" header="Mes" class="center">
                         <v-filter>
                             <input v-model="filters.month"/>
                         </v-filter>
                         {{ row.month }}
                     </td>
-
-                    <td width="120" header="Tipo" class="center">
+                    <td width="80" header="Número" class="center">
+                        <v-filter>
+                            <input v-model="filters.number"/>
+                        </v-filter>
+                        {{ row.number }}
+                    </td>
+                    <td width="240" header="Tipo" class="center">
                         <v-filter>
                             <input v-model="filters.typeId"/>
                         </v-filter>
-                        {{ row.typeId }}
+                        {{ row.typeName }}
                     </td>
-
                     <td width="160" header="Fuente Financ." class="center">
                         <v-filter>
                             <input v-model="filters.idFuenteFinanc"/>
                         </v-filter>
                         {{ row.idFuenteFinanc }}
                     </td>
-
                     <td width="240" header="Comentarios">
                         <v-filter>
                             <input v-model="filters.comments"/>
@@ -120,31 +112,22 @@
 
                     <label>Año</label>
                     <input type="number" v-model="o.year"/>
-
-                    <label>Número</label>
-                    <input type="number" v-model="o.number"/>
-
                     <label>Mes</label>
                     <input type="number" v-model="o.month"/>
-
+                    <label>Número</label>
+                    <input type="number" v-model="o.number"/>
                     <label>Tipo</label>
                     <input v-model="o.typeId"/>
-
                     <label>Fuente Financiamiento</label>
                     <input v-model="o.idFuenteFinanc"/>
-
                     <label>Comentarios</label>
                     <textarea v-model="o.comments"/>
-
                     <label>Fecha Generación</label>
                     <input type="datetime-local" v-model="o.generateDate"/>
-
                     <label>Cerrado</label>
                     <input type="checkbox" v-model="o.closed"/>
-
                     <label>Cancelado</label>
                     <input type="checkbox" v-model="o.canceled"/>
-
                     <label>Preparado por</label>
                     <input v-model="o.preparedBy"/>
 
