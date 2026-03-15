@@ -103,7 +103,7 @@
     justify-content:center;
     align-items:center;">loading....</div>
   <div style="display:none">
-    <v-dialog id="addPerson" width="460">
+    <v-form id="addPerson" header="Agregar Persona" width="460">
       <div v-if="showAddPerson" class="v-form">
         <div style="margin-bottom: 10px;"><input></div>
         <v-table :selectable="true" :scrollable="true" ref="personal" style="height:400px" rowKey="id" :pagination="20"
@@ -127,7 +127,7 @@
           </template>
         </v-table>
       </div>
-    </v-dialog>
+    </v-form>
     <v-panel header="Agregar Concepto" id="addConcept" width="460">
       <div v-if="showAddConcept" class="v-form">
         <v-fieldset legend="Destino">
@@ -344,13 +344,30 @@ export default ui({
       });
     }
 
+    const addPerson = () => {
+      showAddPerson.value = true;
+      MsgBox(document.querySelector('#addPerson'), (b) => {
+        if (b == 1) {
+          const persons = me.$refs.personal.load.selected.value;
+          if (persons.length) {
+            axios.post('/api/payroll/add-person', { persons }).then(({ data }) => {
+              refresh();
+            });
+          } else {
+            MsgBox("Debe seleccionar algun empleado de la lista");
+            return false;
+          }
+        }
+      }, [{ label: 'Agregar', icon: 'fa-plus' }]);
+    }
+
     return {
       o,
       headers,
       items,
       process,
       refresh,
-
+      addPerson,
       headerRows,
       visibleHeaders,
       columnsHeaders,
@@ -391,23 +408,6 @@ export default ui({
           this.selectedRows.delete(index)
         }
       }
-    },
-    addPerson() {
-      const me = this;
-      me.showAddPerson = true;
-      MsgBox(document.querySelector('#addPerson'), (b) => {
-        if (b == 1) {
-          const persons = me.$refs.personal.load.selected.value;
-          if (persons.length) {
-            axios.post('/api/payroll/add-person', { persons }).then(({ data }) => {
-              me.refresh2();
-            });
-          } else {
-            MsgBox("Debe seleccionar algun empleado de la lista");
-            return false;
-          }
-        }
-      }, ['Cancelar', 'Agregar']);
     },
     addConcept() {
       const me = this;
