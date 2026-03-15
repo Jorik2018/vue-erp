@@ -111,7 +111,6 @@
                                 </template>
                             </v-options>
                         </v-select>
-
                         <label>Concepto:</label>
                         <v-select ref="concept" v-model="o.concept">
                             <option value="">Select One...</option>
