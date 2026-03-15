@@ -55,6 +55,6 @@ ion-content::part(scroll) {
 .v-msgbox > .v-dialog-content > .ui-panel > .v-panel-titlebar > .v-panel-title {
   padding: 5px;
 }
-.v-menu > ul > li > ul > li {
+.v-menu > ul > ul > li {
   padding-left: 68px;
 }
