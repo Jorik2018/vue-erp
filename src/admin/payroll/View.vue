@@ -208,9 +208,10 @@ export default ui({
 
     const refresh = () => {
       axios.get('/api/payroll/' + id + '/preview')
-        .then(({ headers, items, ...payroll  }) => {
-          headers.value = headers
-          items.value = items
+        .then(({data:{ headers:h, items:i, ...payroll  }}) => {
+          console.log(h);
+          headers.value = h
+          items.value = i
           o.value = payroll
           handler(items)
         })
