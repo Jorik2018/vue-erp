@@ -3,22 +3,16 @@
         <v-form header="Personas por Grupo" action="/admin/payroll/group-people">
             <v-table ref="table" rowKey="id" src="/api/payroll/group-people" :pagination="20" :filters="filters"
                 :selectable="true" :scrollable="true">
-
                 <template v-slot:header>
                     <v-button value="Crear" icon="fa-plus" class="on" @click.prevent="create"></v-button>
-                    <v-button value="Editar" icon="fa-pen" @click.prevent="edit"
-                        :disabled="!rowSelectedCount"></v-button>
                     <v-button value="Eliminar" icon="fa-trash" @click.prevent="destroy"
                         :disabled="!rowSelectedCount"></v-button>
                     <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh"></v-button>
                 </template>
-
                 <template v-slot="{ row }">
-
                     <td width="60" header="ID" class="center">
                         {{ pad(row.id, 4) }}
                     </td>
-
                     <td width="120" header="Código" class="center">
                         <v-filter>
                             <input v-model="filters.code" />

@@ -110,7 +110,7 @@
                             <label>Tipo Planilla</label>
                             <v-select v-model="o.payrollType">
                                 <option value="">All...</option>
-                                <v-options src="payrollType" value-field="id" display-field="name"></v-options>
+                                <v-options src="/api/payroll/type" value-field="id" display-field="name"></v-options>
                             </v-select>
                         </v-template>
                     </v-fieldset>
