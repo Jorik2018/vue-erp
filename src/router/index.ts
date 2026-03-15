@@ -244,6 +244,10 @@ const routes: Array<RouteRecordRaw> = [
         path: 'payroll/concept',
         component: () => import('../admin/payroll/concept/List.vue')
       },
+            {
+        path: 'payroll/group/people',
+        component: () => import('../admin/payroll/group/people/List.vue')
+      },
       {
         path: 'payroll/amount',
         component: () => import('../admin/payroll/amount/List.vue')

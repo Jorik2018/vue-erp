@@ -18,6 +18,7 @@ mock.onGet(/\/api\/hr\/personal\/\d+\/\d+/).reply(200, {
             "secuenciaFuncional": null,
             "actividad": "UE-1768",
             "dni": "09689938",
+            "code": "09689938",
             "codigoAirhsp": null,
             "apellidosNombres": "Cuya Camacho Adler Joel",
             "organoId": "10",
@@ -41,6 +42,7 @@ mock.onGet(/\/api\/hr\/personal\/\d+\/\d+/).reply(200, {
             "secuenciaFuncional": null,
             "actividad": "UE-1768",
             "dni": "22196399",
+            "code": "22196399",
             "codigoAirhsp": null,
             "apellidosNombres": "Huaman Ayala Alejandro Fernando",
             "organoId": "8",
@@ -137,6 +139,27 @@ mock.onGet(/\/api\/payroll\/concept\/\d+\/\d+/).reply(200, {
             "pdt_code": null,
             "description": null,
             "created_date": "2026-02-28 11:56:53"
+        }
+    ],
+    "size": 21
+})
+
+mock.onGet(/\/api\/payroll\/group\/\d+\/\d+/).reply(200, {
+    "data": [
+        {
+            "id": "1",
+            "name": "integra 1",
+            "parentId": "1"
+        },
+        {
+            "id": "2",
+            "name": "g2-1",
+            "parentId": "1"
+        },
+                {
+            "id": "3",
+            "name": "g3-2",
+            "parentId": "2"
         }
     ],
     "size": 21

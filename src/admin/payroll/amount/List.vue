@@ -71,7 +71,7 @@
 
         <div style="display:none">
 
-            <v-form :header="o.id ? 'Editar' : 'Crear' + ' Monto'" id="form" width="480">
+            <v-form :header="o.id ? 'Editar' : 'Crear' + ' Monto'" id="form" width="480" action="/api/payroll/amount">
 
                 <div v-if="form" class="v-form">
                     <v-fieldset legend="Destino">
@@ -88,7 +88,7 @@
                             <label>Grupo:</label>
                             <v-select v-model="o.targetId" required>
                                 <option value="">Select One...</option>
-                                <v-options :data="group" value-field="id" display-field="name"></v-options>
+                                <v-options store="group" value-field="id" display-field="name"></v-options>
                             </v-select>
                         </v-template>
                         <v-template v-if="o.type == 'PE'">
@@ -97,7 +97,10 @@
                         </v-template>
                         <v-template v-if="o.type">
                             <label>Tipo Planilla</label>
-                            <input v-model="o.payrollTypeId" />
+                            <v-select v-model="o.payrollType">
+                                <option value="">All...</option>
+                                <v-options src="payrollType" value-field="id" display-field="name"></v-options>
+                            </v-select>
                         </v-template>
                     </v-fieldset>
                     <v-fieldset legend="Concepto">
@@ -118,11 +121,11 @@
                         </v-select>
                     </v-fieldset>
                     <label>Fecha Inicio:</label>
-                    <input type="date" v-model="o.iniDate" />
+                    <input type="date" v-model="o.iniDate" required />
                     <label>Fecha Fin:</label>
                     <input type="date" v-model="o.endDate" />
                     <label>Monto:</label>
-                    <v-number v-model="o.amount" />
+                    <v-number v-model="o.amount" required/>
                 </div>
                 <center>
                     <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>

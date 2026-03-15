@@ -82,7 +82,9 @@
         <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll" label="Panillas">
           <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/concept" label="Conceptos" />
           <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/amount" label="Montos" />
-          <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/group" label="Grupos" />
+          <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/group" label="Grupos">
+            <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/group/people" label="Personas" />
+          </v-item>
           <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/create" label="Crear" />
           <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/chd"
             label="Constancia de Pago de Haberes y Descuentos" />
@@ -98,7 +100,7 @@
         <v-item icon="fa-sign-out-alt" @click="app.logout" label="Cerrar Sessión" />
       </ul>
       <div class="center" style="font-size: 10px;margin: 20px;">
-        VERSION: {{ app.VERSION }} <br/>
+        VERSION: {{ app.VERSION }} <br />
         BUILT ON: {{ app.BUILT_ON }}
       </div>
     </ion-content>
