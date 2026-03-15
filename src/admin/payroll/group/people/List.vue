@@ -49,7 +49,7 @@
             <v-form header="Agregar Persona en Grupo" id="form" width="420" action="/api/payroll/group-people">
 
                 <div v-if="form" class="v-form">
-                    <label>Persona:{{ o }}</label>
+                    <label>Persona:</label>
                     <v-autocomplete placeholder="Ingrese mas de 5 caracteres y presione ENTER"  page="20"
                         :show-selection="true" inputClass="center"
                         minQueryLength="5" required v-model="o.people" @complete="peopleComplete"
@@ -123,10 +123,8 @@ export default ui({
 
     },
     methods:{
-        process({people:{id}, ...others}){
-            
-            alert(JSON.stringify({people:id, ...others}))
-        }
+        process: ({people:{id}, ...others})=> ({people:id, ...others})
+        
     }
 
 })
