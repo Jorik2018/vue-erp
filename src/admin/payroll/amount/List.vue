@@ -93,7 +93,18 @@
                         </v-template>
                         <v-template v-if="o.type == 'PE'">
                             <label>Persona:</label>
-                            <input v-model="o.targetId" />
+                            <v-autocomplete placeholder="Ingrese mas de 5 caracteres y presione ENTER" page="20"
+                                :show-selection="true" inputClass="center" @input="inputPeople" minQueryLength="5" required v-model="o.targetId"
+                                src="/api/hr/personal">
+                                <template v-slot:label="{ selected }">
+                                    <template v-if="selected">
+                                        {{ selected.code }}: {{ selected.fullName }}
+                                    </template>
+                                </template>
+                                <template v-slot="{ row }">
+                                    {{ row.code }}: {{ row.fullName }}
+                                </template>
+                            </v-autocomplete>
                         </v-template>
                         <v-template v-if="o.type">
                             <label>Tipo Planilla</label>
@@ -125,7 +136,7 @@
                     <label>Fecha Fin:</label>
                     <input type="date" v-model="o.endDate" />
                     <label>Monto:</label>
-                    <v-number v-model="o.amount" required/>
+                    <v-number v-model="o.amount" required />
                 </div>
                 <center>
                     <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
