@@ -105,14 +105,14 @@
                         <v-select v-model="o.conceptType" required
                             @input="$refs.concept.load({ typeId: o.conceptType })">
                             <option value="">Select One...</option>
-                            <v-options :data="conceptType">
+                            <v-options :data="conceptType" value-field="id">
                                 <template #default="{ item }">
                                     {{ item.id }}: {{ item.name }}
                                 </template>
                             </v-options>
                         </v-select>
                         <label>Concepto:</label>
-                        <v-select ref="concept" v-model="o.concept">
+                        <v-select ref="concept" :disabled="!o.conceptType" v-model="o.concept">
                             <option value="">Select One...</option>
                             <v-options name="concept" store="concept" value-field="id" display-field="name" />
                         </v-select>
@@ -131,7 +131,6 @@
         </div>
     </ion-page>
 </template>
-
 <script>
 import { ui, MsgBox } from 'isobit-ui'
 import axios from 'axios'
