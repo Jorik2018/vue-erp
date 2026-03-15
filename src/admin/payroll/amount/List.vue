@@ -30,7 +30,7 @@
                         {{ TARGET_TYPE_NAME[row.type]||row.type }}
                     </td>
 
-                    <td width="180" header="Target" class="center">
+                    <td width="180" header="Destino" class="center">
                         <v-filter>
                             <input v-model="filters.targetId" />
                         </v-filter>

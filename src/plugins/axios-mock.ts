@@ -117,6 +117,26 @@ mock.onGet(/\/api\/payroll\/\d+\/personal/).reply(200, {
     "size": "148"
 })
 
+mock.onGet(/\/api\/payroll\/\d+\/\d+/).reply(200, {
+    "data": [
+        {
+            "id": "1",
+            "year": "2026",
+            "number": "1",
+            "month": "3",
+            "typeId": "1",
+            "idFuenteFinanc": null,
+            "comments": null,
+            "closed": "0",
+            "generateDate": "2026-02-25 20:04:27",
+            "canceled": "0",
+            "preparedBy": null,
+            "typeName": "PLANILLA CAS"
+        }
+    ],
+    "size": "1"
+})
+
 
 mock.onGet(/\/api\/payroll\/concept\/\d+\/\d+/).reply(200, {
     "data": [
@@ -282,8 +302,8 @@ function generarNombreCompleto() {
   return palabras.join(' ');
 }
 
-mock.onGet('/api/payroll/period').reply(config => {
-  const { year, month } = config.params
+mock.onGet('/api/payroll/1/preview').reply(config => {
+  
   const headers = assignLeafIndexes([
     { title: 'NOMBRE COMPLETO', width: 200, index: 'fullName' },
     { title: 'DIAS LABORADOS', width: 100 },
@@ -363,6 +383,20 @@ mock.onGet('/api/payroll/period').reply(config => {
   return [200, {
     "success": true,
     "data": items,
-    "headers": headers
+    "headers": headers,
+    "payroll": {
+        "id": "1",
+        "year": "2026",
+        "number": "1",
+        "month": "3",
+        "payrollTypeName": "PLANILLA CAS",
+        "type_id": "1",
+        "id_fuente_financ": null,
+        "comments": null,
+        "closed": "0",
+        "generate_date": "2026-02-25 20:04:27",
+        "canceled": "0",
+        "prepared_by": null
+    }
   }]
 })

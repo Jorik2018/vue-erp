@@ -237,10 +237,6 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../admin/payroll/chd.vue')
       },
       {
-        path: 'payroll/create',
-        component: () => import('../admin/payroll/Create.vue')
-      },
-      {
         path: 'payroll/concept',
         component: () => import('../admin/payroll/concept/List.vue')
       },
@@ -253,8 +249,8 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../admin/payroll/amount/List.vue')
       },
       {
-        path: 'payroll/:id',
-        component: () => import('../admin/payroll/Create.vue')
+        path: 'payroll/:id', props: true,
+        component: () => import('../admin/payroll/View.vue')
       },
       {
         path: 'setting',

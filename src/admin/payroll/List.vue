@@ -38,7 +38,8 @@
                         <v-filter>
                             <input v-model="filters.month"/>
                         </v-filter>
-                        {{ row.month }}
+                        {{ MONTH_NAME[row.month]?.toUpperCase()|| row.month}}
+                        
                     </td>
                     <td width="80" header="Número" class="center">
                         <v-filter>
@@ -46,7 +47,7 @@
                         </v-filter>
                         {{ row.number }}
                     </td>
-                    <td width="240" header="Tipo" class="center">
+                    <td width="240" header="Tipo">
                         <v-filter>
                             <input v-model="filters.typeId"/>
                         </v-filter>
@@ -113,7 +114,10 @@
                     <label>Año</label>
                     <input type="number" v-model="o.year"/>
                     <label>Mes</label>
-                    <input type="number" v-model="o.month"/>
+                    <v-select v-model="o.month" required>
+                        <option value="">Select One...</option>
+                        <v-options :data="MONTHS" value-field="id" display-field="name"></v-options>
+                    </v-select>
                     <label>Número</label>
                     <input type="number" v-model="o.number"/>
                     <label>Tipo</label>
@@ -143,6 +147,7 @@
 <script>
 import { ui, MsgBox } from 'isobit-ui'
 import { ref } from 'vue'
+import { MONTH_NAME } from './constants';
 
 export default ui({
 
@@ -184,7 +189,9 @@ export default ui({
             table,
             edit,
             create,
-            view
+            view,
+            MONTH_NAME,
+            MONTHS:Object.entries(MONTH_NAME).map(([id,name]) => ({ id:Number(id), name:name.toUpperCase() }))
         }
 
     }

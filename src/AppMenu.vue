@@ -81,13 +81,12 @@
         <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/hr/employee" label="Empleados" />
         <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll" label="Panillas">
           <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/concept" label="Conceptos" />
-          <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/amount" label="Montos" />
           <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/group" label="Grupos">
             <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/group/people" label="Personas" />
           </v-item>
-          <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/create" label="Crear" />
+          <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/amount" label="Montos" />
           <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/chd"
-            label="Constancia de Pago de Haberes y Descuentos" />
+            label="Reportes" />
         </v-item>
         <v-item v-if="perms.PREGNANT_READ" icon="fa-person-pregnant" href="/admin/desarrollo-social/pregnant"
           label="Gestantes" />
