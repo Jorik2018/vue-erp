@@ -37,13 +37,18 @@
                         {{ row.targetId }}
                     </td>
 
-                    <td width="120" header="Concepto" class="center">
+                    <td width="220" header="Concepto" class="center">
                         <v-filter>
                             <input v-model="filters.concept" />
                         </v-filter>
                         {{ row.conceptName }}
                     </td>
-
+                    <td width="120" header="Monto" class="right">
+                        <v-filter>
+                            <input v-model="filters.amount" />
+                        </v-filter>
+                        {{ row.amount }}
+                    </td>
                     <td width="120" header="Inicio" class="center">
                         <v-filter>
                             <input v-model="filters.iniDate" />
@@ -56,13 +61,6 @@
                             <input v-model="filters.endDate" />
                         </v-filter>
                         {{ row.endDate }}
-                    </td>
-
-                    <td width="120" header="Monto" class="right">
-                        <v-filter>
-                            <input v-model="filters.amount" />
-                        </v-filter>
-                        {{ row.amount }}
                     </td>
                 </template>
             </v-table>
