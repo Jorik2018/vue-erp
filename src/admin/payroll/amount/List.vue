@@ -128,9 +128,7 @@
                     <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
                 </center>
             </v-form>
-
         </div>
-
     </ion-page>
 </template>
 
