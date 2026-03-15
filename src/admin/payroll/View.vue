@@ -208,11 +208,11 @@ export default ui({
 
     const refresh = () => {
       axios.get('/api/payroll/' + id + '/preview')
-        .then(({ data: { headers: h, data, payroll } }) => {
-          headers.value = h
-          items.value = data
+        .then(({ data: { headers, items, ...payroll } }) => {
+          headers.value = headers
+          items.value = items
           o.value = payroll
-          handler(data)
+          handler(items)
         })
     }
 

@@ -381,10 +381,6 @@ mock.onGet('/api/payroll/1/preview').reply(config => {
     });
   }
   return [200, {
-    "success": true,
-    "data": items,
-    "headers": headers,
-    "payroll": {
         "id": "1",
         "year": "2026",
         "number": "1",
@@ -396,7 +392,8 @@ mock.onGet('/api/payroll/1/preview').reply(config => {
         "closed": "0",
         "generate_date": "2026-02-25 20:04:27",
         "canceled": "0",
-        "prepared_by": null
-    }
+        "prepared_by": null,
+        headers,
+        items
   }]
 })
