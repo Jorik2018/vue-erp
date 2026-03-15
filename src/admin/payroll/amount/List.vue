@@ -23,7 +23,7 @@
                         {{ row.payrollType }}
                     </td>
 
-                    <td width="120" header="Tipo" class="center">
+                    <td width="180" header="Tipo" class="center">
                         <v-filter>
                             <input v-model="filters.type" />
                         </v-filter>
