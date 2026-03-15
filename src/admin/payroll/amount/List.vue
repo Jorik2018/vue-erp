@@ -23,14 +23,14 @@
                         {{ row.payrollType }}
                     </td>
 
-                    <td width="80" header="Tipo" class="center">
+                    <td width="120" header="Tipo" class="center">
                         <v-filter>
                             <input v-model="filters.type" />
                         </v-filter>
-                        {{ row.type }}
+                        {{ TARGET_TYPE_NAME[row.type]||row.type }}
                     </td>
 
-                    <td width="120" header="Target" class="center">
+                    <td width="180" header="Target" class="center">
                         <v-filter>
                             <input v-model="filters.targetId" />
                         </v-filter>
@@ -173,6 +173,7 @@ export default ui({
             openForm()
         }
 
+        
         return {
             o,
             form,
@@ -180,7 +181,8 @@ export default ui({
             edit,
             create,
             targetType,
-            conceptType
+            conceptType,
+            TARGET_TYPE_NAME: Object.fromEntries(targetType.map(o => [o.id, o.name]))
         }
 
     }
