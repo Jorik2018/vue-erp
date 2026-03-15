@@ -46,14 +46,15 @@ ion-content::part(scroll) {
     margin: auto;
   }
 }
-
-.v-msgbox>.v-dialog-content>.ui-panel>.v-panel-titlebar {
+.v-msgbox > .v-dialog-content > .ui-panel > .v-panel-titlebar {
   border: unset;
   background: unset;
   color: unset;
   font-size: 24px;
 }
-
-.v-msgbox>.v-dialog-content>.ui-panel>.v-panel-titlebar>.v-panel-title {
+.v-msgbox > .v-dialog-content > .ui-panel > .v-panel-titlebar > .v-panel-title {
   padding: 5px;
+}
+.v-menu > ul > li > ul > li {
+  padding-left: 68px;
 }
