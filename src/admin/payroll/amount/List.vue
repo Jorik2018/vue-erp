@@ -39,9 +39,9 @@
 
                     <td width="120" header="Concepto" class="center">
                         <v-filter>
-                            <input v-model="filters.conceptId" />
+                            <input v-model="filters.concept" />
                         </v-filter>
-                        {{ row.conceptId }}
+                        {{ row.conceptName }}
                     </td>
 
                     <td width="120" header="Inicio" class="center">
