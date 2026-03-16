@@ -7,11 +7,12 @@ export const targetType = [
 ]
 
 export const conceptType = [
-    { id: 1, name: 'INGRESOS' },
-    { id: 2, name: 'EGRESOS INICIAL' },
+    { id: 1, name: 'INGRESOS BASE' },
+    { id: 2, name: 'INGRESOS EXTRA' },
     { id: 3, name: 'EGRESOS QUE AFECTAN BASE IMPONIBLE' },
-    { id: 4, name: 'DESCUENTOS DE LEY' },
-    { id: 5, name: 'OTROS DESCUENTOS' }
+    { id: 4, name: 'PAGO EN EXCESO' },
+    { id: 5, name: 'DESCUENTOS DE LEY' },
+    { id: 6, name: 'OTROS DESCUENTOS' }
 ]
 
 export const MONTH_NAME = {
