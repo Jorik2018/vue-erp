@@ -7,7 +7,7 @@
         <v-button icon="fa fa-gear" @click="process" />
         <v-button icon="fa fa-person-circle-plus" @click="addPerson" :disabled="!(o.month && o.year)" />
         <v-button icon="fa fa-square-plus" @click="addConcept" :disabled="!(o.month && o.year)" />
-        <v-button title="Descargar" icon="fa-download"
+        <v-button title="Descargar" :disabled="!o.generateDate" icon="fa-download"
           @click.prevent="saveAs('/api/payroll/download', { id: 1 })"></v-button>
 
         <div style="margin-left:auto">
