@@ -338,10 +338,10 @@ export default ui({
     })
 
     const process = () => {
-      axios.post('/api/payroll/process', o.value).then(({ data: { data, headers } }) => {
-        items.value = data;
-        headers.value = headers;
-        handler(me.items);
+      axios.post('/api/payroll/process', o.value).then(({ data: { items:i, headers:h } }) => {
+        items.value = i;
+        headers.value = h;
+        //handler(me.items);
       });
     }
 
