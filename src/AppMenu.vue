@@ -78,7 +78,7 @@
         <v-item v-if="perms.HR_MOVEMENT_READ" icon="fa-table" href="/admin/hr/movement" label="Movimientos">
           <v-item v-if="perms.HR_MOVEMENT_REGISTER" icon="fa-plus" href="/admin/hr/movement/create" label="Agregar" />
         </v-item>
-        <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/hr/employee" label="Empleados" />
+        <!--v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/hr/employee" label="Empleados" /-->
         <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll" label="Panillas">
           <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/concept" label="Conceptos" />
           <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/group" label="Grupos">
