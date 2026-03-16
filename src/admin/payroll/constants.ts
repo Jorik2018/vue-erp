@@ -10,7 +10,7 @@ export const conceptType = [
     { id: 1, name: 'INGRESOS' },
     { id: 2, name: 'EGRESOS INICIAL' },
     { id: 3, name: 'EGRESOS QUE AFECTAN BASE IMPONIBLE' },
-    { id: 4, name: 'DESCUENTOS DE LEY' }
+    { id: 4, name: 'DESCUENTOS DE LEY' },
     { id: 5, name: 'OTROS DESCUENTOS' }
 ]
 
