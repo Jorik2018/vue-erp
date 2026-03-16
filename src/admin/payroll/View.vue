@@ -3,8 +3,8 @@
     <div class="v-form" style="display: flex;flex-direction: column;flex:1">
       <div style="display:flex; flex-grow:1; margin-bottom:3px; align-items:flex-end;">
 
-        <v-button icon="fa fa-refresh" @click="refresh2" :disabled="!(o.month && o.year)" />
-        <v-button icon="fa fa-gear" @click="process" :disabled="!(o.month && o.year)" />
+        <v-button icon="fa fa-refresh" @click="refresh" />
+        <v-button icon="fa fa-gear" @click="process" />
         <v-button icon="fa fa-person-circle-plus" @click="addPerson" :disabled="!(o.month && o.year)" />
         <v-button icon="fa fa-square-plus" @click="addConcept" :disabled="!(o.month && o.year)" />
         <v-button title="Descargar" icon="fa-download"
