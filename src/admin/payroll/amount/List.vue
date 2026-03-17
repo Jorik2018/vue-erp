@@ -30,14 +30,14 @@
                         {{ TARGET_TYPE_NAME[row.type]||row.type }}
                     </td>
 
-                    <td width="180" header="Destino" class="center">
+                    <td width="240" header="Destino" class="center">
                         <v-filter>
                             <input v-model="filters.targetId" />
                         </v-filter>
                         {{ row.targetName?.toUpperCase()||row.targetId }}
                     </td>
 
-                    <td width="220" header="Concepto" class="center">
+                    <td width="240" header="Concepto" class="center">
                         <v-filter>
                             <input v-model="filters.concept" />
                         </v-filter>
