@@ -5,9 +5,11 @@
 
         <v-button icon="fa fa-refresh" @click="refresh" />
 
-        <v-button icon="fa fa-person-circle-plus" @click="addPerson" :disabled="!(o.month && o.year)" />
+        <v-button icon="fa fa-person-circle-plus" @click="addPerson" />
+        <v-button icon="fa fa-person-circle-minus" class="red-light" @click="removePerson" 
+        :disabled="selectedRows.size === 0" />
         <v-button icon="fa fa-square-plus" @click="addConcept" :disabled="!(o.month && o.year)" />
-        <v-button icon="fa fa-gear" @click="process" />
+        <v-button icon="fa fa-gear" @click="process" class="yellow-light" />
         <v-button title="Descargar" :disabled="!o.generateDate" icon="fa-download"
           @click.prevent="saveAs('/api/payroll/download', { id: 1 })"></v-button>
 
@@ -358,21 +360,14 @@ export default ui({
       MsgBox(document.querySelector('#addPerson'), async (b) => {
         if (b === 0) {
           const persons = personal.value.load.selected.value;
-
           if (!persons.length) {
             MsgBox("Debe seleccionar algun empleado de la lista");
             return false; // ❗ evita cerrar
           }
-
           try {
-            await axios.post('/api/payroll/add-person', { persons });
-
+            await axios.post('/api/payroll/add-person', { persons, payrollType:o.value.typeId });
             refresh(); // éxito → se cierra normalmente
-
-          } catch (e) {
-            console.error(e);
-
-            MsgBox("Error al agregar empleados");
+          } catch {
             return false; // ❗ evita cerrar el modal
           }
         }

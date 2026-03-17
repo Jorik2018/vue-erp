@@ -58,3 +58,34 @@ ion-content::part(scroll) {
 .v-menu > ul > ul > li {
   padding-left: 68px;
 }
+
+.v-button.red-light {
+    background: linear-gradient(to bottom, #f9c2c2, #f39191);
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.v-button.red-light:hover {
+    background: linear-gradient(to bottom, #fbcaca, #ee7f7f);
+    border-color: #d96b6b;
+}
+
+.v-button.red-light:active {
+    background: linear-gradient(to bottom, #f39191, #e57373);
+    border-color: #c85c5c;
+}
+.v-button.yellow-light {
+    background: linear-gradient(to bottom, #f9e7b8, #f3d97a);
+    border: 1px solid #e0c45c;
+    color: #2b2b2b;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.v-button.yellow-light:hover {
+    background: linear-gradient(to bottom, #fbeec6, #efd368);
+    border-color: #d4b84f;
+}
+
+.v-button.yellow-light:active {
+    background: linear-gradient(to bottom, #f3d97a, #e6c95a);
+    border-color: #c9ad45;
+}
