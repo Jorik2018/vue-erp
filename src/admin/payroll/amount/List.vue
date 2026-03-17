@@ -34,7 +34,7 @@
                         <v-filter>
                             <input v-model="filters.targetId" />
                         </v-filter>
-                        {{ row.targetName||row.targetId }}
+                        {{ row.targetName?.toUpperCase()||row.targetId }}
                     </td>
 
                     <td width="220" header="Concepto" class="center">
