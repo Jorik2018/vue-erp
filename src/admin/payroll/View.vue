@@ -4,9 +4,10 @@
       <div style="display:flex; flex-grow:1; padding:10px; align-items:flex-end;">
 
         <v-button icon="fa fa-refresh" @click="refresh" />
-        <v-button icon="fa fa-gear" @click="process" />
+
         <v-button icon="fa fa-person-circle-plus" @click="addPerson" :disabled="!(o.month && o.year)" />
         <v-button icon="fa fa-square-plus" @click="addConcept" :disabled="!(o.month && o.year)" />
+        <v-button icon="fa fa-gear" @click="process" />
         <v-button title="Descargar" :disabled="!o.generateDate" icon="fa-download"
           @click.prevent="saveAs('/api/payroll/download', { id: 1 })"></v-button>
 
@@ -60,8 +61,7 @@
           </div>
         </div>
         <div data-v-72883fb8="" class="v-datatable undefined"
-          style="flex: 1; height: 0px;min-width: unset;min-height: -webkit-fill-available;"
-          v--popup="1"><!----><!---->
+          style="flex: 1; height: 0px;min-width: unset;min-height: -webkit-fill-available;" v--popup="1"><!----><!---->
           <div class="v-widget-header v-datatable-scrollable-header" style="position: relative; margin-right: 0px;">
             <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
               <table class="v-cloned-header v-table"><!---->
@@ -105,14 +105,20 @@
   <div style="display:none">
     <v-form id="addPerson" header="Agregar Persona" width="460">
       <div v-if="showAddPerson" class="v-form">
-        <div style="margin-bottom: 10px;"><input></div>
+        <div style="margin-bottom: 10px;"></div>
         <v-table :selectable="true" :scrollable="true" ref="personal" style="height:400px" rowKey="id" :pagination="20"
           :filters="filters" src="/api/hr/personal">
           <template v-slot="{ row }">
             <td width="80" class="center" header="DNI">
+              <v-filter>
+                <input v-model="filters.code" />
+              </v-filter>
               {{ row.dni }}
             </td>
             <td width="220" header="Apellidos Nombres">
+              <v-filter>
+                <input v-model="filters.fullName" />
+              </v-filter>
               {{ row.apellidosNombres }}
             </td>
             <td width="220" header="Organo">
@@ -199,7 +205,9 @@ export default ui({
     ])
 
     const keySet = ref(0)
-    const current = ref(null)
+    const current = ref(null);
+
+    const personal = ref(null)
 
     const tableKey = ref(0)
 
@@ -208,7 +216,7 @@ export default ui({
 
     const refresh = () => {
       axios.get('/api/payroll/' + id + '/preview')
-        .then(({data:{ headers:h, items:i, ...payroll  }}) => {
+        .then(({ data: { headers: h, items: i, ...payroll } }) => {
           console.log(h);
           headers.value = h
           items.value = i
@@ -338,7 +346,7 @@ export default ui({
     })
 
     const process = () => {
-      axios.post('/api/payroll/process', o.value).then(({ data: { items:i, headers:h } }) => {
+      axios.post('/api/payroll/process', o.value).then(({ data: { items: i, headers: h } }) => {
         items.value = i;
         headers.value = h;
         //handler(me.items);
@@ -347,16 +355,25 @@ export default ui({
 
     const addPerson = () => {
       showAddPerson.value = true;
-      MsgBox(document.querySelector('#addPerson'), (b) => {
-        if (b == 1) {
-          const persons = me.$refs.personal.load.selected.value;
-          if (persons.length) {
-            axios.post('/api/payroll/add-person', { persons }).then(({ data }) => {
-              refresh();
-            });
-          } else {
+      MsgBox(document.querySelector('#addPerson'), async (b) => {
+        if (b === 0) {
+          const persons = personal.value.load.selected.value;
+
+          if (!persons.length) {
             MsgBox("Debe seleccionar algun empleado de la lista");
-            return false;
+            return false; // ❗ evita cerrar
+          }
+
+          try {
+            await axios.post('/api/payroll/add-person', { persons });
+
+            refresh(); // éxito → se cierra normalmente
+
+          } catch (e) {
+            console.error(e);
+
+            MsgBox("Error al agregar empleados");
+            return false; // ❗ evita cerrar el modal
           }
         }
       }, [{ label: 'Agregar', icon: 'fa-plus' }]);
@@ -368,6 +385,7 @@ export default ui({
       items,
       process,
       refresh,
+      personal,
       addPerson,
       headerRows,
       visibleHeaders,
