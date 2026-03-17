@@ -4,10 +4,11 @@
       <div style="display:flex; flex-grow:1; padding:10px; align-items:flex-end;">
 
         <v-button icon="fa fa-refresh" @click="refresh" />
-
+        <div style="width: 10px;"></div>
         <v-button icon="fa fa-person-circle-plus" @click="addPerson" />
-        <v-button icon="fa fa-person-circle-minus" class="red-light" @click="removePerson" 
-        :disabled="selectedRows.size === 0" />
+        <v-button icon="fa fa-person-circle-minus" class="red-light" @click="removePerson"
+          :disabled="selectedRows.size === 0" />
+        <div style="width: 10px;"></div>
         <v-button icon="fa fa-square-plus" @click="addConcept" :disabled="!(o.month && o.year)" />
         <v-button icon="fa fa-gear" @click="process" class="yellow-light" />
         <v-button title="Descargar" :disabled="!o.generateDate" icon="fa-download"
@@ -365,13 +366,30 @@ export default ui({
             return false; // ❗ evita cerrar
           }
           try {
-            await axios.post('/api/payroll/add-person', { persons, payrollType:o.value.typeId });
+            await axios.post('/api/payroll/add-person', { persons, payrollType: o.value.typeId });
             refresh(); // éxito → se cierra normalmente
           } catch {
             return false; // ❗ evita cerrar el modal
           }
         }
       }, [{ label: 'Agregar', icon: 'fa-plus' }]);
+    }
+
+    const removePerson = () => {
+      MsgBox("Esta seguro de remover estos trabajadores de la planilla?", async (b) => {
+        if (b === 0) {
+          try {
+            await axios.post('/api/payroll/remove-person', {
+              payrollType: o.value.typeId,
+              persons: Array.from(selectedRows.value)
+                .map(i => items.value[i].code)
+            });
+            refresh(); // éxito → se cierra normalmente
+          } catch {
+            return false; // ❗ evita cerrar el modal
+          }
+        }
+      }, [{ label: 'Si', icon: 'fa-check' }]);
     }
 
     return {
@@ -385,7 +403,7 @@ export default ui({
       headerRows,
       visibleHeaders,
       columnsHeaders,
-
+      removePerson,
       syncingScroll,
       tk,
       selectedRows,
