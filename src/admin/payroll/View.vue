@@ -17,7 +17,7 @@
       </div>
       <div style="display:flex;flex-direction:row;height: -webkit-fill-available;">
         <div data-v-72883fb8="" class="v-datatable undefined"
-          style="width:300px;flex:0 0 300px; margin-top: 10px; height: 400px;min-width: unset;min-height: -webkit-fill-available;"
+          style="width:300px;flex:0 0 300px; height: 0px;min-width: unset;min-height: -webkit-fill-available;"
           v--popup="1"><!----><!---->
           <div class="v-widget-header v-datatable-scrollable-header" style="position: relative; margin-right: 0px;">
             <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
@@ -60,7 +60,7 @@
           </div>
         </div>
         <div data-v-72883fb8="" class="v-datatable undefined"
-          style="flex: 1; margin-top: 10px; height: 400px;min-width: unset;min-height: -webkit-fill-available;"
+          style="flex: 1; height: 0px;min-width: unset;min-height: -webkit-fill-available;"
           v--popup="1"><!----><!---->
           <div class="v-widget-header v-datatable-scrollable-header" style="position: relative; margin-right: 0px;">
             <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
