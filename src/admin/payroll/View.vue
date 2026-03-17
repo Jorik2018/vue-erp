@@ -382,7 +382,7 @@ export default ui({
             await axios.post('/api/payroll/remove-person', {
               payrollType: o.value.typeId,
               persons: Array.from(selectedRows.value)
-                .map(i => items.value[i].code)
+                .map(i => items.value[i].peopleId)
             });
             refresh(); // éxito → se cierra normalmente
           } catch {
