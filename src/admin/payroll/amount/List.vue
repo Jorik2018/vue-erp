@@ -25,7 +25,10 @@
 
                     <td width="180" header="Tipo" class="center">
                         <v-filter>
-                            <input v-model="filters.type" />
+                            <v-select v-model="filters.type" name="event">
+                                <option value="">Select One...</option>
+                                <v-options :data="targetType" value-field="id" display-field="name"></v-options>
+                            </v-select>
                         </v-filter>
                         {{ TARGET_TYPE_NAME[row.type]||row.type }}
                     </td>
