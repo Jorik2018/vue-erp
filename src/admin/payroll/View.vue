@@ -1,7 +1,7 @@
 <template>
   <v-form v-if="o" :header="o.payrollTypeName + ' [' + o.year + '-' + pad(o.month, 2) + ']'" action="/api/hr/employee">
-    <div class="v-form" style="display: flex;flex-direction: column;flex:1">
-      <div style="display:flex; flex-grow:1; margin-bottom:3px; align-items:flex-end;">
+    <div class="v-form" style="padding:0px;display: flex;flex-direction: column;flex:1">
+      <div style="display:flex; flex-grow:1; padding:10px; align-items:flex-end;">
 
         <v-button icon="fa fa-refresh" @click="refresh" />
         <v-button icon="fa fa-gear" @click="process" />
