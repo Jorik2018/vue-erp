@@ -119,20 +119,46 @@ mock.onGet(/\/api\/payroll\/\d+\/personal/).reply(200, {
 
 mock.onGet(/\/api\/payroll\/\d+\/\d+/).reply(200, {
     "data": [
-        {
-            "id": "1",
-            "year": "2026",
-            "number": "1",
-            "month": "3",
-            "typeId": "1",
-            "idFuenteFinanc": null,
-            "comments": null,
-            "closed": "0",
-            "generateDate": "2026-02-25 20:04:27",
-            "canceled": "0",
-            "preparedBy": null,
-            "typeName": "PLANILLA CAS"
-        }
+        
+{
+        "id": "1",
+        "year": "2026",
+        "number": "1",
+        "month": "3",
+        "payrollTypeName": "PLANILLA CAS",
+        "type_id": "1",
+        "id_fuente_financ": null,
+        "comments": null,
+        "closed": "0",
+        "generateDate": "2026-02-25 20:04:27",
+        "canceled": "0",
+        "prepared_by": null
+  },{
+        "id": "10",
+        "year": "2026",
+        "number": "1",
+        "month": "3",
+        "payrollTypeName": "PLANILLA CAS",
+        "type_id": "1",
+        "id_fuente_financ": null,
+        "comments": null,
+        "closed": "0",
+        "canceled": "0",
+        "prepared_by": null
+  },{
+        "id": "11",
+        "year": "2026",
+        "number": "1",
+        "month": "3",
+        "payrollTypeName": "PLANILLA CAS",
+        "type_id": "1",
+        "id_fuente_financ": null,
+        "comments": null,
+        "closed": "1",
+        "generateDate": "2026-02-25 20:04:27",
+        "canceled": "0",
+        "prepared_by": null
+  }
     ],
     "size": "1"
 })

@@ -6,6 +6,7 @@
                 rowKey="id"
                 src="/api/payroll"
                 :pagination="20"
+                :row-style-class="rowStyleClass"
                 :filters="filters"
                 :selectable="true"
                 :scrollable="true"
@@ -173,10 +174,15 @@ export default ui({
         const view = (o) => {
             open('/admin/payroll/' + (o.tmpId ? (-o.tmpId) : o.id));
         }
+
+        const rowStyleClass = (row) => {
+            return row.closed=='1'?'gray':row.generateDate?'yellow':'green'
+        }
     
         return {
             o,
             form,
+            rowStyleClass,
             table,
             edit,
             create,
