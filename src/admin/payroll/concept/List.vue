@@ -19,7 +19,7 @@
                         </v-filter>
                         {{ row.id }}
                     </td>
-                    <td width="200" class="center" header="Nombre">
+                    <td width="200" header="Nombre">
                         <v-filter>
                             <input v-model="filters.name" />
                         </v-filter>
@@ -31,7 +31,7 @@
                         </v-filter>
                         {{ row.abbreviation }}
                     </td>
-                    <td width="120" header="Tipo" class="center">
+                    <td width="200" header="Tipo" class="center">
                         <v-filter>
                             <v-select v-model="filters.typeId" name="event">
                                 <option value="">Select One...</option>
