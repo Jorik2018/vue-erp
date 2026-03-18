@@ -179,7 +179,6 @@
         </v-fieldset>
         <label>Monto:</label>
         <input type="nuber" v-model="concept.amount" />
-        {{ concept }}
       </div>
     </v-panel>
   </div>
