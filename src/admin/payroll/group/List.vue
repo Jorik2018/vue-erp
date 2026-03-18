@@ -27,7 +27,7 @@
           <label>Tipo:</label>
           <v-select v-model="o.parentId">
             <option value="">Ninguno</option>
-            <v-options src="/api/payroll/group" :params="{orphan:1}" value-field="id" display-field="name"></v-options>
+            <v-options src="/api/payroll/group/0/0" :params="{orphan:1}" value-field="id" display-field="name"></v-options>
           </v-select>
         </div>
         <center>
