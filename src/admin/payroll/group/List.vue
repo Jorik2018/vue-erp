@@ -12,8 +12,8 @@
         <template v-slot="{ row }">
           <td width="60" header="ID" class="center">{{ row.id }}</td>
           <td width="240" header="Nombre">{{ row.name }}</td>
-          <td width="240" header="Parent">{{ row.parentName || '-' }}</td>
-          <td width="120" header="Es Parent" class="center">{{ row.isParent=='1' ? 'Sí' : 'No' }}</td>
+          <td width="240" header="Padre">{{ row.parentName || '-' }}</td>
+          <td width="120" header="Es Padre" class="center">{{ row.isParent=='1' ? 'Sí' : 'No' }}</td>
         </template>
       </v-table>
     </v-form>
