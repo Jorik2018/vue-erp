@@ -17,7 +17,7 @@
                         <v-filter>
                             <input v-model="filters.id" />
                         </v-filter>
-                        {{ row.id }}
+                        {{ pad(row.id, 2) }}
                     </td>
                     <td width="200" header="Nombre">
                         <v-filter>
@@ -128,6 +128,7 @@ export default ui({
             table,
             edit,
             create,
+            conceptType,
             CONCEPT_TYPE_NAME: Object.fromEntries(conceptType.map(o => [o.id, o.name]))
         }
     }
