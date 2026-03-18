@@ -145,15 +145,25 @@
             <option value="">Select One...</option>
             <v-options :data="targetType" value-field="id" display-field="name"></v-options>
           </v-select>
-          <label>Persona:</label>
-          <v-select v-model="concept.target" name="event" required>
-            <option value="">Select One...</option>
-            <v-options value-field="id" src="/api/payroll/1/personal">
-              <template #default="{ item }">
-                👤 {{ item.code }}, {{ item.fullName }}
-              </template>
-            </v-options>
-          </v-select>
+          <v-template v-if="concept.targetType == 'GR'">
+            <label>Grupo:</label>
+            <v-select v-model="concept.targetId" required>
+              <option value="">Select One...</option>
+              <v-options store="group" value-field="id" display-field="name"></v-options>
+            </v-select>
+          </v-template>
+          <v-template v-if="concept.targetType == 'PE'">
+            <label>Persona:</label>
+            <v-select v-model="concept.target" name="event" required>
+              <option value="">Select One...</option>
+              <v-options value-field="id" src="/api/payroll/1/personal">
+                <template #default="{ item }">
+                  👤 {{ item.code }}, {{ item.fullName }}
+                </template>
+              </v-options>
+            </v-select>
+          </v-template>
+
         </v-fieldset>
         <v-fieldset legend="Concepto">
           <label>Tipo:</label>
@@ -162,13 +172,14 @@
             <v-options :data="conceptType" value-field="id" display-field="name"></v-options>
           </v-select>
           <label>Concepto:</label>
-          <v-select ref="concept" :disabled="!concept.type" v-model="concept.concept">
+          <v-select ref="conceptSelect" :disabled="!concept.type" v-model="concept.concept">
             <option value="">Select One...</option>
             <v-options src="/api/payroll/concept/0/0" value-field="id" display-field="name"></v-options>
           </v-select>
         </v-fieldset>
         <label>Monto:</label>
         <input type="nuber" v-model="concept.amount" />
+        {{ concept }}
       </div>
     </v-panel>
   </div>
