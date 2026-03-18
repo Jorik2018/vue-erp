@@ -12,7 +12,8 @@ export const conceptType = [
     { id: 3, name: 'EGRESOS QUE AFECTAN BASE IMPONIBLE' },
     { id: 4, name: 'PAGO EN EXCESO' },
     { id: 5, name: 'DESCUENTOS DE LEY' },
-    { id: 6, name: 'OTROS DESCUENTOS' }
+    { id: 6, name: 'OTROS DESCUENTOS' },
+    { id: 8, name: 'APORTES'}
 ]
 
 export const MONTH_NAME = {

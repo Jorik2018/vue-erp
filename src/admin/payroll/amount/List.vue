@@ -108,11 +108,11 @@
                             </v-autocomplete>
                         </v-template>
                         <v-template v-if="o.type == 'PS'">
-                        <label>Sistema Pension:</label>
-                        <v-select v-model="o.targetId" required>
-                            <option value="">Select One...</option>
-                            <v-options :data="afp_onp"></v-options>
-                        </v-select>
+                            <label>Sistema Pension:</label>
+                            <v-select v-model="o.targetId" required>
+                                <option value="">Select One...</option>
+                                <v-options :data="afp_onp"></v-options>
+                            </v-select>
                         </v-template>
                         <v-template v-if="o.type">
                             <label>Tipo Planilla:</label>
@@ -144,7 +144,7 @@
                     <label>Fecha Fin:</label>
                     <input type="date" v-model="o.endDate" />
                     <label>Monto:</label>
-                    <v-number v-model="o.amount" required />
+                    <input type="number" v-model="o.amount" required />
                 </div>
                 <center>
                     <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
@@ -154,7 +154,7 @@
     </ion-page>
 </template>
 <script>
-import { ui, MsgBox } from 'isobit-ui'
+import { ui, MsgBox, date } from 'isobit-ui'
 import axios from 'axios'
 import { ref } from 'vue'
 import { targetType, conceptType } from '../constants';
@@ -180,7 +180,9 @@ export default ui({
         }
 
         const create = () => {
-            o.value = {}
+            const today = new Date(); // Fecha actual
+            const iniDate = date(new Date(today.getFullYear(), today.getMonth(), 1),'date-'); // Primer día del mes
+            o.value = { iniDate }
             openForm()
         }
 
