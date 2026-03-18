@@ -76,9 +76,15 @@
                     <label>Abreviatura:</label>
                     <input v-model="o.abbreviation" />
                     <label>Tipo:</label>
-                    <input v-model="o.typeId" />
+                    <v-select v-model="o.typeId" name="event">
+                        <option value="">Select One...</option>
+                        <v-options :data="conceptType" value-field="id" display-field="name"></v-options>
+                    </v-select>
                     <label>Padre:</label>
-                    <v-select v-model="o.parentId" :options="parents" value-field="id" display-field="name" />
+        <v-select v-model="o.parentId">
+            <option value="">Ninguno</option>
+            <v-options src="/api/payroll/concept/0/0" :filters="{orphan:1}" value-field="id" display-field="name"></v-options>
+          </v-select>
                     <label>Código PDT:</label>
                     <input v-model="o.pdtCode" />
                     <label>Clase:</label>
@@ -106,7 +112,7 @@ export default ui({
         const form = ref(false)
         const openForm = () => {
             form.value = true
-            MsgBox(document.querySelector('#form'),[])
+            MsgBox(document.querySelector('#form'), [])
         }
         const edit = () => {
             o.value = { ...table.value.load.selected.value[0] }
