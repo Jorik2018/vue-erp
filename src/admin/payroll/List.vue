@@ -126,17 +126,7 @@
                     <input v-model="o.idFuenteFinanc"/>
                     <label>Comentarios</label>
                     <v-textarea v-model="o.comments"/>
-                    <label>Fecha Generación</label>
-                    <input type="datetime-local" v-model="o.generateDate"/>
-                    <label>Cerrado</label>
-                    <input type="checkbox" v-model="o.closed"/>
-                    <label>Cancelado</label>
-                    <input type="checkbox" v-model="o.canceled"/>
-                    <label>Preparado por</label>
-                    <input v-model="o.preparedBy"/>
-
                 </div>
-
             </v-form>
 
         </div>
@@ -175,7 +165,8 @@ export default ui({
         }
 
         const create = () => {
-            o.value = {}
+            const today = new Date();
+            o.value = {year:today.getFullYear(), month:today.getMonth()+1}
             openForm()
         }
 
