@@ -164,11 +164,11 @@
           <label>Concepto:</label>
           <v-select ref="concept" :disabled="!concept.type" v-model="concept.concept">
             <option value="">Select One...</option>
-            <v-options name="concept" store="concept" value-field="id" display-field="name" />
+            <v-options src="/api/payroll/concept/0/0" value-field="id" display-field="name"></v-options>
           </v-select>
         </v-fieldset>
         <label>Monto:</label>
-        <v-number v-model="concept.amount" />
+        <input type="nuber" v-model="concept.amount" />
       </div>
     </v-panel>
   </div>
@@ -177,7 +177,7 @@
 import { ui, MsgBox } from 'isobit-ui';
 import axios from 'axios';
 import { ref, reactive, computed, watch, onMounted } from 'vue'
-import { targetType } from './constants';
+import { targetType, conceptType } from './constants';
 
 const groups = {
   1: "INGRESOS",
@@ -199,13 +199,6 @@ export default ui({
     const selectedRows = ref(new Set())
 
     const concept = ref({})
-
-    const conceptType = ref([
-      { id: 1, name: 'INGRESOS' },
-      { id: 2, name: 'INGRESOS' },
-      { id: 3, name: 'EGRESOS QUE AFECTAN LA BASE IMPONIBLE' },
-      { id: 4, name: 'INGRESOS' }
-    ])
 
     const keySet = ref(0)
     const current = ref(null);

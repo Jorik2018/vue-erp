@@ -136,7 +136,7 @@
                         <label>Concepto:</label>
                         <v-select ref="concept" :disabled="!o.conceptType" v-model="o.concept">
                             <option value="">Select One...</option>
-                            <v-options name="concept" store="concept" value-field="id" display-field="name" />
+                            <v-options src="/api/payroll/concept/0/0" value-field="id" display-field="name"></v-options>
                         </v-select>
                     </v-fieldset>
                     <label>Fecha Inicio:</label>
@@ -198,7 +198,6 @@ export default ui({
             afp_onp,
             TARGET_TYPE_NAME: Object.fromEntries(targetType.map(o => [o.id, o.name]))
         }
-
     }
 
 })
