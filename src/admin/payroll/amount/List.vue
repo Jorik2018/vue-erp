@@ -30,14 +30,14 @@
                                 <v-options :data="targetType" value-field="id" display-field="name"></v-options>
                             </v-select>
                         </v-filter>
-                        {{ TARGET_TYPE_NAME[row.type]||row.type }}
+                        {{ TARGET_TYPE_NAME[row.type] || row.type }}
                     </td>
 
                     <td width="240" header="Destino" class="center">
                         <v-filter>
                             <input v-model="filters.targetId" />
                         </v-filter>
-                        {{ row.targetName?.toUpperCase()||row.targetId }}
+                        {{ row.targetName?.toUpperCase() || row.targetId }}
                     </td>
 
                     <td width="240" header="Concepto" class="center">
@@ -95,8 +95,8 @@
                         <v-template v-if="o.type == 'PE'">
                             <label>Persona:</label>
                             <v-autocomplete placeholder="Ingrese mas de 5 caracteres y presione ENTER" page="20"
-                                :show-selection="true" inputClass="center" @input="inputPeople" minQueryLength="5" required v-model="o.targetId"
-                                src="/api/hr/personal">
+                                :show-selection="true" inputClass="center" @input="inputPeople" minQueryLength="5"
+                                required v-model="o.targetId" src="/api/hr/personal">
                                 <template v-slot:label="{ selected }">
                                     <template v-if="selected">
                                         {{ selected.code }}: {{ selected.fullName }}
@@ -107,8 +107,15 @@
                                 </template>
                             </v-autocomplete>
                         </v-template>
+                        <v-template v-if="o.type == 'PS'">
+                        <label>Sistema Pension:</label>
+                        <v-select v-model="o.targetId" required>
+                            <option value="">Select One...</option>
+                            <v-options :data="afp_onp"></v-options>
+                        </v-select>
+                        </v-template>
                         <v-template v-if="o.type">
-                            <label>Tipo Planilla</label>
+                            <label>Tipo Planilla:</label>
                             <v-select v-model="o.payrollType">
                                 <option value="">All...</option>
                                 <v-options src="/api/payroll/type" value-field="id" display-field="name"></v-options>
@@ -151,6 +158,7 @@ import { ui, MsgBox } from 'isobit-ui'
 import axios from 'axios'
 import { ref } from 'vue'
 import { targetType, conceptType } from '../constants';
+import { afp_onp } from './../../hr/personal/constants'
 
 export default ui({
 
@@ -176,7 +184,7 @@ export default ui({
             openForm()
         }
 
-        
+
         return {
             o,
             form,
@@ -185,6 +193,7 @@ export default ui({
             create,
             targetType,
             conceptType,
+            afp_onp,
             TARGET_TYPE_NAME: Object.fromEntries(targetType.map(o => [o.id, o.name]))
         }
 

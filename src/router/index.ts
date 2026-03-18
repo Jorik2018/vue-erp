@@ -242,7 +242,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'payroll/group',
-        component: () => import('../admin/payroll/group/people/List.vue')
+        component: () => import('../admin/payroll/group/List.vue')
       },
       {
         path: 'payroll/group/people',
