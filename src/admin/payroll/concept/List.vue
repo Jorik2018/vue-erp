@@ -52,11 +52,11 @@
                         </v-filter>
                         {{ row.class }}
                     </td>
-                    <td width="160" header="Padre" class="center">
+                    <td width="200" header="Padre" class="center">
                         <v-filter>
                             <input v-model="filters.parentId" />
                         </v-filter>
-                        {{ row.parentId }}
+                        {{ row.parentName||row.parentId }}
                     </td>
                     <td width="260" header="Fórmula">
                         <v-filter>
