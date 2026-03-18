@@ -33,9 +33,12 @@
                     </td>
                     <td width="120" header="Tipo" class="center">
                         <v-filter>
-                            <input v-model="filters.typeId" />
+                            <v-select v-model="filters.typeId" name="event">
+                                <option value="">Select One...</option>
+                                <v-options :data="conceptType" value-field="id" display-field="name"></v-options>
+                            </v-select>
                         </v-filter>
-                        {{ row.typeId }}
+                        {{ CONCEPT_TYPE_NAME[row.typeId] || row.typeId }}
                     </td>
                     <td width="120" header="Código PDT" class="center">
                         <v-filter>
@@ -94,6 +97,7 @@
 <script>
 import { ui, MsgBox } from 'isobit-ui'
 import { ref } from 'vue'
+import { conceptType } from '../constants';
 
 export default ui({
     setup() {
@@ -117,7 +121,8 @@ export default ui({
             form,
             table,
             edit,
-            create
+            create,
+            CONCEPT_TYPE_NAME: Object.fromEntries(conceptType.map(o => [o.id, o.name]))
         }
     }
 })
