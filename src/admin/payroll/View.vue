@@ -220,6 +220,7 @@ export default ui({
     const refresh = () => {
       axios.get('/api/payroll/' + id + '/preview')
         .then(({ data: { headers: h, items: i, ...payroll } }) => {
+          selectedRows.value.clear();
           console.log(h);
           headers.value = h
           items.value = i
