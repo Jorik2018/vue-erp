@@ -90,6 +90,6 @@ ion-content::part(scroll) {
     border-color: #c9ad45;
 }
 
-.v-table tr:nth-child(even) {
+.v-table tr.green:nth-child(even) {
     background-color: #a3f1a3;
 }
