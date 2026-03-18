@@ -89,3 +89,7 @@ ion-content::part(scroll) {
     background: linear-gradient(to bottom, #f3d97a, #e6c95a);
     border-color: #c9ad45;
 }
+
+.v-table tr:nth-child(even) {
+    background-color: #a3f1a3;
+}
