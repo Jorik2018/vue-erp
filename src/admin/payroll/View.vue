@@ -167,14 +167,14 @@
         </v-fieldset>
         <v-fieldset legend="Concepto">
           <label>Tipo:</label>
-          <v-select v-model="concept.type" name="event" @input="$refs.conceptSelect.load({ typeId: concept.type })" required>
+          <v-select v-model="concept.type" @input="$refs.conceptSelect.load({ typeId: concept.type })" required>
             <option value="">Select One...</option>
             <v-options :data="conceptType" value-field="id" display-field="name"></v-options>
           </v-select>
           <label>Concepto:</label>
           <v-select ref="conceptSelect" :disabled="!concept.type" v-model="concept.concept">
             <option value="">Select One...</option>
-            <v-options src="/api/payroll/concept/0/0" value-field="id" display-field="name"></v-options>
+            <v-options src="/api/payroll/concept/0/0" value-field="id" :filters="{a:1}" display-field="name"></v-options>
           </v-select>
         </v-fieldset>
         <label>Monto:</label>
