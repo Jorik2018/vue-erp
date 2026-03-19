@@ -179,6 +179,13 @@ export default ui({
             openForm()
         }
 
+        const process = (item) => {
+            if(item.type=='PE'){
+                item.targetId = item.targetId.id;
+            }
+            return item;
+        }
+
         const create = () => {
             const today = new Date(); // Fecha actual
             const iniDate = date(new Date(today.getFullYear(), today.getMonth(), 1),'date-'); // Primer día del mes
@@ -191,6 +198,7 @@ export default ui({
             o,
             form,
             table,
+            process,
             edit,
             create,
             targetType,

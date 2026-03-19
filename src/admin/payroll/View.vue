@@ -137,7 +137,7 @@
         </v-table>
       </div>
     </v-form>
-    <v-panel header="Agregar Concepto" id="addConcept" width="460">
+    <v-panel header="Agregar Monto" id="addConcept" width="460">
       <div v-if="showAddConcept" class="v-form">
         <v-fieldset legend="Destino">
           <label>Tipo:</label>
