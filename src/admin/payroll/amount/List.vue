@@ -77,7 +77,8 @@
                 <div v-if="form" class="v-form">
                     <v-fieldset legend="Destino">
                         <label>Tipo:</label>
-                        <v-select v-model="o.type" name="event" required>
+                        <v-select v-model="o.type" name="event" required 
+                        @input="o.targetId=null">
                             <option value="">Select One...</option>
                             <v-options :data="targetType" value-field="id" display-field="name"></v-options>
                         </v-select>

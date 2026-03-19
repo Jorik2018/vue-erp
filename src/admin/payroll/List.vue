@@ -111,7 +111,11 @@
             >
 
                 <div v-if="form" class="v-form">
-
+                    <label>Tipo</label>
+                    <v-select v-model="o.typeId" required>
+                    <option value="">Select One...</option>
+                        <v-options src="/api/payroll/type" value-field="id" display-field="name"></v-options>
+                    </v-select>
                     <label>Año</label>
                     <input type="number" v-model="o.year"/>
                     <label>Mes</label>
@@ -119,15 +123,12 @@
                         <option value="">Select One...</option>
                         <v-options :data="MONTHS" value-field="id" display-field="name"></v-options>
                     </v-select>
-                    <label>Número</label>
-                    <input type="number" v-model="o.number"/>
-                    <label>Tipo</label>
-                    <input v-model="o.typeId"/>
-                    <label>Fuente Financiamiento</label>
-                    <input v-model="o.idFuenteFinanc"/>
                     <label>Comentarios</label>
                     <v-textarea v-model="o.comments"/>
                 </div>
+                <center>
+                    <v-button value="Grabar" icon="fa-save" class="blue" @click.prevent="save"></v-button>
+                </center>
             </v-form>
 
         </div>
