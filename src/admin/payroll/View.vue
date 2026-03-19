@@ -174,7 +174,7 @@
           <label>Concepto:</label>
           <v-select ref="conceptSelect" :disabled="!concept.type" v-model="concept.concept">
             <option value="">Select One...</option>
-            <v-options src="/api/payroll/concept/0/0" value-field="id" :filters="{a:1}" display-field="name"></v-options>
+            <v-options src="/api/payroll/concept/0/0" value-field="id" display-field="name"></v-options>
           </v-select>
         </v-fieldset>
         <label>Monto:</label>
