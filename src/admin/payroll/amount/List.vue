@@ -124,7 +124,7 @@
                         </v-template>
                     </v-fieldset>
                     <v-fieldset legend="Concepto">
-                        <label>Tipo:</label>
+                        <label>Tipo:{{ o.conceptType }}</label>
                         <v-select v-model="o.conceptType" required
                             @input="$refs.concept.load({ typeId: o.conceptType })">
                             <option value="">Select One...</option>
@@ -135,7 +135,7 @@
                             </v-options>
                         </v-select>
                         <label>Concepto:</label>
-                        <v-select ref="concept" :disabled="!o.conceptType" autoload="false" :auyo v-model="o.concept">
+                        <v-select ref="concept" :disabled="!o.conceptType" autoload="false" v-model="o.concept">
                             <option value="">Select One...</option>
                             <v-options src="/api/payroll/concept/0/0" value-field="id" display-field="name"></v-options>
                         </v-select>
