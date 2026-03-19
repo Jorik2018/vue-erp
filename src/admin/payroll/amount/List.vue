@@ -135,7 +135,7 @@
                             </v-options>
                         </v-select>
                         <label>Concepto:</label>
-                        <v-select ref="concept" :disabled="!o.conceptType" v-model="o.concept">
+                        <v-select ref="concept" :disabled="!o.conceptType" autoload="false" :auyo v-model="o.concept">
                             <option value="">Select One...</option>
                             <v-options src="/api/payroll/concept/0/0" value-field="id" display-field="name"></v-options>
                         </v-select>
