@@ -206,16 +206,21 @@ export default ui({
   setup({ id, app: { axios } }) {
 
     const o = ref()
+
     const headers = ref([])
+
     const items = ref([])
 
     const syncingScroll = ref(false)
+
     const tk = ref(0)
+
     const selectedRows = ref(new Set())
 
     const concept = ref({})
 
     const keySet = ref(0)
+
     const current = ref(null);
 
     const personal = ref(null)
@@ -223,6 +228,7 @@ export default ui({
     const tableKey = ref(0)
 
     const showAddPerson = ref(false)
+
     const showAddConcept = ref(false)
 
     const refresh = () => {
@@ -384,6 +390,26 @@ export default ui({
       }, [{ label: 'Agregar', icon: 'fa-plus' }]);
     }
 
+    const addConcept = () => {
+      showAddConcept.value = true;
+      MsgBox(document.querySelector('#addConcept'), async (b) => {
+        if (b == 1) {
+          try {
+            const item = concept.value;
+            if (item.type == 'PE') {
+              item.targetId = item.targetId.id;
+            } else if (item.type == 'PT') {
+              item.targetId = item.payrollType;
+            }
+            await axios.post('/api/payroll/add-concept', item);
+            refresh();
+          } catch (e) {
+            return false;
+          }
+        }
+      }, [{ label: 'Agregar', icon: 'fa-plus' }]);
+    }
+
     const removePerson = () => {
       MsgBox("Esta seguro de remover estos trabajadores de la planilla?", async (b) => {
         if (b === 0) {
@@ -424,8 +450,8 @@ export default ui({
       groups,
       tableKey,
       showAddPerson,
-      showAddConcept
-
+      showAddConcept,
+      addConcept
     }
 
   },
@@ -450,25 +476,8 @@ export default ui({
         }
       }
     },
-    addConcept() {
-      const me = this;
-      me.showAddConcept = true;
-      MsgBox(document.querySelector('#addConcept'), async (b) => {
-        if (b == 1) {
-          try {
-            const { data } = await axios.post('/api/payroll/add-concept', me.concept);
-            me.refresh2();
-          } catch (e) {
-            console.error(e);
-            return false;
-          }
-        }
-      }, ['Cancelar', 'Agregar']);
-    },
     onScrolling(e, tableId) {
-
       const body = e.target
-
       // horizontal header sync
       const horizontal = body.scrollLeft
       const header = body.previousElementSibling.children[0]
