@@ -399,7 +399,7 @@ export default ui({
             if (item.type == 'PE') {
               item.targetId = item.targetId.id;
             } else if (item.type == 'PT') {
-              item.targetId = item.payrollType;
+              item.targetId = item.payrollType || 0;
             }
             await axios.post('/api/payroll/add-concept', item);
             refresh();
