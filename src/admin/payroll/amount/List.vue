@@ -77,8 +77,7 @@
                 <div v-if="form" class="v-form">
                     <v-fieldset legend="Destino">
                         <label>Tipo:</label>
-                        <v-select v-model="o.type" name="event" required 
-                        @input="o.targetId=null">
+                        <v-select v-model="o.type" name="event" required @input="o.targetId = null">
                             <option value="">Select One...</option>
                             <v-options :data="targetType" value-field="id" display-field="name"></v-options>
                         </v-select>
@@ -124,9 +123,8 @@
                         </v-template>
                     </v-fieldset>
                     <v-fieldset legend="Concepto">
-                        <label>Tipo:{{ o.conceptType }}</label>
-                        <v-select v-model="o.conceptType" required
-                            @input="$refs.concept.load({ typeId1: o.conceptType })">
+                        <label>Tipo:</label>
+                        <v-select v-model="o.conceptType" required>
                             <option value="">Select One...</option>
                             <v-options :data="conceptType" value-field="id">
                                 <template #default="{ item }">
@@ -135,9 +133,10 @@
                             </v-options>
                         </v-select>
                         <label>Concepto:</label>
-                        <v-select ref="concept" :disabled="!o.conceptType" autoload="false" v-model="o.concept">
+                        <v-select ref="concept" :disabled="!o.conceptType" v-model="o.concept" required>
                             <option value="">Select One...</option>
-                            <v-options src="/api/payroll/concept/0/0" :filters="{typeId: o.conceptType}" value-field="id" display-field="name"></v-options>
+                            <v-options src="/api/payroll/concept/0/0" name="concept" :filter="{ typeId: o.conceptType }"
+                                value-field="id" display-field="name"></v-options>
                         </v-select>
                     </v-fieldset>
                     <label>Fecha Inicio:</label>
@@ -181,15 +180,16 @@ export default ui({
         }
 
         const process = (item) => {
-            if(item.type=='PE'){
+            if (item.type == 'PE') {
                 item.targetId = item.targetId.id;
             }
-            return item;
+            console.log(item);
+            return false;
         }
 
         const create = () => {
             const today = new Date(); // Fecha actual
-            const iniDate = date(new Date(today.getFullYear(), today.getMonth(), 1),'date-'); // Primer día del mes
+            const iniDate = date(new Date(today.getFullYear(), today.getMonth(), 1), 'date-'); // Primer día del mes
             o.value = { iniDate }
             openForm()
         }
