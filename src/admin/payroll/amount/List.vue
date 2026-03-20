@@ -129,7 +129,7 @@
                             </v-options>
                         </v-select>
                         <label>Concepto:</label>
-                        <v-select ref="concept" :disabled="!o.conceptType" v-model="o.concept" required>
+                        <v-select :disabled="!o.conceptType" v-model="o.concept" required>
                             <option value="">Select One...</option>
                             <v-options src="/api/payroll/concept/0/0" name="concept" :filter="{ typeId: o.conceptType }"
                                 value-field="id" display-field="name"></v-options>
@@ -181,8 +181,7 @@ export default ui({
             }else if(item.type == 'PT'){
                 item.targetId = item.payrollType;
             }
-            console.log(item);
-            return false;
+            return item;
         }
 
         const create = () => {

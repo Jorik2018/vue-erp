@@ -141,7 +141,7 @@
       <div v-if="showAddConcept" class="v-form">
         <v-fieldset legend="Destino">
           <label>Tipo:</label>
-          <v-select v-model="concept.targetType" name="event" required>
+          <v-select v-model="concept.targetType" required>
             <option value="">Select One...</option>
             <v-options :data="targetType" value-field="id" display-field="name"></v-options>
           </v-select>
@@ -167,14 +167,19 @@
         </v-fieldset>
         <v-fieldset legend="Concepto">
           <label>Tipo:</label>
-          <v-select v-model="concept.type" @input="$refs.conceptSelect.load({ typeId: concept.type })" required>
+          <v-select v-model="concept.conceptType" required>
             <option value="">Select One...</option>
-            <v-options :data="conceptType" value-field="id" display-field="name"></v-options>
+            <v-options :data="conceptType" value-field="id">
+              <template #default="{ item }">
+                {{ item.id }}: {{ item.name }}
+              </template>
+            </v-options>
           </v-select>
           <label>Concepto:</label>
-          <v-select ref="conceptSelect" :disabled="!concept.type" v-model="concept.concept">
+          <v-select :disabled="!concept.conceptType" v-model="concept.concept" required>
             <option value="">Select One...</option>
-            <v-options src="/api/payroll/concept/0/0" value-field="id" display-field="name"></v-options>
+            <v-options src="/api/payroll/concept/0/0" :filter="{ typeId: o.conceptType }" value-field="id"
+              display-field="name"></v-options>
           </v-select>
         </v-fieldset>
         <label>Monto:</label>
