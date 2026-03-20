@@ -81,10 +81,6 @@
                             <option value="">Select One...</option>
                             <v-options :data="targetType" value-field="id" display-field="name"></v-options>
                         </v-select>
-                        <v-template v-if="o.type == 'PT'">
-                            <label>Tipo Planilla:</label>
-                            <input v-model="o.targetId" />
-                        </v-template>
                         <v-template v-if="o.type == 'GR'">
                             <label>Grupo:</label>
                             <v-select v-model="o.targetId" required>
@@ -182,6 +178,8 @@ export default ui({
         const process = (item) => {
             if (item.type == 'PE') {
                 item.targetId = item.targetId.id;
+            }else if(item.type == 'PT'){
+                item.targetId = item.payrollType;
             }
             console.log(item);
             return false;
