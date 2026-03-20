@@ -15,7 +15,7 @@
           @click.prevent="saveAs('/api/payroll/download', { id: 1 })"></v-button>
 
         <div style="margin-left:auto">
-          <v-button icon="fa fa-save" @click="save" :disabled="!(o.employee && o.year)" />
+          <v-button icon="fa fa-save" @click="save" />
         </div>
 
       </div>
@@ -428,7 +428,13 @@ export default ui({
       }, [{ label: 'Si', icon: 'fa-check' }]);
     }
 
+    const save = () => {
+      axios.post('/api/payroll/people', { payrollType:o.value.typeId, items: items.value }).then(({ data }) => {
+        refresh();
+      });
+    }
     return {
+      save,
       o,
       headers,
       items,
@@ -563,12 +569,6 @@ export default ui({
         }
       });
       return result;
-    },
-    save() {
-      const me = this;
-      axios.post('/api/payroll/people', { ...this.o, items: this.items }).then(({ data }) => {
-        me.refresh();
-      });
     },
     addItem(item) {
       item = { type: Number(item.name) };
