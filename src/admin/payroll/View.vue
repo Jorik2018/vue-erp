@@ -52,7 +52,7 @@
                       @change="toggleCheckbox(rowIndex, $event)">
                   </td>
                   <td v-for="(cell) in visibleHeaders" :width="cell.width || 90"
-                    :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }" ">
+                    :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }" >
                     <v-number v-if="cell.concept_id" placeholder="-" :title="'index=' + cell.concept_id"
                     v-model.number="item.values[cell.concept_id]" />
                   <!-- STRING -->
@@ -393,7 +393,7 @@ export default ui({
     const addConcept = () => {
       showAddConcept.value = true;
       MsgBox(document.querySelector('#addConcept'), async (b) => {
-        if (b == 1) {
+        if (b == 0) {
           try {
             const item = concept.value;
             item.payrollType = o.value.typeId;
