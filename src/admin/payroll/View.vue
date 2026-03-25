@@ -53,10 +53,13 @@
                   </td>
                   <td v-for="(cell) in visibleHeaders" :width="cell.width || 90"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }" >
+<!--
                     <v-number v-if="cell.concept_id" placeholder="-" :title="'index=' + cell.concept_id"
                     v-model.number="item.values[cell.concept_id]" />
+                -->
                   <!-- STRING -->
-                  <input v-else type="text" v-model="item[cell.index]" class="v-input" />
+                  <!--input v-else type="text" v-model="item[cell.index]" class="v-input" /-->
+                  {{ item[cell.index] }}
                   </td>
                 </tr>
               </tbody>
