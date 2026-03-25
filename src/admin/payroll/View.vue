@@ -87,7 +87,9 @@
               <tbody class="v-datatable-data"><!---->
 
                 <tr v-for="(item, rowIndex) in items" :key="rowIndex"
-                  :class="{ 'v-selected': selectedRows.has(rowIndex) }" @click="toggleRow(rowIndex)">
+                  :class="{ 'v-selected': selectedRows.has(rowIndex) }" @click="toggleRow(rowIndex)"
+                  @dblclick="editCell(rowIndex, cell)"
+                  >
 
                   <td v-for="(cell) in visibleHeaders.slice(2)" :width="cell.width || 90"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
@@ -437,6 +439,43 @@ export default ui({
         refresh();
       });
     }
+
+
+
+    const editingCell = ref({ rowIndex: null, concept_id: null }); // celda actualmente en edición
+
+const editCell = (rowIndex, cell) => {
+  if (!cell.concept_id) return; // solo editable si tiene concept_id
+  editingCell.value = { rowIndex, concept_id: cell.concept_id };
+};
+
+const isEditing = (rowIndex, cell) => {
+  return editingCell.value.rowIndex === rowIndex && editingCell.value.concept_id === cell.concept_id;
+};
+
+// Devuelve el valor que se está editando
+const getEditingValue = (rowIndex, cell) => {
+  const peopleId = items.value[rowIndex].peopleId;
+  const found = editedValues.value.find(v => v.peopleId === peopleId && v.concept_id === cell.concept_id);
+  return found ? found.value : items.value[rowIndex].values[cell.concept_id] || 0;
+};
+
+// Finalizar edición y guardar en array de cambios
+const finishEdit = (rowIndex, cell) => {
+  const peopleId = items.value[rowIndex].peopleId;
+  const currentVal = getEditingValue(rowIndex, cell);
+
+  // Actualizamos o insertamos el valor
+  const idx = editedValues.value.findIndex(v => v.peopleId === peopleId && v.concept_id === cell.concept_id);
+  if (idx >= 0) {
+    editedValues.value[idx].value = currentVal;
+  } else {
+    editedValues.value.push({ peopleId, concept_id: cell.concept_id, value: currentVal });
+  }
+
+  // cerrar edición
+  editingCell.value = { rowIndex: null, concept_id: null };
+};
     return {
       save,
       o,
@@ -462,7 +501,10 @@ export default ui({
       tableKey,
       showAddPerson,
       showAddConcept,
-      addConcept
+      addConcept,
+      editCell,
+      isEditing,
+      finishEdit
     }
 
   },
