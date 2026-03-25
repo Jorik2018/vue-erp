@@ -98,7 +98,7 @@
                       v-model.number="item.values[cell.concept_id]" /-->
                     <!-- STRING -->
                     <!--input v-else type="text" v-model="item[cell.index]" class="v-input" /-->
-                    {{ item[cell.concept_id||cell.index] }}
+                    {{ cell.concept_id?item.values[cell.concept_id]:item[cell.index] }}
                   </td>
                 </tr>
               </tbody>
