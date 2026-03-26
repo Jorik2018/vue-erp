@@ -91,6 +91,7 @@
 
                   <td v-for="(cell) in visibleHeaders.slice(2)" :width="cell.width || 90"
                     @dblclick="editCell(rowIndex, cell)"
+                    :class="{ 'cell-edited': isEdited(rowIndex, cell) }"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
 
                     <!--v-number v-if="cell.concept_id" placeholder="-" :title="'concept_id=' + cell.concept_id"
@@ -509,7 +510,19 @@ export default ui({
         editingCell.value = { rowIndex: null, concept_id: null, value: null };
       }
     };
+
+    const isEdited = (rowIndex, cell) => {
+  if (!cell.concept_id) return false;
+
+  const row = items.value[rowIndex];
+  const peopleId = row.peopleId;
+
+  return editedValues.value.some(
+    v => v.peopleId === peopleId && v.concept_id === cell.concept_id
+  );
+};
     return {
+    isEdited,
       save,
       o,
       headers,
@@ -763,5 +776,8 @@ export default ui({
 .p-yellow {
   background: yellow !important;
   color: black !important;
+}
+.cell-edited{
+border: 1px solid #f5b323;
 }
 </style>
