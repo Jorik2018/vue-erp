@@ -778,6 +778,6 @@ export default ui({
   color: black !important;
 }
 .cell-edited{
-border: 1px solid #f5b323;
+border: 1px solid #f5b323 !important;
 }
 </style>
