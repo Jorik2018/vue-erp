@@ -52,14 +52,14 @@
                       @change="toggleCheckbox(rowIndex, $event)">
                   </td>
                   <td v-for="(cell) in visibleHeaders" :width="cell.width || 90"
-                    :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }" >
-<!--
+                    :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
+                    <!--
                     <v-number v-if="cell.concept_id" placeholder="-" :title="'index=' + cell.concept_id"
                     v-model.number="item.values[cell.concept_id]" />
                 -->
-                  <!-- STRING -->
-                  <!--input v-else type="text" v-model="item[cell.index]" class="v-input" /-->
-                  {{ item[cell.index] }}
+                    <!-- STRING -->
+                    <!--input v-else type="text" v-model="item[cell.index]" class="v-input" /-->
+                    {{ item[cell.index] }}
                   </td>
                 </tr>
               </tbody>
@@ -87,18 +87,25 @@
               <tbody class="v-datatable-data"><!---->
 
                 <tr v-for="(item, rowIndex) in items" :key="rowIndex"
-                  :class="{ 'v-selected': selectedRows.has(rowIndex) }" @click="toggleRow(rowIndex)"
-                  @dblclick="editCell(rowIndex, cell)"
-                  >
+                  :class="{ 'v-selected': selectedRows.has(rowIndex) }" @click="toggleRow(rowIndex)">
 
                   <td v-for="(cell) in visibleHeaders.slice(2)" :width="cell.width || 90"
+                    @dblclick="editCell(rowIndex, cell)"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
 
                     <!--v-number v-if="cell.concept_id" placeholder="-" :title="'concept_id=' + cell.concept_id"
                       v-model.number="item.values[cell.concept_id]" /-->
                     <!-- STRING -->
                     <!--input v-else type="text" v-model="item[cell.index]" class="v-input" /-->
-                    {{ cell.concept_id?item.values[cell.concept_id]:item[cell.index] }}
+                    --{{  isEditing(rowIndex, cell)}}--
+                    <template v-if="isEditing(rowIndex, cell)">
+                      <input type="number" class="v-input" v-model.number="editingCell.value.value" @blur="finishEdit"
+                        @keyup.enter="finishEdit" style="width:100%" />
+                    </template>
+
+                    <template v-else>
+                      {{ item.values?.[cell.concept_id] ?? item[cell.index] }}
+                    </template>
                   </td>
                 </tr>
               </tbody>
@@ -435,47 +442,60 @@ export default ui({
     }
 
     const save = () => {
-      axios.post('/api/payroll/people', { payrollType:o.value.typeId, items: items.value }).then(({ data }) => {
+      axios.post('/api/payroll/people', { payrollType: o.value.typeId, items: items.value }).then(({ data }) => {
         refresh();
       });
     }
 
 
 
-    const editingCell = ref({ rowIndex: null, concept_id: null }); // celda actualmente en edición
+    const editingCell = ref({
+      rowIndex: null,
+      concept_id: null,
+      value: null
+    });
 
-const editCell = (rowIndex, cell) => {
-  if (!cell.concept_id) return; // solo editable si tiene concept_id
-  editingCell.value = { rowIndex, concept_id: cell.concept_id };
-};
+    const editCell = (rowIndex, cell) => {
+      console.log(cell);
+      if (!cell.concept_id) return;
 
-const isEditing = (rowIndex, cell) => {
-  return editingCell.value.rowIndex === rowIndex && editingCell.value.concept_id === cell.concept_id;
-};
+      const row = items.value[rowIndex];
+console.log(row);
+      editingCell.value = {
+        rowIndex,
+        concept_id: cell.concept_id,
+        value: row.values?.[cell.concept_id] || 0
+      };
+    };
 
-// Devuelve el valor que se está editando
-const getEditingValue = (rowIndex, cell) => {
-  const peopleId = items.value[rowIndex].peopleId;
-  const found = editedValues.value.find(v => v.peopleId === peopleId && v.concept_id === cell.concept_id);
-  return found ? found.value : items.value[rowIndex].values[cell.concept_id] || 0;
-};
+    const isEditing = (rowIndex, cell) => {
+      return editingCell.value.rowIndex === rowIndex &&
+        editingCell.value.concept_id === cell.concept_id;
+    };
 
-// Finalizar edición y guardar en array de cambios
-const finishEdit = (rowIndex, cell) => {
-  const peopleId = items.value[rowIndex].peopleId;
-  const currentVal = getEditingValue(rowIndex, cell);
+    // Devuelve el valor que se está editando
+    const getEditingValue = (rowIndex, cell) => {
+      const peopleId = items.value[rowIndex].peopleId;
+      const found = editedValues.value.find(v => v.peopleId === peopleId && v.concept_id === cell.concept_id);
+      return found ? found.value : items.value[rowIndex].values[cell.concept_id] || 0;
+    };
 
-  // Actualizamos o insertamos el valor
-  const idx = editedValues.value.findIndex(v => v.peopleId === peopleId && v.concept_id === cell.concept_id);
-  if (idx >= 0) {
-    editedValues.value[idx].value = currentVal;
-  } else {
-    editedValues.value.push({ peopleId, concept_id: cell.concept_id, value: currentVal });
-  }
+    // Finalizar edición y guardar en array de cambios
+    const finishEdit = (rowIndex, cell) => {
+      const peopleId = items.value[rowIndex].peopleId;
+      const currentVal = getEditingValue(rowIndex, cell);
 
-  // cerrar edición
-  editingCell.value = { rowIndex: null, concept_id: null };
-};
+      // Actualizamos o insertamos el valor
+      const idx = editedValues.value.findIndex(v => v.peopleId === peopleId && v.concept_id === cell.concept_id);
+      if (idx >= 0) {
+        editedValues.value[idx].value = currentVal;
+      } else {
+        editedValues.value.push({ peopleId, concept_id: cell.concept_id, value: currentVal });
+      }
+
+      // cerrar edición
+      editingCell.value = { rowIndex: null, concept_id: null };
+    };
     return {
       save,
       o,
@@ -504,7 +524,8 @@ const finishEdit = (rowIndex, cell) => {
       addConcept,
       editCell,
       isEditing,
-      finishEdit
+      finishEdit,
+      getEditingValue
     }
 
   },
