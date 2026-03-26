@@ -97,9 +97,8 @@
                       v-model.number="item.values[cell.concept_id]" /-->
                     <!-- STRING -->
                     <!--input v-else type="text" v-model="item[cell.index]" class="v-input" /-->
-                    --{{  isEditing(rowIndex, cell)}}--
                     <template v-if="isEditing(rowIndex, cell)">
-                      <input type="number" class="v-input" v-model.number="editingCell.value.value" @blur="finishEdit"
+                      <input type="number" class="v-input" v-model.number="editingCell.value" @blur="finishEdit"
                         @keyup.enter="finishEdit" style="width:100%" />
                     </template>
 
@@ -442,12 +441,17 @@ export default ui({
     }
 
     const save = () => {
-      axios.post('/api/payroll/people', { payrollType: o.value.typeId, items: items.value }).then(({ data }) => {
+      axios.post('/api/payroll/people', {
+         payrollType: o.value.typeId, 
+         items: items.value, 
+         values: editedValues.value
+         }).then(({ data }) => {
+          editedValues.value = [];
         refresh();
       });
     }
 
-
+    const editedValues = ref([]);
 
     const editingCell = ref({
       rowIndex: null,
@@ -456,11 +460,8 @@ export default ui({
     });
 
     const editCell = (rowIndex, cell) => {
-      console.log(cell);
       if (!cell.concept_id) return;
-
       const row = items.value[rowIndex];
-console.log(row);
       editingCell.value = {
         rowIndex,
         concept_id: cell.concept_id,
@@ -481,20 +482,32 @@ console.log(row);
     };
 
     // Finalizar edición y guardar en array de cambios
-    const finishEdit = (rowIndex, cell) => {
-      const peopleId = items.value[rowIndex].peopleId;
-      const currentVal = getEditingValue(rowIndex, cell);
+    const finishEdit = () => {
+      const { rowIndex, concept_id, value } = editingCell.value;
+      if (Number.isInteger(rowIndex)) {
 
-      // Actualizamos o insertamos el valor
-      const idx = editedValues.value.findIndex(v => v.peopleId === peopleId && v.concept_id === cell.concept_id);
-      if (idx >= 0) {
-        editedValues.value[idx].value = currentVal;
-      } else {
-        editedValues.value.push({ peopleId, concept_id: cell.concept_id, value: currentVal });
+
+        const row = items.value[rowIndex];
+        const peopleId = row.peopleId;
+
+        // actualizar array de cambios
+        const idx = editedValues.value.findIndex(
+          v => v.peopleId === peopleId && v.concept_id === concept_id
+        );
+
+        if (idx >= 0) {
+          editedValues.value[idx].value = value;
+        } else {
+          editedValues.value.push({ peopleId, concept_id, value });
+        }
+
+        // opcional: reflejar en UI inmediatamente
+        if (!row.values) row.values = {};
+        row.values[concept_id] = value;
+
+        // limpiar edición
+        editingCell.value = { rowIndex: null, concept_id: null, value: null };
       }
-
-      // cerrar edición
-      editingCell.value = { rowIndex: null, concept_id: null };
     };
     return {
       save,
@@ -525,7 +538,8 @@ console.log(row);
       editCell,
       isEditing,
       finishEdit,
-      getEditingValue
+      getEditingValue,
+      editingCell
     }
 
   },

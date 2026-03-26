@@ -887,7 +887,7 @@ mock.onGet('/api/payroll/1/preview').reply(config => {
       title: 'INGRESO', backgroundColor: '#20ab29', children: [{ title: '_REMUNERACION', code: '0131' },
       { title: 'REMUNERACION', width: 120, code: '0131', type: 1 },
       { title: '_D.S. N° 311-2022-EF', code: '0897' },
-      { title: 'D.S. N° 311-2022-EF', code: '0897', type: 1 },
+      { title: 'D.S. N° 311-2022-EF', code: '0897', type: 1, concept_id:1 },
 
       { title: '_D.S. N° 313-2023-EF', code: '0981' },
       { title: 'D.S. N° 313-2023-EF', code: '0981', type: 1 },
@@ -895,7 +895,7 @@ mock.onGet('/api/payroll/1/preview').reply(config => {
       { title: 'D.S. N° 265-2024-EF', code: '1051', type: 1 },
       { title: '_D.S. N° 279-2024-EF', code: '1053' },
 
-      { title: 'D.S. N° 279-2024-EF', code: '1053', type: 1 },
+      { title: 'D.S. N° 279-2024-EF', code: '1053', type: 1, concept_id:12 },
       { title: '_DS 327-2025-EF', code: '' },
       { title: 'DS 327-2025-EF', code: '', type: 1 },
       { title: 'DIFERENCIAL SUBSIDIO', width: 100, code: '', type: 1 },
