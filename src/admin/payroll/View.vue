@@ -512,15 +512,15 @@ export default ui({
     };
 
     const isEdited = (rowIndex, cell) => {
-  if (!cell.concept_id) return false;
+      if (!cell.concept_id) return false;
 
-  const row = items.value[rowIndex];
-  const peopleId = row.peopleId;
+      const row = items.value[rowIndex];
+      const peopleId = row.peopleId;
 
-  return editedValues.value.some(
-    v => v.peopleId === peopleId && v.concept_id === cell.concept_id
-  );
-};
+      return editedValues.value.some(
+        v => v.peopleId === peopleId && v.concept_id === cell.concept_id
+      );
+    };
     return {
     isEdited,
       save,
