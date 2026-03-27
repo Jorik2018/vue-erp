@@ -51,8 +51,7 @@
                     <input type="checkbox" :checked="selectedRows.has(rowIndex)" @click.stop
                       @change="toggleCheckbox(rowIndex, $event)">
                   </td>
-                  <td v-for="(cell) in visibleHeaders" :width="cell.width || 90"
-                  :class="[cell.class]"
+                  <td v-for="(cell) in visibleHeaders" :width="cell.width || 90" :class="[cell.class]"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
                     <!--
                     <v-number v-if="cell.concept_id" placeholder="-" :title="'index=' + cell.concept_id"
@@ -74,10 +73,9 @@
               <table class="v-cloned-header v-table"><!---->
                 <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
                   <th v-for="(cell, colIndex) in rowIndex ? row : row.slice(2)" :title="cell.index" :key="colIndex"
-                    :colspan="cell.colspan" :rowspan="cell.rowspan" 
-                    :class="cell.class"
+                    :colspan="cell.colspan" :rowspan="cell.rowspan" :class="cell.class"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
-                    {{ cell.title }} 
+                    {{ cell.title }}
                   </th>
                 </tr>
               </table>
@@ -93,7 +91,7 @@
 
                   <td v-for="(cell) in visibleHeaders.slice(2)" :width="cell.width || 90"
                     @dblclick="editCell(rowIndex, cell)"
-                    :class="[{ 'cell-edited': isEdited(rowIndex, cell), 'right': cell.concept_id },cell.class]"
+                    :class="[{ 'cell-edited': isEdited(rowIndex, cell), 'right': cell.concept_id }, cell.class]"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
 
                     <!--v-number v-if="cell.concept_id" placeholder="-" :title="'concept_id=' + cell.concept_id"
@@ -459,50 +457,52 @@ export default ui({
     const editingCell = ref({
       rowIndex: null,
       concept_id: null,
+      index: null,
       value: null
     });
 
     const editCell = (rowIndex, cell) => {
-      if (cell.index) {
+      if (cell.concept_id) {
+        const row = items.value[rowIndex];
+        editingCell.value = {
+          rowIndex,
+          concept_id: cell.concept_id,
+          value: row.values?.[cell.concept_id] || 0
+        }
+      } else if (cell.index) {
         const row = items.value[rowIndex];
         editingCell.value = {
           rowIndex,
           index: cell.index,
           value: row?.[cell.index] || 0
         };
-        return;
       }
-      if (!cell.concept_id) return;
-      const row = items.value[rowIndex];
-      editingCell.value = {
-        rowIndex,
-        concept_id: cell.concept_id,
-        value: row.values?.[cell.concept_id] || 0
-      };
+
     };
 
     const isEditing = (rowIndex, cell) => {
-      if (cell.index) {
-              return editingCell.value.rowIndex === rowIndex && editingCell.value.index === cell.index;
-      }else
-      return editingCell.value.rowIndex === rowIndex && editingCell.value.concept_id === cell.concept_id;
+      if (cell.concept_id) {
+        return editingCell.value.rowIndex === rowIndex && editingCell.value.concept_id === cell.concept_id;
+      } else if (cell.index) {
+        return editingCell.value.rowIndex === rowIndex && editingCell.value.index === cell.index;
+      }
     };
 
     // Devuelve el valor que se está editando
     const getEditingValue = (rowIndex, cell) => {
       const peopleId = items.value[rowIndex].peopleId;
-      if (cell.index) {
-        const found = editedValues.value.find(v => v.peopleId === peopleId && v.index === cell.index);
-        return found ? found.value : items.value[rowIndex][cell.index] || 0;
-      } else {
+      if (cell.concept_id) {
         const found = editedValues.value.find(v => v.peopleId === peopleId && v.concept_id === cell.concept_id);
         return found ? found.value : items.value[rowIndex].values[cell.concept_id] || 0;
+      }else if (cell.index) {
+        const found = editedValues.value.find(v => v.peopleId === peopleId && v.index === cell.index);
+        return found ? found.value : items.value[rowIndex][cell.index] || 0;
       }
     };
 
     // Finalizar edición y guardar en array de cambios
     const finishEdit = () => {
-      const { rowIndex, concept_id, index,  value } = editingCell.value;
+      const { rowIndex, concept_id, index, value } = editingCell.value;
       if (Number.isInteger(rowIndex)) {
 
 
@@ -511,7 +511,7 @@ export default ui({
 
         // actualizar array de cambios
         const idx = editedValues.value.findIndex(
-          v => v.peopleId === peopleId && v.concept_id === concept_id
+          v => v.peopleId === peopleId && v.concept_id === concept_id && v.index === index
         );
 
         if (idx >= 0) {
@@ -522,7 +522,11 @@ export default ui({
 
         // opcional: reflejar en UI inmediatamente
         if (!row.values) row.values = {};
-        row.values[concept_id||index] = value;
+
+        if(concept_id)
+        row.values[concept_id] = value;
+        else
+        row[index] = value;
 
         // limpiar edición
         editingCell.value = { rowIndex: null, concept_id: null, index: null, value: null };
