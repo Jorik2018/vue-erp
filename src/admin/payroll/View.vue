@@ -93,7 +93,6 @@
                     @dblclick="editCell(rowIndex, cell)"
                     :class="[{ 'cell-edited': isEdited(rowIndex, cell), 'right': cell.concept_id }, cell.class]"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
-
                     <!--v-number v-if="cell.concept_id" placeholder="-" :title="'concept_id=' + cell.concept_id"
                       v-model.number="item.values[cell.concept_id]" /-->
                     <!-- STRING -->
@@ -494,7 +493,7 @@ export default ui({
       if (cell.concept_id) {
         const found = editedValues.value.find(v => v.peopleId === peopleId && v.concept_id === cell.concept_id);
         return found ? found.value : items.value[rowIndex].values[cell.concept_id] || 0;
-      }else if (cell.index) {
+      } else if (cell.index) {
         const found = editedValues.value.find(v => v.peopleId === peopleId && v.index === cell.index);
         return found ? found.value : items.value[rowIndex][cell.index] || 0;
       }
@@ -504,43 +503,42 @@ export default ui({
     const finishEdit = () => {
       const { rowIndex, concept_id, index, value } = editingCell.value;
       if (Number.isInteger(rowIndex)) {
-
-
         const row = items.value[rowIndex];
         const peopleId = row.peopleId;
-
         // actualizar array de cambios
+        console.log(editingCell.value);
         const idx = editedValues.value.findIndex(
           v => v.peopleId === peopleId && v.concept_id === concept_id && v.index === index
         );
-
         if (idx >= 0) {
           editedValues.value[idx].value = value;
         } else {
           editedValues.value.push({ peopleId, concept_id, index, value });
         }
-
         // opcional: reflejar en UI inmediatamente
         if (!row.values) row.values = {};
 
-        if(concept_id)
-        row.values[concept_id] = value;
+        if (concept_id)
+          row.values[concept_id] = value;
         else
-        row[index] = value;
-
+          row[index] = value;
+        console.log(editedValues.value)
         // limpiar edición
         editingCell.value = { rowIndex: null, concept_id: null, index: null, value: null };
       }
     };
 
     const isEdited = (rowIndex, cell) => {
-      if (!cell.concept_id&&!cell.index) return false;
-
+      if (!cell.concept_id && !cell.index) return false;
       const row = items.value[rowIndex];
       const peopleId = row.peopleId;
-
+      if (cell.concept_id) {
+        return editedValues.value.some(
+          v => v.peopleId === peopleId && v.concept_id == cell.concept_id
+        );
+      }
       return editedValues.value.some(
-        v => v.peopleId === peopleId && v.concept_id == cell.concept_id && v.index == cell.index
+        v => v.peopleId === peopleId && v.index == cell.index
       );
     };
     return {
