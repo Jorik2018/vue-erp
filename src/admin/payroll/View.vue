@@ -90,8 +90,8 @@
                   :class="{ 'v-selected': selectedRows.has(rowIndex) }" @click="toggleRow(rowIndex)">
 
                   <td v-for="(cell) in visibleHeaders.slice(2)" :width="cell.width || 90"
-                    @dblclick="editCell(rowIndex, cell)"
-                    :class="{ 'cell-edited': isEdited(rowIndex, cell) }"
+
+                    @dblclick="editCell(rowIndex, cell)" :class="{ 'cell-edited': isEdited(rowIndex, cell), 'right':cell.concept_id }"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
 
                     <!--v-number v-if="cell.concept_id" placeholder="-" :title="'concept_id=' + cell.concept_id"
@@ -443,11 +443,11 @@ export default ui({
 
     const save = () => {
       axios.post('/api/payroll/people', {
-         payrollType: o.value.typeId, 
-         items: items.value, 
-         values: editedValues.value
-         }).then(({ data }) => {
-          editedValues.value = [];
+        payrollType: o.value.typeId,
+        items: items.value,
+        values: editedValues.value
+      }).then(({ data }) => {
+        editedValues.value = [];
         refresh();
       });
     }
@@ -522,7 +522,7 @@ export default ui({
       );
     };
     return {
-    isEdited,
+      isEdited,
       save,
       o,
       headers,
@@ -777,7 +777,17 @@ export default ui({
   background: yellow !important;
   color: black !important;
 }
-.cell-edited{
-border: 1px solid #f5b323 !important;
+
+.v-datatable-data td {
+  white-space: nowrap;
+  /* evita salto de línea */
+  overflow: hidden;
+  /* oculta lo que sobra */
+  text-overflow: ellipsis;
+  border-width: 2px 1px;
+}
+
+.cell-edited {
+  border: 2px solid #f5b323 !important;
 }
 </style>

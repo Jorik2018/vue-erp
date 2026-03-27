@@ -949,6 +949,7 @@ mock.onGet('/api/payroll/1/preview').reply(config => {
   const items = [];
   for (let i = 0; i < 20; i++) {
     items.push({
+        peopleId:i+1,
       fullName: generarNombreCompleto().toUpperCase(), values: [30, 2500, null, 64.19, null, 50, null, 50, null,
         100, null, 100, null, null, null, null, null, null, null,
         null, null, null, null, 8, null, null, 7, 88, 9,
