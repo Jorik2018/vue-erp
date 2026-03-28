@@ -804,10 +804,22 @@ export default ui({
   overflow: hidden;
   /* oculta lo que sobra */
   text-overflow: ellipsis;
-  border-width: 2px 1px;
+  border-width: 3px 1px;
 }
 
 .cell-edited {
-  border: 2px solid #f5b323 !important;
+    background-color: #ffe1a0;
+    border-color: #f5b323 !important;
+}
+
+.v-table tr:nth-child(even) > .cell-edited {
+    background-color: #ffd780;
+}
+
+.cell-edited:hover, .v-table tr:nth-child(even):not(.v-selected) > .cell-edited:hover {
+    background-color: #ffd2b4;
+}
+.v-selected > .cell-edited, tr:nth-child(even).v-selected > .cell-edited{
+  background-color: #996900;
 }
 </style>
