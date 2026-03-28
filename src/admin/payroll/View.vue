@@ -779,21 +779,21 @@ export default ui({
   color: white;
 }
 
-.p-green {
+th.p-green {
   background: #95f75a !important;
   color: black !important;
 }
 
-.p-wine {
+th.p-wine {
   background: #e51700 !important;
 }
 
-.p-sky {
+th.p-sky {
   background: #41d9ff !important;
   color: black !important;
 }
 
-.p-yellow {
+th.p-yellow {
   background: yellow !important;
   color: black !important;
 }
