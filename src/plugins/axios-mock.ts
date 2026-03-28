@@ -828,25 +828,6 @@ mock.onPost('/api/auth').reply(config => {
     }]
 })
 
-const assignLeafIndexes = (headers) => {
-    let index = 0;
-
-    const walk = (items) => {
-        items.forEach(h => {
-            if (h.children && h.children.length) {
-                walk(h.children);
-            } else if (!h.index) {
-                h.index = index++;   // solo hojas obtienen índice
-            }
-        });
-    };
-
-    walk(headers);
-    return headers;
-}
-
-
-
 function generarNombreCompleto() {
     const consonantes = 'bcdfghjklmnpqrstvwxyz';
     const vocales = 'aeiou';
@@ -880,7 +861,7 @@ function generarNombreCompleto() {
 
 mock.onGet('/api/payroll/1/preview').reply(config => {
 
-    const headers = assignLeafIndexes([
+    const headers = [
         { title: 'CODE', width: 100, index: 'code', class:'center' },
 
         { title: 'NOMBRE COMPLETO', width: 200, index: 'fullName' },
@@ -948,7 +929,7 @@ mock.onGet('/api/payroll/1/preview').reply(config => {
         { title: 'ESSALUD CAS' }
 
 
-    ]);
+    ];
     const items = [];
     for (let i = 0; i < 20; i++) {
         items.push({

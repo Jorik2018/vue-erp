@@ -72,8 +72,9 @@
             <div class="v-datatable-scrollable-header-box" ref="header" style="left: 0px; transform: translateX(0px);">
               <table class="v-cloned-header v-table"><!---->
                 <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
-                  <th v-for="(cell, colIndex) in rowIndex ? row : row.slice(2)" :title="cell.index" :key="colIndex"
-                    :colspan="cell.colspan" :rowspan="cell.rowspan" :class="cell.class"
+                  <th v-for="(cell, colIndex) in rowIndex ? row : row.slice(2)"
+                    :title="cell.concept_id || cell.index || '???'" :key="colIndex" :colspan="cell.colspan"
+                    :rowspan="cell.rowspan" :class="cell.class"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
                     {{ cell.title }}
                   </th>
@@ -240,12 +241,20 @@ export default ui({
     const tableKey = ref(0)
 
     const showAddPerson = ref(false)
-
+    
+    
+    
     const showAddConcept = ref(false)
 
     const refresh = () => {
+    console.log(editedValues.value);
+      if (editedValues.value.length) {
+        if(!confirm('Tiene cambios pendientes a grabar, confirma cancelarlos?')) return;
+      }
+      editingCell.value = {}
       axios.get('/api/payroll/' + id + '/preview')
         .then(({ data: { headers: h, items: i, ...payroll } }) => {
+          editedValues.value = [];
           selectedRows.value.clear();
           console.log(h);
           headers.value = h
@@ -312,7 +321,8 @@ export default ui({
             width: hasChildren ? undefined : (h.width || 90),
             backgroundColor: h.backgroundColor,
             color: h.color,
-            index: h.index
+            index: h.index,
+            concept_id: h.concept_id,
           }
 
           rows[level].push(cell)
@@ -443,10 +453,10 @@ export default ui({
     const save = () => {
       axios.post('/api/payroll/people', {
         payrollType: o.value.typeId,
-        items: items.value,
         values: editedValues.value
       }).then(({ data }) => {
         editedValues.value = [];
+        editingCell.value = {};
         refresh();
       });
     }
@@ -455,33 +465,26 @@ export default ui({
 
     const editingCell = ref({
       rowIndex: null,
-      concept_id: null,
+      concept: null,
       index: null,
       value: null
     });
 
     const editCell = (rowIndex, cell) => {
-      if (cell.concept_id) {
+      if (cell.concept_id || cell.index) {
         const row = items.value[rowIndex];
         editingCell.value = {
           rowIndex,
-          concept_id: cell.concept_id,
-          value: row.values?.[cell.concept_id] || 0
-        }
-      } else if (cell.index) {
-        const row = items.value[rowIndex];
-        editingCell.value = {
-          rowIndex,
+          concept: cell.concept_id,
           index: cell.index,
-          value: row?.[cell.index] || 0
-        };
+          value: cell.concept_id ? row.values?.[cell.concept_id] : row?.[cell.index]
+        }
       }
-
     };
 
     const isEditing = (rowIndex, cell) => {
       if (cell.concept_id) {
-        return editingCell.value.rowIndex === rowIndex && editingCell.value.concept_id === cell.concept_id;
+        return editingCell.value.rowIndex === rowIndex && editingCell.value.concept === cell.concept_id;
       } else if (cell.index) {
         return editingCell.value.rowIndex === rowIndex && editingCell.value.index === cell.index;
       }
@@ -501,44 +504,41 @@ export default ui({
 
     // Finalizar edición y guardar en array de cambios
     const finishEdit = () => {
-      const { rowIndex, concept_id, index, value } = editingCell.value;
+      const { rowIndex, concept, index, value } = editingCell.value;
       if (Number.isInteger(rowIndex)) {
         const row = items.value[rowIndex];
-        const peopleId = row.peopleId;
-        // actualizar array de cambios
-        console.log(editingCell.value);
-        const idx = editedValues.value.findIndex(
-          v => v.peopleId === peopleId && v.concept_id === concept_id && v.index === index
-        );
-        if (idx >= 0) {
-          editedValues.value[idx].value = value;
-        } else {
-          editedValues.value.push({ peopleId, concept_id, index, value });
+        const oldValue = concept ? row.values[concept] : row[index];
+        if (oldValue != value) {
+          const people = row.peopleId;
+          const idx = editedValues.value.findIndex(
+            v => v.people === people && v.concept === concept && v.index === index
+          );
+          if (idx >= 0) {
+            editedValues.value[idx].value = value;
+          } else {
+            editedValues.value.push({ people, concept, index, value });
+          }
+          if (concept) {
+            row.values[concept] = value;
+          } else {
+            row[index] = value;
+          }
         }
-        // opcional: reflejar en UI inmediatamente
-        if (!row.values) row.values = {};
-
-        if (concept_id)
-          row.values[concept_id] = value;
-        else
-          row[index] = value;
-        console.log(editedValues.value)
-        // limpiar edición
-        editingCell.value = { rowIndex: null, concept_id: null, index: null, value: null };
+        editingCell.value = { rowIndex: null, concept: null, index: null, value: null };
       }
     };
 
     const isEdited = (rowIndex, cell) => {
       if (!cell.concept_id && !cell.index) return false;
       const row = items.value[rowIndex];
-      const peopleId = row.peopleId;
+      const people = row.peopleId;
       if (cell.concept_id) {
         return editedValues.value.some(
-          v => v.peopleId === peopleId && v.concept_id == cell.concept_id
+          v => v.people === people && v.concept == cell.concept_id
         );
       }
       return editedValues.value.some(
-        v => v.peopleId === peopleId && v.index == cell.index
+        v => v.people === people && v.index == cell.index
       );
     };
     return {
@@ -808,18 +808,21 @@ th.p-yellow {
 }
 
 .cell-edited {
-    background-color: #ffe1a0;
-    border-color: #f5b323 !important;
+  background-color: #ffe1a0;
+  border-color: #f5b323 !important;
 }
 
-.v-table tr:nth-child(even) > .cell-edited {
-    background-color: #ffd780;
+.v-table tr:nth-child(even)>.cell-edited {
+  background-color: #ffd780;
 }
 
-.cell-edited:hover, .v-table tr:nth-child(even):not(.v-selected) > .cell-edited:hover {
-    background-color: #ffd2b4;
+.cell-edited:hover,
+.v-table tr:nth-child(even):not(.v-selected)>.cell-edited:hover {
+  background-color: #ffd2b4;
 }
-.v-selected > .cell-edited, tr:nth-child(even).v-selected > .cell-edited{
+
+.v-selected>.cell-edited,
+tr:nth-child(even).v-selected>.cell-edited {
   background-color: #996900;
 }
 </style>
