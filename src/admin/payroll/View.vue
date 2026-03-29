@@ -386,7 +386,7 @@ export default ui({
     })
 
     const process = () => {
-      axios.post('/api/payroll/process', o.value).then(({ data: { items: i, headers: h } }) => {
+      axios.post('/api/payroll/process', {id:o.value.id}).then(({ data: { items: i, headers: h } }) => {
         items.value = i;
         headers.value = h;
         //handler(me.items);
@@ -737,7 +737,6 @@ export default ui({
   padding: 0px 20px !important;
   text-align: right;
 }
-
 .v-datatable ::v-deep(.v-footer-group > td) {
   padding: 0px 20px !important;
   text-align: right;
@@ -778,7 +777,6 @@ export default ui({
   background: unset;
   color: white;
 }
-
 th.p-green {
   background: #95f75a !important;
   color: black !important;
