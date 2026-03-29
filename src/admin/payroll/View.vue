@@ -284,7 +284,7 @@ export default ui({
     const headerRows = computed(() => {
 
       const maxDepth = (headers) => {
-        return headers.reduce((max, h) => {
+        return headers?.reduce((max, h) => {
 
           if (h.title.startsWith('_')) return max
 
@@ -294,7 +294,7 @@ export default ui({
 
           return Math.max(max, 1)
 
-        }, 0)
+        }, 0)||0
       }
 
       const depth = maxDepth(headers.value)
