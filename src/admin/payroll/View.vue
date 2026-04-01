@@ -452,7 +452,7 @@ export default ui({
 
     const save = () => {
       axios.post('/api/payroll/people', {
-        payrollType: o.value.typeId,
+        payrollType: o.value.id,
         values: editedValues.value
       }).then(({ data }) => {
         editedValues.value = [];
