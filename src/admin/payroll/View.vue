@@ -5,17 +5,18 @@
 
         <v-button icon="fa fa-refresh" @click="refresh" />
         <div style="width: 10px;"></div>
-        <v-button icon="fa fa-person-circle-plus" @click="addPerson" />
+        <v-button icon="fa fa-person-circle-plus" :disabled="o.closed" @click="addPerson" />
         <v-button icon="fa fa-person-circle-minus" class="red-light" @click="removePerson"
-          :disabled="selectedRows.size === 0" />
+          :disabled="selectedRows.size === 0||o.closed" />
         <div style="width: 10px;"></div>
-        <v-button icon="fa fa-square-plus" @click="addConcept" :disabled="!(o.month && o.year)" />
-        <v-button icon="fa fa-gear" @click="process" class="yellow-light" />
+        <v-button icon="fa fa-square-plus" @click="addConcept" :disabled="!(o.month && o.year)||o.closed" />
+        <v-button icon="fa fa-gear" @click="process" :disabled="o.closed" class="yellow-light" />
         <v-button title="Descargar" :disabled="!o.generateDate" icon="fa-download"
           @click.prevent="saveAs('/api/payroll/download', { id: o.id })"></v-button>
 
         <div style="margin-left:auto">
-          <v-button icon="fa fa-save" @click="save" />
+          <v-button icon="fa fa-lock" v-if="o.generateDate" :disabled="o.closed" @click="lock" />
+          <v-button icon="fa fa-save" :disabled="o.closed" @click="save" />
         </div>
 
       </div>
@@ -31,7 +32,7 @@
                   <th v-if="!rowIndex" style="width:30px; min-width: 30px" rowspan="2">
                     <input type="checkbox" @click.stop @change="toggleCheckbox(-1, $event)">
                   </th>
-                  <th v-if="!rowIndex" style="width:30px; min-width: 30px" rowspan="2">
+                  <th v-if="!rowIndex" style="width:40px; min-width: 40px" rowspan="2">
                     #
                   </th>
                   <th v-for="(cell, colIndex) in row" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
@@ -127,7 +128,7 @@
       <div v-if="showAddPerson" class="v-form">
         <div style="margin-bottom: 10px;"></div>
         <v-table :selectable="true" :scrollable="true" ref="personal" style="height:400px" rowKey="id" :pagination="20"
-          :filters="filters" src="/api/hr/personal">
+          :filters="filters" :src="'/api/payroll/'+id+'/people'">
           <template v-slot="{ row }">
             <td width="80" class="center" header="DNI">
               <v-filter>
@@ -545,7 +546,18 @@ export default ui({
         v => v.people === people && v.index == cell.index
       );
     };
+
+    const lock = () => {
+      axios.post('/api/payroll/lock', {
+        id: o.value.id
+      }).then(() => {
+        editedValues.value = [];
+        editingCell.value = {};
+        refresh();
+      });
+    }
     return {
+      lock,
       isEdited,
       save,
       o,

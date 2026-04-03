@@ -65,7 +65,7 @@ mock.onGet(/\/api\/hr\/personal\/\d+\/\d+/).reply(200, {
     "size": "148"
 })
 
-mock.onGet(/\/api\/payroll\/\d+\/personal/).reply(200, {
+mock.onGet(/\/api\/payroll\/\d+\/people\/\d+\/\d+/).reply(200, {
     "data": [
         {
             "n": "1",
@@ -997,8 +997,8 @@ mock.onGet(/\/api\/payroll\/\d+\/preview/).reply(config => {
         "type_id": "1",
         "id_fuente_financ": null,
         "comments": null,
-        "closed": "0",
-        "generate_date": "2026-02-25 20:04:27",
+        "closed": false,
+        "generateDate": "2026-02-25 20:04:27",
         "canceled": "0",
         "prepared_by": null,
         headers,
