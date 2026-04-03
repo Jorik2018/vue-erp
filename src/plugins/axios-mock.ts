@@ -903,7 +903,7 @@ function generarNombreCompleto() {
     return palabras.join(' ');
 }
 
-mock.onGet('/api/payroll/1/preview').reply(config => {
+mock.onGet(/\/api\/payroll\/\d+\/preview/).reply(config => {
 
     const headers = [
         { title: 'CODE', width: 100, index: 'code', class:'center' },

@@ -31,6 +31,9 @@
                   <th v-if="!rowIndex" style="width:30px; min-width: 30px" rowspan="2">
                     <input type="checkbox" @click.stop @change="toggleCheckbox(-1, $event)">
                   </th>
+                  <th v-if="!rowIndex" style="width:30px; min-width: 30px" rowspan="2">
+                    #
+                  </th>
                   <th v-for="(cell, colIndex) in row" :title="cell.index" :key="colIndex" :colspan="cell.colspan"
                     :rowspan="cell.rowspan" :class="cell.class"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : (cell.colspan > 1 ? { width: '0px', textOverflow: 'ellipsis' } : {}), backgroundColor: cell.backgroundColor, color: cell.color }">
@@ -51,6 +54,7 @@
                     <input type="checkbox" :checked="selectedRows.has(rowIndex)" @click.stop
                       @change="toggleCheckbox(rowIndex, $event)">
                   </td>
+                  <td style="width:40px" class="center">{{pad(rowIndex+1,3)}}</td>
                   <td v-for="(cell) in visibleHeaders" :width="cell.width || 90" :class="[cell.class]"
                     :style="{ ...cell.width ? { minWidth: cell.width + 'px', maxWidth: cell.width + 'px' } : {} }">
                     <!--

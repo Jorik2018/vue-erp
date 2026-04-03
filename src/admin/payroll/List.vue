@@ -19,7 +19,7 @@
                        
                     <v-button value="Generar" icon="fa-gear" @click.prevent="generate(getSelected()[0])"
                         :disabled="!rowSelectedCount||getSelected()[0]?.closed==1"></v-button>
-                    <v-button value="Eliminar" icon="fa-trash" @click.prevent="destroy" :disabled="!rowSelectedCount"></v-button>
+                    <v-button value="Eliminar" icon="fa-trash" @click.prevent="destroy"         :disabled="!rowSelectedCount"></v-button>
                     <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh"></v-button>
                 </template>
 
