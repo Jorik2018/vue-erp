@@ -16,6 +16,9 @@
                     <v-button value="Editar" icon="fa-pen" @click.prevent="edit" :disabled="!rowSelectedCount"></v-button>
                     <v-button value="Ver" icon="fa-search" @click.prevent="view(getSelected()[0])"
                         :disabled="!rowSelectedCount"></v-button>
+                       
+                    <v-button value="Generar" icon="fa-gear" @click.prevent="generate(getSelected()[0])"
+                        :disabled="!rowSelectedCount||getSelected()[0]?.closed==1"></v-button>
                     <v-button value="Eliminar" icon="fa-trash" @click.prevent="destroy" :disabled="!rowSelectedCount"></v-button>
                     <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh"></v-button>
                 </template>
@@ -143,7 +146,7 @@ import { MONTH_NAME } from './constants';
 
 export default ui({
 
-    setup({ open }) {
+    setup({ open, app:{axios}, refresh }) {
 
         const o = ref({})
         const table = ref(null)
@@ -179,9 +182,15 @@ export default ui({
         const rowStyleClass = (row) => {
             return row.closed=='1'?'gray':row.generateDate?'yellow':'green'
         }
+
+        const generate = (row) => {
+            axios.post('/api/payroll/generate', {id:row.id}).then(() => {
+                refresh();
+            });
+        }
     
         return {
-            o,
+            o,generate,
             form,
             rowStyleClass,
             table,

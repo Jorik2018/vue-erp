@@ -386,7 +386,7 @@ export default ui({
     })
 
     const process = () => {
-      axios.post('/api/payroll/process', {id:o.value.id}).then(({ data: { items: i, headers: h } }) => {
+      axios.post('/api/payroll/generate', {id:o.value.id}).then(({ data: { items: i, headers: h } }) => {
         items.value = i;
         headers.value = h;
         //handler(me.items);
@@ -451,7 +451,7 @@ export default ui({
     }
 
     const save = () => {
-      axios.post('/api/payroll/people', {
+      axios.post('/api/payroll/values', {
         id: o.value.id,
         values: editedValues.value
       }).then(({ data }) => {
