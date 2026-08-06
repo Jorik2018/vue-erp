@@ -29,8 +29,8 @@ export default ui({
     }
     Network.addListener("networkStatusChange", me.app.networkStatusChange);
     Network.getStatus().then(me.app.networkStatusChange);
-    me.app.BUILT_ON =   import.meta.env.VITE_APP_BUILT_ON;
-    me.app.VERSION =   import.meta.env.VITE_APP_VERSION;
+    me.app.BUILT_ON = import.meta.env.VITE_APP_BUILT_ON;
+    me.app.VERSION = import.meta.env.VITE_APP_VERSION;
     me.app.getAge = (birthDate) => {
       const today = new Date();
       birthDate = typeof birthDate == 'string' || typeof birthDate == 'number' ? new Date(birthDate) : birthDate;
@@ -52,8 +52,52 @@ export default ui({
         });
       });
     }
+    this.processOAuthCallback();
   },
   methods: {
+    async processOAuthCallback() {
+
+      const me = this;
+      const route = me.$router.currentRoute.value;
+      const code = route.query.code;
+      const state = route.query.state;
+      if (!code) {
+        return false;
+      }
+      try {
+        const { data } = await axios.post(
+          "/wp-json/api/oauth/token", { code, state }
+        );
+        me.app.session = data;
+        axios.defaults.headers.common.Authorization =
+          "Bearer " + data.token;
+        // Recuperar la ruta anterior
+        const returnUrl = sessionStorage.getItem("oauth-return-url");
+        sessionStorage.removeItem("oauth-return-url");
+        // Limpiar la URL (elimina code y state)
+        if (returnUrl) {
+          await me.$router.replace(returnUrl);
+        } else {
+          await me.$router.replace({
+            path: route.path,
+            query: {}
+          });
+        }
+        return true;
+      } catch (e) {
+        console.error(e);
+        me.app.toast(
+          "No fue posible completar la autenticación."
+        );
+        // Limpiar igualmente la URL
+        await me.$router.replace({
+          path: route.path,
+          query: {}
+        });
+        return true;
+      }
+
+    },
     /*connect() {
       const me = this, session = me.session;
       if (session != null) {
