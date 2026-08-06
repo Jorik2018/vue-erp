@@ -66,7 +66,7 @@ export default ui({
       }
       try {
         const { data } = await axios.post(
-          "/wp-json/api/oauth/token", { code, state }
+          "/api/oauth/token", { code, state }
         );
         me.app.session = data;
         axios.defaults.headers.common.Authorization =
