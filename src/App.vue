@@ -65,9 +65,7 @@ export default ui({
         return false;
       }
       try {
-        const { data } = await axios.post(
-          "/api/oauth/token", { code, state }
-        );
+        const { data } = await axios.post("/api/oauth/token", { code, state });
         me.app.session = data;
         axios.defaults.headers.common.Authorization =
           "Bearer " + data.token;
