@@ -16,11 +16,8 @@ export default ui({
   created() {
     const me = this;
     const session = me.session;
-    if (session?.token) {
-      axios.defaults.headers.common = {
-        Authorization:
-          `Bearer ` + (session.token ? session.token : session.uid),
-      };
+    if (session) {
+      //aqui deberia llamarse a refresh
       me.profileImg = session.people ? session.people.urlPerfil : null;
       //if (me.$router.currentRoute.value.fullPath == '/') {
       //me.$router.push("/admin");

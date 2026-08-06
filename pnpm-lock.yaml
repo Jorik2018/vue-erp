@@ -50,9 +50,6 @@ importers:
       '@fortawesome/fontawesome-free':
         specifier: ^6.7.2
         version: 6.7.2
-      '@fortawesome/fontawesome-svg-core':
-        specifier: ^7.2.0
-        version: 7.2.0
       '@fortawesome/free-regular-svg-icons':
         specifier: ^6.7.2
         version: 6.7.2

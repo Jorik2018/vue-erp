@@ -6,10 +6,6 @@ import { getActivePinia } from 'pinia';
 import axios from 'axios';
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/file',
-    component: () => import('../admin/file/List.vue')
-  },
-  {
     path: '/verify',
     component: () => import('../document/VerifyPanel.vue')
   },
@@ -31,6 +27,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/admin',
     component: Admin,
     children: [
+      {
+        path: '/file',
+        component: () => import('../admin/file/List.vue')
+      },
       {
         path: 'desarrollo-social/people', meta: { perm: 'DS_PEOPLE_READ' },
         component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/List.vue')

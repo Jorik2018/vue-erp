@@ -25,13 +25,13 @@ import i18n from './i18n';
 import { setupApp } from 'isobit-ui';
 import axios from 'axios';
 if (import.meta.env.MODE === 'development') {
-  import('./plugins/axios-mock').then((module) => {
-    console.log('Mock activado');
-  });
+    const { setupAxiosMock } = await import('./plugins/axios-mock')
+    await setupAxiosMock() // 👈 CLAVE
+
 }
 const app = createApp(App) as any;
 const pinia = createPinia();
-setupApp({ pinia, axios, router });
+setupApp({ pinia, axios, router , ttlSeconds:20});
 app.config.ignoredElements = [/^ion-/, /^v-/, 'center'];
 app.config.productionTip = false;
 app.directive('uppercase', {

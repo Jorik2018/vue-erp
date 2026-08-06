@@ -7,15 +7,31 @@
     flex: 1;
     flex-direction: column;
 ">
-            <div style="padding-bottom: 10px;">
-                <a style="display:inline-block;padding: 5px;" v-on:click="send({ path: null, type: 'D' })"><i
-                        class="fa fa-home"></i></a>
+            <div style="padding-bottom: 10px; display: flex; align-items: center;">
 
-                <template v-for="item in subpaths">
-                    \ <a style="display:inline-block;padding: 5px;" v-on:click="send({ path: item, type: 'D' })"> {{
-                        item.split('\\').pop()
-                    }}</a>
+                <a style="display:inline-block;padding: 5px;cursor: pointer;"
+                    v-on:click="send({ path: null, type: 'D' })">
+                    <i class="fa fa-home"></i>
+                </a>
+
+                <template v-for="(item, i) in subpaths">
+                    <span>
+                        \
+                        <a style="display:inline-block;padding: 5px;cursor: pointer;"
+                            v-on:click="send({ path: item, type: 'D' })">
+                            {{ i === 0
+                                ? item.replace(/[\\/]+$/, '') // 🔥 quita "\" final
+                            : item.split(/[\\/]/).pop()
+                            }}
+                        </a>
+                    </span>
                 </template>
+
+                <!-- 👇 esto lo empuja a la derecha -->
+                <div style="margin-left: auto;margin-right: 10px;">
+                <v-button value="o" @click="gg"/>
+                    <v-uploader :dst="o.current" onlyicon="false" icon="fa-upload" @input="onUploaded" />
+                </div>
 
             </div>
             <div style="
@@ -27,9 +43,9 @@
                 <div v-for="item in o.files"
                     style="display:block;padding: 10px;border:1px solid gray;position: relative;">
                     <i style="width: 20px;padding: 2px;margin-right: 10px;text-align: center;" class="fa"
-                        :class="item.type == 'F' ? 'fa-file' : 'fa-folder'"></i><a style="line-break: anywhere;"
-                        v-on:click="send(item)"> {{
-                            label(item.path) }}</a>
+                        :class="item.type == 'F' ? 'fa-file' : 'fa-folder'"></i>
+                    <a style="line-break: anywhere;cursor: pointer;" v-on:click="send(item)"> {{
+                        label(item.path) }}</a>
                     <span v-if="item.type == 'F'" style="position:absolute;right: 0px;padding: 4px 10px;"
                         v-on:click="remove(item)"><i class="fa fa-trash"></i></span>
                 </div>
@@ -42,82 +58,135 @@
 <script>
 import axios from "axios";
 import { ui } from 'isobit-ui'
+import { ref, computed, onMounted, onBeforeMount, getCurrentInstance } from 'vue';
+let ax;
 export default ui({
+    setup({ app }) {
+        const { appContext } = getCurrentInstance();
+        console.log(appContext);
+        const ax = app.axios;
 
-    computed: {
-        subpaths() {
-            const parts = (this.o.current || '').split("\\");
-            return parts.map((_, index) => {
-                // Crea cada subruta desde la raíz hasta el índice actual
-                return parts.slice(0, index + 1).join("\\");
-            });
-        },
-    },
-    data() {
-        return {
-            o: { current: 'D:\\', id: null, files: [] },
-            image: 0,
-            base: 'http://web.regionancash.gob.pe/cdn/web/viewer.html?v=1&file=http://web.regionancash.gob.pe/admin/uti/api/document/download/'
-        }
-    },
-    created() {
-        const path = this.getParameterByName('path');
-        if (path) {
-            this.o.current = path;
-        }
-    },
-    mounted() {
+        const o = ref({ current: 'D:\\', id: null, files: [] });
+        const image = ref(0);
+        const base = ref('http://web.regionancash.gob.pe/cdn/web/viewer.html?v=1&file=http://web.regionancash.gob.pe/admin/uti/api/document/download/');
 
-        this.send({ path: this.o.current, type: 'D' });
-    },
-    methods: {
-        getParameterByName(name) {
+        const subpaths = computed(() => {
+            let path = o.value.current || '';
+            if (!path) return [];
+
+            const isWindows = /^[a-zA-Z]:\\/.test(path);
+            const sep = isWindows ? '\\' : '/';
+
+            if (path.length > 1 && path.endsWith(sep)) {
+                if (!(isWindows && path.length === 3)) {
+                    path = path.slice(0, -1);
+                }
+            }
+
+            let parts = path.split(sep);
+            let result = [];
+
+            if (isWindows) {
+                parts = parts.filter(Boolean);
+
+                const drive = parts[0] + '\\';
+                result.push(drive);
+
+                for (let i = 1; i < parts.length; i++) {
+                    result.push(result[i - 1] + parts[i]);
+                }
+
+                return result;
+            } else {
+                if (path.startsWith('/')) {
+                    result.push('/');
+                    parts = parts.slice(1);
+                }
+
+                for (let i = 0; i < parts.length; i++) {
+                    if (!parts[i]) continue;
+
+                    const prev = result[result.length - 1] || '';
+                    result.push(prev === '/' ? '/' + parts[i] : prev + '/' + parts[i]);
+                }
+
+                return result;
+            }
+        });
+
+        const getParameterByName = (name) => {
             const regex = new RegExp('[?&]' + encodeURIComponent(name) + '=([^&#]*)', 'i');
             const results = regex.exec(window.location.search);
             return results ? decodeURIComponent(results[1]) : null;
-        },
-        label(path) {
-            const paths = path.split('\\');
-            return paths.pop() || paths.pop();
-        },
-        send(item) {
-            const me = this;
-            if (item.type == 'D') {
-                axios.post('/api/obresec/file', { folder: item.path }, {
-                    headers: { authorization: "" }
-                }).then(({ data }) => {
-                    me.o.files = data.data;
-                    me.o.current = item.path;
+        };
+
+        const send = (item) => {
+            if (item.type === 'D') {
+                ax.post('/api/file', { folder: item.path }).then(({ data }) => {
+                    o.value.files = data.data;
+                    o.value.current = item.path;
                 });
             } else {
-                axios.post('/api/obresec/file/download',
+                axios.post('/api/file/download',
                     { folder: item.path },
-                    {
-                        headers: { authorization: "" },
-                        responseType: 'blob' // Especifica que la respuesta debe ser tratada como un archivo binario
-                    }
+                    { responseType: 'blob' }
                 ).then(({ data }) => {
-                    // Crear un enlace de descarga dinámico
                     const url = window.URL.createObjectURL(new Blob([data]));
-
-                    // Crear un enlace de descarga
                     const link = document.createElement('a');
                     link.href = url;
-                    link.setAttribute('download', item.path.split('\\').pop()); // Define el nombre del archivo a descargar
+                    link.setAttribute('download', item.path.split('\\').pop());
                     document.body.appendChild(link);
-                    link.click(); // Simula el clic para iniciar la descarga
-                    document.body.removeChild(link); // Limpia el enlace después de la descarga
+                    link.click();
+                    document.body.removeChild(link);
                 }).catch(error => {
                     console.error('Error descargando el archivo:', error);
                 });
             }
-        },
-        remove(item) {
-            const me = this;
-            axios.delete('http://38.250.135.118/api/obresec/file/' + encodeURIComponent(item.path)).then(() => {
-                me.send({ path: me.o.current, type: 'D' });
+        };
+
+        const remove = (item) => {
+            axios.delete('/api/file/' + encodeURIComponent(item.path)).then(() => {
+                send({ path: o.value.current, type: 'D' });
             });
-        }
+        };
+
+        const gg = (item) => {
+            axios.get('/api/bpm/prepare/1').then(({data}) => {
+                console.log(data);
+            });
+        };
+
+        const onUploaded = () => {
+            send({ path: o.value.current, type: 'D' });
+        };
+
+        const label = (path) => {
+            const paths = path.split('\\');
+            return paths.pop() || paths.pop();
+        };
+
+        onBeforeMount(() => {
+            const path = getParameterByName('path');
+            if (path) {
+                o.value.current = path;
+            }
+        });
+
+        onMounted(() => {
+            send({ path: o.value.current, type: 'D' });
+        });
+
+        return {
+        gg,
+            o,
+            image,
+            base,
+            subpaths,
+            send,
+            remove,
+            onUploaded,
+            label
+        };
     }
 })
 </script>

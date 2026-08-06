@@ -36,7 +36,7 @@ export default ui({
         send() {
             const me = this;
             //me.saveAs('/api/payroll/chd', me.o);
-            axios.post('/api/payroll/chd', me.o).then(({ data }) => {
+            axios.post('/api/hr/report', me.o).then(({ data }) => {
                 const fo = new FormData();
                 fo.append(
                     "file",

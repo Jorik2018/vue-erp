@@ -38,6 +38,7 @@
           </div>
           <a @click="$router.push('/register')" style="margin-bottom: 10px">Registrate</a>
           <a @click="$router.push('/password')">&iquest;Olvidaste tu Contrase&ntilde;a?</a>
+          <a @click="authorize">Authorize</a>
           <div class="center" style="
    font-size: 10px;
     margin-top: 20px;
@@ -70,6 +71,14 @@ export default ui({
     //_.bindLinks(this.$el);
   },
   methods: {
+    authorize() {
+      const provider = 'miniorange';
+      axios.get(
+        `${API}/wp-json/api/oauth/${provider}`
+      ).then(({ data }) => {
+        window.location.href = data.authorizeUrl;
+      });
+    },
     focus(e) {
       //console.log(e.target.nextSibling.focus());
     },
