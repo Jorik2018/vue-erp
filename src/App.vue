@@ -71,9 +71,8 @@ export default ui({
         const provider = context.provider;
         const returnUrl = context.returnUrl;
         const { data } = await axios.post("/api/oauth/token", { code, state, provider });
-        me.app.session = data;
-        axios.defaults.headers.common.Authorization =
-          "Bearer " + data.token;
+        const { token, perms, user_nicename } = data;
+        me.app.connect({ token, people: { display_name: user_nicename }, perms });
         sessionStorage.removeItem("oauth-context");
         if (returnUrl) {
           await me.$router.replace(returnUrl);
