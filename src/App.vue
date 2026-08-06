@@ -72,16 +72,17 @@ export default ui({
         const returnUrl = context.returnUrl;
         const { data } = await axios.post("/api/oauth/token", { code, state, provider });
         const { token, perms, user_nicename } = data;
-        me.app.connect({ token, people: { display_name: user_nicename }, perms });
         sessionStorage.removeItem("oauth-context");
-        if (returnUrl) {
+        me.app.connect({ token, people: { display_name: user_nicename }, perms });
+        
+        /*if (returnUrl) {
           await me.$router.replace(returnUrl);
         } else {
           await me.$router.replace({
             path: route.path,
             query: {}
           });
-        }
+        }*/
         return true;
       } catch (e) {
         console.error(e);
