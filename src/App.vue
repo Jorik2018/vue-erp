@@ -65,14 +65,16 @@ export default ui({
         return false;
       }
       try {
-        const { data } = await axios.post("/api/oauth/token", { code, state });
+        const context = JSON.parse(
+          sessionStorage.getItem("oauth-context") || "{}"
+        );
+        const provider = context.provider;
+        const returnUrl = context.returnUrl;
+        const { data } = await axios.post("/api/oauth/token", { code, state, provider });
         me.app.session = data;
         axios.defaults.headers.common.Authorization =
           "Bearer " + data.token;
-        // Recuperar la ruta anterior
-        const returnUrl = sessionStorage.getItem("oauth-return-url");
-        sessionStorage.removeItem("oauth-return-url");
-        // Limpiar la URL (elimina code y state)
+        sessionStorage.removeItem("oauth-context");
         if (returnUrl) {
           await me.$router.replace(returnUrl);
         } else {

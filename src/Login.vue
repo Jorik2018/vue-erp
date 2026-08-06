@@ -74,7 +74,14 @@ export default ui({
     authorize() {
       const provider = 'miniorange';
       axios.get(`/api/oauth/${provider}`).then(({ data }) => {
-        window.location.href = data.url;
+        sessionStorage.setItem(
+          "oauth-context",
+          JSON.stringify({
+            provider,
+            returnUrl: this.$router.currentRoute.value.fullPath
+          })
+        );
+        setTimeout(() => { window.location.href = data.url; }, 1)
       });
     },
     focus(e) {
