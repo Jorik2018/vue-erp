@@ -66,7 +66,7 @@ export default ui({
         console.log(appContext);
         const ax = app.axios;
 
-        const o = ref({ current: 'D:\\', id: null, files: [] });
+        const o = ref({ current: 'C:\\wildfly-18.0.1.Final\\standalone', id: null, files: [] });
         const image = ref(0);
         const base = ref('http://web.regionancash.gob.pe/cdn/web/viewer.html?v=1&file=http://web.regionancash.gob.pe/admin/uti/api/document/download/');
 

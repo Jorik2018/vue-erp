@@ -134,9 +134,9 @@ import { contract_type, afp_onp, organ } from '../personal/constants';
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { library } from '@fortawesome/fontawesome-svg-core';
 
-library.add(faTrash);
+
+
 export default ui({
   components: { FontAwesomeIcon },
   props: ["id"],
