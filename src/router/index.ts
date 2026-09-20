@@ -28,10 +28,6 @@ const routes: Array<RouteRecordRaw> = [
     component: Admin,
     children: [
       {
-        path: '/file',
-        component: () => import('../admin/file/List.vue')
-      },
-      {
         path: 'desarrollo-social/people', meta: { perm: 'DS_PEOPLE_READ' },
         component: () => import(/* webpackChunkName: "people" */'../admin/desarrollo-social/people/List.vue')
       },
@@ -80,6 +76,24 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "inventory" */'../admin/inventory/Create.vue')
       },
       {
+        path: 'content/node',
+        component: () => import(/* webpackChunkName: "inventory" */'../admin/content/node/List.vue')
+      },
+
+      {
+        path: 'content/node/:id/edit', props: true,
+        component: () => import(/* webpackChunkName: "inventory" */'../admin/content/node/Create.vue')
+      },
+      {
+        path: 'content/block',
+        component: () => import(/* webpackChunkName: "inventory" */'../admin/content/block/List.vue')
+      },
+
+      {
+        path: 'content/block/:id/edit', props: true,
+        component: () => import(/* webpackChunkName: "inventory" */'../admin/content/block/Create.vue')
+      },
+      {
         path: 'inventory/item/:id/edit', props: true,
         component: () => import(/* webpackChunkName: "inventory" */'../admin/inventory/Create.vue')
       },
@@ -88,8 +102,40 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../admin/HelloWorld.vue')
       },
       {
-        path: 'file',
-        component: () => import('../admin/file/List.vue')
+        path: 'bpm/run',
+        component: () => import('../admin/bpm/run/List.vue')
+      },
+      {
+        path: 'bpm/run/create',
+        component: () => import('../admin/bpm/run/Create.vue')
+      },
+      {
+        path: 'treasury/warrant',
+        component: () => import('../admin/treasury/warrant/List.vue')
+      },
+      {
+        path: 'treasury/warrant/create/:parent',
+        component: () => import('../admin/treasury/warrant/Create.vue')
+      },
+      {
+        path: 'treasury/warrant/create',
+        component: () => import('../admin/treasury/warrant/Create.vue')
+      },
+      {
+        path: 'treasury/warrant/:id',props: true,
+        component: () => import('../admin/treasury/warrant/Create.vue')
+      },
+      {
+        path: 'content/file',
+        component: () => import('../admin/content/file/List.vue')
+      },
+        {
+        path: 'content/session',
+        component: () => import(/* webpackChunkName: "session" */ '../admin/content/session/Create.vue')
+      },
+              {
+        path: 'content/db',
+        component: () => import(/* webpackChunkName: "session" */ '../admin/content/db/Create.vue')
       },
       {
         path: 'obresec/crime', props: true,
@@ -155,12 +201,12 @@ const routes: Array<RouteRecordRaw> = [
         path: 'hr/movement/create',
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/movement/Create.vue')
       },
-            {
-        path: 'hr/movement/:id',props: true,
+      {
+        path: 'hr/movement/:id', props: true,
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/movement/Create.vue')
       },
-            {
-        path: 'hr/movement/:id/edit',props: true,
+      {
+        path: 'hr/movement/:id/edit', props: true,
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/movement/Create.vue')
       },
       {
@@ -199,11 +245,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'hr/personal/resource/:id', props: true, meta: { perm: 'HR_PERSONAL_REGISTER' },
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
       },
-            {
+      {
         path: 'hr/resource/:id', props: true, meta: { perm: 'HR_RESOURCE_READ' },
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
       },
-                  {
+      {
         path: 'hr/resource/:id/edit', props: true, meta: { perm: 'HR_RESOURCE_REGISTER' },
         component: () => import(/* webpackChunkName: "personal" */'../admin/hr/personal/resource/Create.vue')
       },

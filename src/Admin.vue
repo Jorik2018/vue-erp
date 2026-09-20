@@ -4,6 +4,7 @@
 		<div style="display: flex;flex-direction: column;width: -webkit-fill-available;background-color: #ffffff;">
 			<ion-header :translucent="true">
 				<ion-toolbar>
+					<img src="https://regionancash.gob.pe/images/logo2023.png" alt="logo" style="height: 52px;float:right"/>
 					<ion-buttons slot="start">
 						<ion-menu-button color="primary"></ion-menu-button>
 					</ion-buttons>

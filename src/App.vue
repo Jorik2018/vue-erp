@@ -42,6 +42,37 @@ export default ui({
       }
       return age;
     }
+    me.app.tt=(a) =>{
+      if (a.msg) {
+        var tp = ["dia", "mes", "año"];
+        var tps = ["dias", "meses", "años"];
+        var aa = a.msg.split("|");
+        var dd = [];
+        var dp = aa[1].split("/");
+        var pe = Math.abs(dp[2] * 10000 + dp[1] * 100 + dp[0] * 1);
+        a.color = a.progress > 100 ? "red" : pe > 300 ? "green" : "yellow";
+        dp.forEach((e, i) => {
+          if ((e = Math.abs(e)) > 0)
+            dd.push(e + " " + (e > 1 ? tps[i] : tp[i]));
+        });
+        dd = dd.reverse();
+        var ds = dd[0];
+        dd.forEach((e, i) => {
+          if (i > 0) {
+            if (i == dd.length - 1) {
+              ds += " y " + e;
+            } else ds += ", " + e;
+          }
+        });
+        if (a.progress > 100) {
+          return "Se paso " + ds + " desde " + aa[0].split(">")[1];
+        } else if (pe == 0) {
+          return "Ultimo dia";
+        } else {
+          return "faltan " + ds + " para " + aa[0].split(">")[1];
+        }
+      } else a.color = "green";
+    }
     me.app.toast = (msg, callback) => {
       toastController.create({
         message: msg,
@@ -55,6 +86,7 @@ export default ui({
     this.processOAuthCallback();
   },
   methods: {
+    
     async processOAuthCallback() {
 
       const me = this;

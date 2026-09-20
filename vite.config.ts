@@ -55,11 +55,11 @@ export default ({ mode }:any) => {
        {
     name: 'mock-validate-endpoint',
     configureServer(server) {
-      server.middlewares.use('/api/auth/validate', (req, res) => {
+      /*server.middlewares.use('/api/auth/validate', (req, res) => {
         res.statusCode = 200
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify({ status: 'ok' }))
-      })
+      })*/
     }
   }
     ],
@@ -81,6 +81,21 @@ export default ({ mode }:any) => {
           target: env.VITE_BASE_URL_FILE_API,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/file/, '/file')
+        },
+        '/api/content': {
+          target: env.VITE_BASE_URL_FILE_API,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/content/, '')
+        },
+        '/api/treasury': {
+          target: env.VITE_BASE_URL_TREASURY_API,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/treasury/, '')
+        },
+        '/api/obresec': {
+          target: env.VITE_BASE_URL_OBRESEC_API,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/obresec/, '')
         },
         '/api/bpm': {
           target: env.VITE_BASE_URL_BPM_API,

@@ -43,6 +43,8 @@ export async function setupAxiosMock() {
             {
                 username: import.meta.env.VITE_USERNAME,
                 password: import.meta.env.VITE_PASSWORD,
+                captchaId: import.meta.env.VITE_CAPTCHA_ID,
+                captcha: import.meta.env.VITE_CAPTCHA,
             }
         )
         localStorage.setItem('session', JSON.stringify(data))

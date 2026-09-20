@@ -51,7 +51,23 @@
           <v-item v-if="perms.DS_PEOPLE_REGISTER" icon="fa-plus" href="/admin/desarrollo-social/people/create"
             label="Agregar" />
         </v-item>
-
+        <v-item v-if="perms.DESARROLLO_SOCIAL_ADULTO_MAYOR_READ || 1" icon="fa-table"
+          href="/admin/desarrollo-social/adulto-mayor" label="CMS">
+          <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/node" label="Paginas"></v-item>
+          <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/block" label="Bloques"></v-item>
+          <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/file" label="Archivos"></v-item>
+        </v-item>
+        <v-item icon="fa-table" label="UTI">
+          <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/node" label="Paginas"></v-item>
+          <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/block" label="Bloques"></v-item>
+          <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/file" label="Archivos"></v-item>
+        </v-item>
+        <v-item icon="fa-table" label="Tesoreria">
+          <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/treasury/warrant" label="Cartas Fianza"></v-item>
+        </v-item>
+        <v-item icon="fa-table" label="PAD">
+          <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/bpm/run" label="Registros"></v-item>
+        </v-item>
         <v-item v-if="perms.DESARROLLO_SOCIAL_ADULTO_MAYOR_READ" icon="fa-table"
           href="/admin/desarrollo-social/adulto-mayor" label="Adulto Mayor">
           <v-item v-if="perms.CDESARROLLO_SOCIAL_ADULTO_MAYOR_ADMIN" icon="fa-plus"
@@ -85,8 +101,7 @@
             <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/group/people" label="Personas" />
           </v-item>
           <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/amount" label="Montos" />
-          <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/chd"
-            label="Reportes" />
+          <v-item v-if="perms.PAYROLL_READ" icon="fa-table" href="/admin/payroll/chd" label="Reportes" />
         </v-item>
         <v-item v-if="perms.PREGNANT_READ" icon="fa-person-pregnant" href="/admin/desarrollo-social/pregnant"
           label="Gestantes" />

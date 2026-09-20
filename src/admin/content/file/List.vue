@@ -14,22 +14,18 @@
                     <i class="fa fa-home"></i>
                 </a>
 
-                <template v-for="(item, i) in subpaths">
+                <template v-for="(item, i) in o.parents">
                     <span>
                         \
-                        <a style="display:inline-block;padding: 5px;cursor: pointer;"
-                            v-on:click="send({ path: item, type: 'D' })">
-                            {{ i === 0
-                                ? item.replace(/[\\/]+$/, '') // 🔥 quita "\" final
-                            : item.split(/[\\/]/).pop()
-                            }}
+                        <a style="display:inline-block;padding: 5px;cursor: pointer;" :title="item"
+                            v-on:click="send({ path: item.path, type: 'D' })">
+                            {{ item.name }}
                         </a>
                     </span>
                 </template>
 
                 <!-- 👇 esto lo empuja a la derecha -->
                 <div style="margin-left: auto;margin-right: 10px;">
-                <v-button value="o" @click="gg"/>
                     <v-uploader :dst="o.current" onlyicon="false" icon="fa-upload" @input="onUploaded" />
                 </div>
 
@@ -40,14 +36,39 @@
     overflow-y: auto;
     /* height: 0px; */
 ">
-                <div v-for="item in o.files"
-                    style="display:block;padding: 10px;border:1px solid gray;position: relative;">
-                    <i style="width: 20px;padding: 2px;margin-right: 10px;text-align: center;" class="fa"
+                <div v-for="item in o.files" style="
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid gray;
+        position: relative;
+        gap: 10px;
+    ">
+                    <!-- Icono -->
+                    <i style="width: 20px; padding: 2px; text-align: center;" class="fa"
                         :class="item.type == 'F' ? 'fa-file' : 'fa-folder'"></i>
-                    <a style="line-break: anywhere;cursor: pointer;" v-on:click="send(item)"> {{
-                        label(item.path) }}</a>
-                    <span v-if="item.type == 'F'" style="position:absolute;right: 0px;padding: 4px 10px;"
-                        v-on:click="remove(item)"><i class="fa fa-trash"></i></span>
+
+                    <!-- Nombre -->
+                    <a style="line-break: anywhere; cursor: pointer;" v-on:click="send(item)">
+                        {{ label(item.path) }}
+                    </a>
+
+                    <!-- Tamaño -->
+                    <span v-if="item.type == 'F'" style="
+            font-size: 16px;
+            color: #444;
+            white-space: nowrap;
+        ">
+                        {{ formatSize(item.length) }}
+                    </span>
+
+                    <!-- Empuja el trash a la derecha -->
+                    <span style="
+            margin-left: auto;
+            cursor: pointer;
+        " v-on:click="remove(item)">
+                        <i class="fa fa-trash"></i>
+                    </span>
                 </div>
             </div>
         </div>
@@ -66,7 +87,7 @@ export default ui({
         console.log(appContext);
         const ax = app.axios;
 
-        const o = ref({ current: 'C:\\wildfly-18.0.1.Final\\standalone', id: null, files: [] });
+        const o = ref({ current: 'C:\\wildfly-18.0.1.Final\\standalone', id: null, files: [], parents: [] });
         const image = ref(0);
         const base = ref('http://web.regionancash.gob.pe/cdn/web/viewer.html?v=1&file=http://web.regionancash.gob.pe/admin/uti/api/document/download/');
 
@@ -122,8 +143,9 @@ export default ui({
 
         const send = (item) => {
             if (item.type === 'D') {
-                ax.post('/api/file', { folder: item.path }).then(({ data }) => {
+                ax.post('/api/file', { current: item.path }).then(({ data }) => {
                     o.value.files = data.data;
+                    o.value.parents = data.parents;
                     o.value.current = item.path;
                 });
             } else {
@@ -144,16 +166,18 @@ export default ui({
             }
         };
 
-        const remove = (item) => {
-            axios.delete('/api/file/' + encodeURIComponent(item.path)).then(() => {
-                send({ path: o.value.current, type: 'D' });
-            });
+        const encodePath = (path) => {
+            return btoa(unescape(encodeURIComponent(path)))
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=+$/, '');
         };
 
-        const gg = (item) => {
-            axios.get('/api/bpm/prepare/1').then(({data}) => {
-                console.log(data);
-            });
+        const remove = (item) => {
+            axios.delete('/api/file/' + encodePath(item.path))
+                .then(() => {
+                    send({ path: o.value.current, type: 'D' });
+                });
         };
 
         const onUploaded = () => {
@@ -172,12 +196,31 @@ export default ui({
             }
         });
 
+
+        const formatSize = (bytes) => {
+            if (bytes === null || bytes === undefined) {
+                return '';
+            }
+
+            const size = Number(bytes);
+
+            if (size === 0) {
+                return '0 B';
+            }
+
+            const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+            const index = Math.floor(Math.log(size) / Math.log(1024));
+
+            return (size / Math.pow(1024, index)).toFixed(
+                index === 0 ? 0 : 2
+            ) + ' ' + units[index];
+        }
+
         onMounted(() => {
             send({ path: o.value.current, type: 'D' });
         });
 
         return {
-        gg,
             o,
             image,
             base,
@@ -185,7 +228,8 @@ export default ui({
             send,
             remove,
             onUploaded,
-            label
+            label,
+            formatSize
         };
     }
 })
