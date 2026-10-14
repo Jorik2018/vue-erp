@@ -102,12 +102,28 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../admin/HelloWorld.vue')
       },
       {
+        path: 'uti/ip',
+        component: () => import(/* webpackChunkName: "uti" */'../admin/uti/ip/List.vue')
+      },
+      {
+        path: 'uti/ip/create',
+        component: () => import(/* webpackChunkName: "uti" */'../admin/uti/ip/Create.vue')
+      },
+      {
+        path: 'uti/ip/:id/edit', props: true,
+        component: () => import(/* webpackChunkName: "uti" */'../admin/uti/ip/Create.vue')
+      },
+      {
         path: 'bpm/run',
         component: () => import('../admin/bpm/run/List.vue')
       },
       {
         path: 'bpm/run/create',
         component: () => import('../admin/bpm/run/Create.vue')
+      },
+      {
+        path: 'treasury/report/warrant',
+        component: () => import('../admin/treasury/report/Warrant.vue')
       },
       {
         path: 'treasury/warrant',
@@ -122,18 +138,18 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../admin/treasury/warrant/Create.vue')
       },
       {
-        path: 'treasury/warrant/:id',props: true,
+        path: 'treasury/warrant/:id', props: true,
         component: () => import('../admin/treasury/warrant/Create.vue')
       },
       {
         path: 'content/file',
         component: () => import('../admin/content/file/List.vue')
       },
-        {
+      {
         path: 'content/session',
         component: () => import(/* webpackChunkName: "session" */ '../admin/content/session/Create.vue')
       },
-              {
+      {
         path: 'content/db',
         component: () => import(/* webpackChunkName: "session" */ '../admin/content/db/Create.vue')
       },

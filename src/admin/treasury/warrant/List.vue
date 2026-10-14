@@ -22,7 +22,7 @@
                     :disabled="!rowSelectedCount" @click.prevent="destroy" />
 
                 <v-button value="Exportar" icon="fa-download" class="on"
-                    @click.prevent="open('/admin/tesoreria/report/warrant')" />
+                    @click.prevent="open('/admin/treasury/report/warrant')" />
 
                 <v-button title="Refrescar" icon="fa-sync" @click.prevent="refresh" />
 
@@ -51,7 +51,6 @@
                         </a>
 
                     </template>
-
                     <template v-else>
                         {{ row.proveedor }}
                     </template>
@@ -61,15 +60,7 @@
                     <v-filter>
                         <input v-model="filters.expediente" />
                     </v-filter>
-
-                    <div class="key">
-                        {{ pad(row.expediente, 4) }}
-                    </div>
-
-                    <div class="hidden">
-                        {{ row.obra }}
-                    </div>
-
+                    {{ pad(row.expediente, 4) }}
                 </td>
                 <td width="200" header="Tipo Proceso">
                     <v-filter>
@@ -98,7 +89,7 @@
                 <td width="100" class="center" header="Tipo Garantía">
                     <v-filter>
 
-                        <v-select label="&nbsp;" multiple style="width: 100%" v-model="filters.warrantType"
+                        <v-select label="&nbsp;" multiple="true" style="width: 100%" v-model="filters.warrantType"
                             autoload="true">
                             <v-options src="/api/treasury/warrant-type/0/0" value-field="id" display-field="name" />
                         </v-select>
@@ -111,7 +102,7 @@
                 </td>
                 <td width="80" class="right" header="Total" :title="row.total">
                     <v-filter>
-                        <v-number v-model="filters.total" />
+                        <v-filter-number v-model="filters.total" name="Total" />
                     </v-filter>
 
                     {{ format(row.total) }}
@@ -119,7 +110,7 @@
                 </td>
                 <td width="90" class="center" header="Fecha Renovación">
                     <v-filter>
-                        <v-calendar v-model="filters.fechaRenovacion" />
+                        <v-filter-date v-model="filters.fechaRenovacion" />
                     </v-filter>
 
                     {{ date(row.fechaRenovacion) }}
@@ -135,7 +126,7 @@
                 </td>
                 <td width="90" class="center" header="Fecha Emisión">
                     <v-filter>
-                        <v-calendar v-model="filters.fechaEmision" />
+                        <v-filter-date v-model="filters.fechaEmision" />
                     </v-filter>
 
                     {{ date(row.fechaEmision) }}
@@ -143,19 +134,19 @@
                 </td>
                 <td width="100" class="center cf-cyan" header="Fecha Vencimiento">
                     <v-filter>
-                        <v-calendar v-model="filters.fechaVencimiento" />
+                        <v-filter-date v-model="filters.fechaVencimiento" />
                     </v-filter>
 
                     {{ date(row.fechaVencimiento) }}
 
                 </td>
                 <td width="120" class="center" header="Días Vencimiento" :class="row.renovated
-                        ? 'green'
-                        : row.diff > 5
-                            ? ''
-                            : row.diff > 0
-                                ? 'yellow'
-                                : 'red'
+                    ? 'green'
+                    : row.diff > 5
+                        ? ''
+                        : row.diff > 0
+                            ? 'yellow'
+                            : 'red'
                     ">
                     <v-filter>
                         <v-select v-model="filters.faltan">
@@ -184,11 +175,9 @@
                 </td>
                 <td width="90" class="center" header="Fecha Registro">
                     <v-filter>
-                        <v-calendar v-model="filters.fechaRegistro" />
+                        <v-filter-date v-model="filters.fechaRegistro" />
                     </v-filter>
-
                     {{ date(row.fechaRegistro) }}
-
                 </td>
                 <td width="160" header="Observación">
                     <v-filter>
@@ -225,30 +214,16 @@
 
             </template>
         </v-table>
-
-        <VPopup ref="popup" width="450px" @success="onSuccess" @close="onClose" />
-
+        <v-popup @success="onSuccess" @close="onClose" />
     </v-page>
 </template>
 
 
 <script>
 import { ui } from 'isobit-ui'
-import VPopup from '../../../components/v-popup.vue'
-import {
-    ref
-} from 'vue'
-
 
 export default ui({
-    components: { VPopup, },
-    setup() {
-
-        const popup = ref(null)
-
-        const open = (path) => {
-            popup.value.open(path)
-        }
+    setup({ open }) {
 
         const create = (selected) => {
             if (selected.length)
@@ -264,21 +239,8 @@ export default ui({
         const onClose = (v) => {
             console.log('Popup cerrado')
         }
-        return {
-            create,
-            open,
-            popup,
-            onSuccess,
-            onClose
-        }
-    },
-    created() {
-        this.filters.order = 'e'
-    },
-    methods: {
 
-        format(n) {
-
+        const format = (n) => {
             if (
                 n === null ||
                 n === undefined ||
@@ -286,15 +248,10 @@ export default ui({
             ) {
                 return ''
             }
-
-
             const number = Number(n)
-
             if (Number.isNaN(number)) {
                 return n
             }
-
-
             return number.toLocaleString(
                 'es-PE',
                 {
@@ -302,47 +259,45 @@ export default ui({
                     maximumFractionDigits: 2,
                 }
             )
-        },
+        }
 
-
-        async upload(file) {
-
+        const upload = async (file) => {
             const selected =
                 this.getSelected?.() || []
-
-
             if (!selected.length) {
                 return
             }
-
-
-            file.id =
-                selected[0].id
-
-
-            await this.app.axios.post(
+            file.id = selected[0].id
+            await app.axios.post(
                 '/api/treasury/warrant/save-file',
                 file
             )
+            refresh()
+        }
 
-
-            this.refresh()
-        },
-
-        can(permission) {
-
+        const can = (permission) => {
             if (
                 this.user?.uid === 1
             ) {
                 return true
             }
-
-
             return this.app?.can
                 ? this.app.can(permission)
                 : true
-        },
+        }
+
+        return {
+            create,
+            format,
+            onSuccess,
+            upload,
+            can,
+            onClose
+        }
     },
+    created() {
+        this.filters.order = 'e'
+    }
 })
 </script>
 

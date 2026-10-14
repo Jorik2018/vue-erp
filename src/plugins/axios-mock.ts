@@ -51,10 +51,51 @@ export async function setupAxiosMock() {
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
     }
     return;
+
     const mock = new MockAdapter(axios, {
         delayResponse: 1000,
         onNoMatch: 'passthrough'
     })
+
+    mock.onPost('/api/auth').reply(config => {
+        const { username } = JSON.parse(config.data)
+        return [200, {
+            "success": true,
+            "perms": {
+                "HR_PERSONAL_REGISTER": true,
+                "HR_PERSONAL_ADMIN": true,
+                "HR_PERSONAL_READ": true,
+                "HR_PERSONAL_DET": true,
+                "HR_RESOURCE_REGISTER": true,
+                "HR_RESOURCE_ADMIN": true,
+                "HR_RESOURCE_READ": true,
+                "HR_RESOURCE_DET": true,
+                "HR_MOVEMENT_READ": true,
+                "HR_MOVEMENT_REGISTER": true,
+                "hr_personal_admin": true,
+                "hr_resource_admin": true,
+                "PAYROLL_READ": true
+            },
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NzE2ODk4MjMsImV4cCI6MTc3MTY5MzQyMywiZW1haWwiOiJocl9wZXJzb25hbF9hZG1pbkBnbWFpbC5jb20ifQ.7ZEifxzvm_XhUYjHpXYeXKmxdwyZhzz8KWX3V8_aiEI",
+            "user_nicename": "personaladmin"
+        }]
+    })
+
+    if (!session) {
+        delete axios.defaults.headers.common['Authorization']
+        const { data } = await axios.post('api/auth',
+            {
+                username: import.meta.env.VITE_USERNAME,
+                password: import.meta.env.VITE_PASSWORD,
+                captchaId: import.meta.env.VITE_CAPTCHA_ID,
+                captcha: import.meta.env.VITE_CAPTCHA,
+            }
+        )
+        localStorage.setItem('session', JSON.stringify(data))
+        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+    }
+    return;
+
 
     //mock.onAny(/^\/api\/file(\/.*)?$/).reply(createAxiosProxy(import.meta.env.VITE_BASE_URL_GRA))
 
@@ -953,29 +994,6 @@ export async function setupAxiosMock() {
         return [200, { id: 12 }]
     });
 
-    mock.onPost('/api/auth').reply(config => {
-        const { username } = JSON.parse(config.data)
-        return [200, {
-            "success": true,
-            "perms": {
-                "HR_PERSONAL_REGISTER": true,
-                "HR_PERSONAL_ADMIN": true,
-                "HR_PERSONAL_READ": true,
-                "HR_PERSONAL_DET": true,
-                "HR_RESOURCE_REGISTER": true,
-                "HR_RESOURCE_ADMIN": true,
-                "HR_RESOURCE_READ": true,
-                "HR_RESOURCE_DET": true,
-                "HR_MOVEMENT_READ": true,
-                "HR_MOVEMENT_REGISTER": true,
-                "hr_personal_admin": true,
-                "hr_resource_admin": true,
-                "PAYROLL_READ": true
-            },
-            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NzE2ODk4MjMsImV4cCI6MTc3MTY5MzQyMywiZW1haWwiOiJocl9wZXJzb25hbF9hZG1pbkBnbWFpbC5jb20ifQ.7ZEifxzvm_XhUYjHpXYeXKmxdwyZhzz8KWX3V8_aiEI",
-            "user_nicename": "personaladmin"
-        }]
-    })
 
     function generarNombreCompleto() {
         const consonantes = 'bcdfghjklmnpqrstvwxyz';
@@ -1131,14 +1149,14 @@ export async function setupAxiosMock() {
 */
     // fallback
     ///mock.onAny(/^\/api\/.*/).reply(config => {
-       /* console.log('FALLBACK MATCH', config.url)
+    /* console.log('FALLBACK MATCH', config.url)
 
-        return axios({
-            ...config,
-            url: 'http://localhost:1400' + config.url.replace(/^\/api/, '')
-        })
-    })*/
-return;
+     return axios({
+         ...config,
+         url: 'http://localhost:1400' + config.url.replace(/^\/api/, '')
+     })
+ })*/
+    return;
     mock.onAny(/^\/api\/.*/).reply(config => {
 
         //const newUrl = 'http://localhost:1400' + config.url.replace(/^\/api/, '')

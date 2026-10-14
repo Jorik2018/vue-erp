@@ -3,10 +3,10 @@
     <v-page class="v-form" header="Explorador de Archivo" store="setting">
 
         <div class="v-form" style="
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-">
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+        ">
             <div style="padding-bottom: 10px; display: flex; align-items: center;">
 
                 <a style="display:inline-block;padding: 5px;cursor: pointer;"
@@ -14,7 +14,7 @@
                     <i class="fa fa-home"></i>
                 </a>
 
-                <template v-for="(item, i) in o.parents">
+                <template v-for="(item, i) in o.parents" :key="i">
                     <span>
                         \
                         <a style="display:inline-block;padding: 5px;cursor: pointer;" :title="item"
@@ -24,26 +24,47 @@
                     </span>
                 </template>
 
-                <!-- 👇 esto lo empuja a la derecha -->
-                <div style="margin-left: auto;margin-right: 10px;">
+                <!-- Acciones a la derecha -->
+                <div style="
+                    margin-left: auto;
+                    margin-right: 10px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                ">
+                    <!-- Trash múltiple -->
+                    <button v-if="selected.length" type="button"
+                        style="cursor: pointer;margin-right: 5px;font-size: 22px;" v-on:click="remove(selected)"
+                        title="Eliminar seleccionados">
+                        <i class="fa fa-trash"></i>
+                    </button>
+
                     <v-uploader :dst="o.current" onlyicon="false" icon="fa-upload" @input="onUploaded" />
                 </div>
 
             </div>
+
             <div style="
-    flex-direction: column;
-    display: flex;
-    overflow-y: auto;
-    /* height: 0px; */
-">
+                flex-direction: column;
+                display: flex;
+                overflow-y: auto;
+            ">
                 <div v-for="item in o.files" style="
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        border: 1px solid gray;
-        position: relative;
-        gap: 10px;
-    ">
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid gray;
+    position: relative;
+    gap: 10px;
+">
+                    <!-- Checkbox -->
+                    <input type="checkbox" :value="item" v-model="selected" :disabled="item.type != 'F'" style="
+            width: auto;
+            min-width: auto;
+            flex: 0 0 auto;
+            margin: 0;
+        " />
+
                     <!-- Icono -->
                     <i style="width: 20px; padding: 2px; text-align: center;" class="fa"
                         :class="item.type == 'F' ? 'fa-file' : 'fa-folder'"></i>
@@ -62,20 +83,31 @@
                         {{ formatSize(item.length) }}
                     </span>
 
-                    <!-- Empuja el trash a la derecha -->
-                    <span style="
-            margin-left: auto;
-            cursor: pointer;
-        " v-on:click="remove(item)">
-                        <i class="fa fa-trash"></i>
-                    </span>
+                    <!-- Fecha y trash a la derecha -->
+                    <div style="
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    ">
+                        <span style="
+            font-size: 14px;
+            color: #666;
+            white-space: nowrap;
+        ">
+                            {{ date(item.lastModified) }}
+                        </span>
+
+                        <span style="cursor: pointer;" v-on:click="remove(item)">
+                            <i class="fa fa-trash"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
     </v-page>
 
 </template>
-
 <script>
 import axios from "axios";
 import { ui } from 'isobit-ui'
@@ -173,11 +205,19 @@ export default ui({
                 .replace(/=+$/, '');
         };
 
-        const remove = (item) => {
-            axios.delete('/api/file/' + encodePath(item.path))
-                .then(() => {
-                    send({ path: o.value.current, type: 'D' });
-                });
+        const remove = (items) => {
+            if (!Array.isArray(items)) {
+                items = [items];
+            }
+
+            Promise.all(
+                items.map(item =>
+                    axios.delete('/api/file/' + encodePath(item.path))
+                )
+            ).then(() => {
+                selected.value = [];
+                send({ path: o.value.current, type: 'D' });
+            });
         };
 
         const onUploaded = () => {
@@ -220,7 +260,17 @@ export default ui({
             send({ path: o.value.current, type: 'D' });
         });
 
+        const selected = ref([])
+
+        const deleteSelected = () => {
+            console.log('Eliminar:', selected.value)
+
+            // Tu lógica de eliminación aquí
+        }
+
         return {
+            selected,
+            deleteSelected,
             o,
             image,
             base,

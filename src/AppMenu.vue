@@ -58,7 +58,7 @@
           <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/file" label="Archivos"></v-item>
         </v-item>
         <v-item icon="fa-table" label="UTI">
-          <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/node" label="Paginas"></v-item>
+          <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/uti/ip" label="IPs"></v-item>
           <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/block" label="Bloques"></v-item>
           <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/file" label="Archivos"></v-item>
         </v-item>

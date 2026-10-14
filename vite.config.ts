@@ -11,7 +11,7 @@ import { defineConfig, loadEnv } from 'vite'
 //import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
-export default ({ mode }:any) => {
+export default ({ mode }: any) => {
 
   // 🔹 cargar variables de entorno
   const env = loadEnv(mode, process.cwd(), '')
@@ -32,7 +32,7 @@ export default ({ mode }:any) => {
       Object.entries(process.env).filter(([key]) => key.startsWith('VITE_'))
     )
   );
-  console.log('env.VITE_BASE_URL_AUTH_API',env.VITE_BASE_URL_AUTH_API);
+  console.log('env.VITE_BASE_URL_AUTH_API', env.VITE_BASE_URL_AUTH_API);
   const publicPath = process.env.VITE_PUBLIC_PATH || '/erp';
   /*return defineConfig({
     plugins: [
@@ -52,16 +52,21 @@ export default ({ mode }:any) => {
     plugins: [
       vue(),
       legacy(),
-       {
-    name: 'mock-validate-endpoint',
-    configureServer(server) {
-      /*server.middlewares.use('/api/auth/validate', (req, res) => {
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({ status: 'ok' }))
-      })*/
-    }
-  }
+      {
+        name: 'mock-validate-endpoint',
+        configureServer(server) {
+          /*server.middlewares.use('/api/auth', (req, res) => {
+            res.statusCode = 200
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ status: 'ok' }))
+          })*/
+          /*server.middlewares.use('/api/auth/validate', (req, res) => {
+            res.statusCode = 200
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ status: 'ok' }))
+          })*/
+        }
+      }
     ],
     resolve: {
       alias: {
@@ -91,6 +96,11 @@ export default ({ mode }:any) => {
           target: env.VITE_BASE_URL_TREASURY_API,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/treasury/, '')
+        },
+        '/api/uti': {
+          target: env.VITE_BASE_URL_UTI_API,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/uti/, '')
         },
         '/api/obresec': {
           target: env.VITE_BASE_URL_OBRESEC_API,
