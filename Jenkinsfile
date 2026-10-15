@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DEPLOY_DIR = 'D:\\apps\\erp'
+        DEPLOY_DIR = 'D:\\apps\\vue-erp'
         BUILD_DIR  = 'dist'
 
         NODE_VERSION = '22'
@@ -15,7 +15,7 @@ pipeline {
         VITE_API_URL = 'https://web.regionancash.gob.pe/api'
 
         // Si tu vite.config/router usa una variable para el base path.
-        VITE_BASE_URL = '/erp/'
+        VITE_BASE_URL = ''
     }
 
     stages {
