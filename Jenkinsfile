@@ -10,6 +10,7 @@ pipeline {
 
         PNPM_HOME = 'D:\\tools\\pnpm'
         PATH = "D:\\tools\\pnpm;${env.PATH}"
+        CI = 'true'
 
         // API pública. Nginx se encarga de /api.
         VITE_API_URL = 'https://web.regionancash.gob.pe/api'
