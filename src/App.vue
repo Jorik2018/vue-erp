@@ -16,6 +16,7 @@ export default ui({
   created() {
     const me = this;
     const session = me.session;
+    console.log('session',session);
     if (session) {
       //aqui deberia llamarse a refresh
       me.profileImg = session.people ? session.people.urlPerfil : null;
