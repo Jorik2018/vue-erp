@@ -33,7 +33,7 @@ export default ({ mode }: any) => {
     )
   );
   console.log('env.VITE_BASE_URL_AUTH_API', env.VITE_BASE_URL_AUTH_API);
-  const publicPath = process.env.VITE_PUBLIC_PATH || '/erp';
+  const publicPath = process.env.VITE_PUBLIC_PATH;
   /*return defineConfig({
     plugins: [
       vue(),
@@ -74,6 +74,9 @@ export default ({ mode }: any) => {
       },
     },
     base: publicPath,
+      build: {
+    assetsDir: 'vue-erp-assets'
+  },
     server: {
       proxy: {
         // 🔐 AUTH API (tu caso principal)
