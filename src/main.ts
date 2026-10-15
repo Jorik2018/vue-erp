@@ -64,7 +64,7 @@ app
     }
   })
   .use(IsobitUI);
-
+console.log("111111")
 router.isReady().then(() => {
   initDB(39, [
     ["region", { src: "/api/directory/region/0/0" }],
@@ -97,6 +97,7 @@ router.isReady().then(() => {
     ["emed_file", { keyPath: "tmpId" }],
     ["cancer", { keyPath: "tmpId" }]
   ]).then(() => {
+    console.log("111111222")
     app.mount('#app');
   }).catch((e) => {
     console.log(e)
