@@ -562,35 +562,107 @@ const router = createRouter({
 
 (axios as any).VITE_LOGIN_PATH = import.meta.env.VITE_LOGIN_PATH;//'/simple-jwt-login/v1/auth';//
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const pinia = getActivePinia();
+
   if (!pinia) {
     return next();
   }
+
   const store = useAppStore(pinia) as any;
-  store.config({ router, axios });
 
-  const isAuthenticated = store.authenticated;
-  const userPermissions = store.session?.perms || {}; // Permisos del usuario como objeto
+  store.config({
+    router,
+    axios
+  });
 
-  // Si la ruta comienza con /admin, requiere autenticación
-  if (to.path.startsWith('/admin')) {
-    if (!isAuthenticated) {
-      next('/login');
-      return;
+  /*
+   * Las rutas /admin requieren autenticación.
+   */
+  if (to.path.startsWith("/admin")) {
+
+    /*
+     * Si no tenemos access token en memoria,
+     * intentamos recuperarlo mediante refresh.
+     */
+    if (!store.authenticated) {
+      try {
+
+        console.log(
+          "Router: refreshing session..."
+        );
+
+        await store.refreshSession();
+
+        console.log(
+          "Router: session refreshed"
+        );
+
+      } catch (e: any) {
+
+        /*
+         * Refresh token inválido/expirado.
+         */
+        if (
+          e.response?.status === 401 ||
+          e.response?.status === 403
+        ) {
+          window.location.replace(
+            `/login?destiny=${encodeURIComponent(to.fullPath)}`
+          );
+
+          return false;
+        }
+
+        /*
+         * Sin conexión.
+         *
+         * Permitimos continuar únicamente
+         * si tenemos sesión/permisos cacheados.
+         */
+        if (!e.response && store.session) {
+          console.log(
+            "Router: offline, usando sesión cacheada"
+          );
+        } else {
+          console.error(
+            "Router: no fue posible recuperar sesión",
+            e
+          );
+
+          return false;
+        }
+      }
     }
 
-    // Verificación de permisos
-    const requiredPermission = to.meta.perm as any;
-    if (requiredPermission && !userPermissions[requiredPermission]) {
+    /*
+     * Aquí ya tenemos:
+     *
+     * ONLINE:
+     *   token + permisos actuales
+     *
+     * OFFLINE:
+     *   permisos cacheados
+     */
+    const userPermissions =
+      store.session?.perms || {};
+
+    const requiredPermission =
+      to.meta.perm as any;
+
+    if (
+      requiredPermission &&
+      !userPermissions[requiredPermission]
+    ) {
       store.unauthorized = true;
-      next(); // Bloquea la navegación sin cambiar la URL
+
+      next();
       return;
     }
   }
 
-  // Si todo está bien, continúa la navegación
   store.unauthorized = false;
+
   next();
 });
 

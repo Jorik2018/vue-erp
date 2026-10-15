@@ -2,193 +2,309 @@
   <Unauthorized v-if="app.unauthorized" />
   <router-view v-else />
 </template>
+
 <script>
 import axios from "axios";
 import { ui } from "isobit-ui";
+import { useRoute, useRouter } from "vue-router";
 import { LocalNotifications } from "@capacitor/local-notifications";
 import { Network } from "@capacitor/network";
-import { toastController } from '@ionic/vue';
-import Unauthorized from './Unauthorized.vue';
+import { toastController } from "@ionic/vue";
+import Unauthorized from "./Unauthorized.vue";
+
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 export default ui({
-  components: { Unauthorized },
-  created() {
-    const me = this;
-    const session = me.session;
-    console.log('session',session);
-    if (session) {
-      //aqui deberia llamarse a refresh
-      me.profileImg = session.people ? session.people.urlPerfil : null;
-      //if (me.$router.currentRoute.value.fullPath == '/') {
-      //me.$router.push("/admin");
-      //}
-      //console.log('me.$router.currentRoute.value.fullPath', me.$router.currentRoute.value.fullPath);
-    } else if (me.$router.currentRoute.value.fullPath.startsWith('/admin')) {
-      //console.log('me.$router', me.$router.currentRoute.value.fullPath)
-      me.$router.push("/login");
-    }
-    Network.addListener("networkStatusChange", me.app.networkStatusChange);
-    Network.getStatus().then(me.app.networkStatusChange);
-    me.app.BUILT_ON = import.meta.env.VITE_APP_BUILT_ON;
-    me.app.VERSION = import.meta.env.VITE_APP_VERSION;
-    me.app.getAge = (birthDate) => {
+  components: {
+    Unauthorized,
+  },
+
+  setup({ app }) {
+    const router = useRouter();
+    const route = useRoute();
+
+    /*
+     * ---------------------------------------------------------
+     * Utilidades generales
+     * ---------------------------------------------------------
+     */
+
+    app.BUILT_ON = import.meta.env.VITE_APP_BUILT_ON;
+    app.VERSION = import.meta.env.VITE_APP_VERSION;
+
+    app.getAge = (birthDate) => {
       const today = new Date();
-      birthDate = typeof birthDate == 'string' || typeof birthDate == 'number' ? new Date(birthDate) : birthDate;
-      //console.log(birthDate);
-      var age = today.getFullYear() - birthDate.getFullYear();
-      var m = today.getMonth() - birthDate.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+
+      birthDate =
+        typeof birthDate === "string" ||
+          typeof birthDate === "number"
+          ? new Date(birthDate)
+          : birthDate;
+
+      let age =
+        today.getFullYear() -
+        birthDate.getFullYear();
+
+      const m =
+        today.getMonth() -
+        birthDate.getMonth();
+
+      if (
+        m < 0 ||
+        (
+          m === 0 &&
+          today.getDate() < birthDate.getDate()
+        )
+      ) {
         age--;
       }
-      return age;
-    }
-    me.app.tt=(a) =>{
-      if (a.msg) {
-        var tp = ["dia", "mes", "año"];
-        var tps = ["dias", "meses", "años"];
-        var aa = a.msg.split("|");
-        var dd = [];
-        var dp = aa[1].split("/");
-        var pe = Math.abs(dp[2] * 10000 + dp[1] * 100 + dp[0] * 1);
-        a.color = a.progress > 100 ? "red" : pe > 300 ? "green" : "yellow";
-        dp.forEach((e, i) => {
-          if ((e = Math.abs(e)) > 0)
-            dd.push(e + " " + (e > 1 ? tps[i] : tp[i]));
-        });
-        dd = dd.reverse();
-        var ds = dd[0];
-        dd.forEach((e, i) => {
-          if (i > 0) {
-            if (i == dd.length - 1) {
-              ds += " y " + e;
-            } else ds += ", " + e;
-          }
-        });
-        if (a.progress > 100) {
-          return "Se paso " + ds + " desde " + aa[0].split(">")[1];
-        } else if (pe == 0) {
-          return "Ultimo dia";
-        } else {
-          return "faltan " + ds + " para " + aa[0].split(">")[1];
-        }
-      } else a.color = "green";
-    }
-    me.app.toast = (msg, callback) => {
-      toastController.create({
-        message: msg,
-        duration: 4000,
-      }).then(toast => {
-        toast.present().then(() => {
-          if (callback) callback();
-        });
-      });
-    }
-    this.processOAuthCallback();
-  },
-  methods: {
-    
-    async processOAuthCallback() {
 
-      const me = this;
-      const route = me.$router.currentRoute.value;
+      return age;
+    };
+
+    app.tt = (a) => {
+      if (!a.msg) {
+        a.color = "green";
+        return;
+      }
+
+      const tp = [
+        "dia",
+        "mes",
+        "año",
+      ];
+
+      const tps = [
+        "dias",
+        "meses",
+        "años",
+      ];
+
+      const aa = a.msg.split("|");
+      let dd = [];
+
+      const dp = aa[1].split("/");
+
+      const pe = Math.abs(
+        dp[2] * 10000 +
+        dp[1] * 100 +
+        dp[0] * 1
+      );
+
+      a.color =
+        a.progress > 100
+          ? "red"
+          : pe > 300
+            ? "green"
+            : "yellow";
+
+      dp.forEach((e, i) => {
+        e = Math.abs(e);
+
+        if (e > 0) {
+          dd.push(
+            e +
+            " " +
+            (e > 1 ? tps[i] : tp[i])
+          );
+        }
+      });
+
+      dd = dd.reverse();
+
+      let ds = dd[0];
+
+      dd.forEach((e, i) => {
+        if (i > 0) {
+          if (i === dd.length - 1) {
+            ds += " y " + e;
+          } else {
+            ds += ", " + e;
+          }
+        }
+      });
+
+      if (a.progress > 100) {
+        return (
+          "Se paso " +
+          ds +
+          " desde " +
+          aa[0].split(">")[1]
+        );
+      }
+
+      if (pe === 0) {
+        return "Ultimo dia";
+      }
+
+      return (
+        "faltan " +
+        ds +
+        " para " +
+        aa[0].split(">")[1]
+      );
+    };
+
+    app.toast = async (msg, callback) => {
+      const toast =
+        await toastController.create({
+          message: msg,
+          duration: 4000,
+        });
+
+      await toast.present();
+
+      if (callback) {
+        callback();
+      }
+    };
+
+    /*
+     * ---------------------------------------------------------
+     * Notificaciones
+     * ---------------------------------------------------------
+     */
+
+    app.notify = async (o) => {
+      const notifs =
+        await LocalNotifications.schedule({
+          notifications: [
+            {
+              title: o.title,
+              body: o.body,
+              id: 1,
+              sound: "file://sound.mp3",
+              attachments: null,
+              actionTypeId: "",
+              extra: null,
+            },
+          ],
+        });
+
+      app.notification.push(o);
+
+      console.log(
+        "scheduled notifications",
+        notifs
+      );
+    };
+
+    /*
+     * ---------------------------------------------------------
+     * OAuth callback
+     * ---------------------------------------------------------
+     */
+
+    const processOAuthCallback = async () => {
       const code = route.query.code;
       const state = route.query.state;
+
       if (!code) {
         return false;
       }
+
       try {
         const context = JSON.parse(
-          sessionStorage.getItem("oauth-context") || "{}"
+          sessionStorage.getItem(
+            "oauth-context"
+          ) || "{}"
         );
+
         const provider = context.provider;
-        const returnUrl = context.returnUrl;
-        const { data } = await axios.post("/api/oauth/token", { code, state, provider });
-        const { token, perms, user_nicename } = data;
-        sessionStorage.removeItem("oauth-context");
-        me.app.connect({ token, people: { display_name: user_nicename }, perms });
-        
-        /*if (returnUrl) {
-          await me.$router.replace(returnUrl);
-        } else {
-          await me.$router.replace({
-            path: route.path,
-            query: {}
-          });
-        }*/
+
+        const { data } = await axios.post(
+          "/api/oauth/token",
+          {
+            code,
+            state,
+            provider,
+          }
+        );
+
+        const {
+          token,
+          perms,
+          user_nicename,
+        } = data;
+
+        sessionStorage.removeItem(
+          "oauth-context"
+        );
+
+        app.connect({
+          token,
+          people: {
+            display_name: user_nicename,
+          },
+          perms,
+        });
+
         return true;
+
       } catch (e) {
         console.error(e);
-        me.app.toast(
+
+        app.toast(
           "No fue posible completar la autenticación."
         );
-        // Limpiar igualmente la URL
-        await me.$router.replace({
+
+        await router.replace({
           path: route.path,
-          query: {}
+          query: {},
         });
+
         return true;
       }
+    };
 
-    },
-    /*connect() {
-      const me = this, session = me.session;
-      if (session != null) {
-        const ws = new WebSocket("wss://web.regionancash.gob.pe/ws/S" + session.uid);
-        ws.onopen = function () {
-          // subscribe to some channels
-          //ws.send(JSON.stringify({
-          //.... some message the I must send when I connect ....
-          //}));
-        };
-        ws.onmessage = function (e) {
-          me.notify({ body: e.data.msg ? e.data.msg : e.data, title: 'SHAMI APP' });
-        };
-        ws.onclose = function (e) {
-          console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
-          setTimeout(function () {
-            me.connect();
-          }, 5000);
-        };
-        ws.onerror = function (err) {
-          console.error('Socket encountered error: ', err.message, 'Closing socket');
-          ws.close();
-        };
-        me.ws = ws;
+    const initSession = async () => {
+      const oauthProcessed =
+        await processOAuthCallback();
+
+      if (oauthProcessed) {
+        return;
       }
-    },*/
-    async notify(o) {
-      const notifs = await LocalNotifications.schedule({
-        notifications: [
-          {
-            title: o.title,
-            body: o.body,
-            id: 1,
-            /*schedule: { at: new Date(Date.now() + 1000 * 5) },*/
-            sound: 'file://sound.mp3',
-            attachments: null,
-            actionTypeId: '',
-            extra: null
-          }
-        ]
-      });
-      this.notification.push(o);
-      console.log('scheduled notifications', notifs);
-    },
-  }
-})
+      app.profileImg =
+        app.session?.people?.urlPerfil ?? null;
+    };
+
+    Network.addListener(
+      "networkStatusChange",
+      app.networkStatusChange
+    );
+
+    Network.getStatus().then(
+      app.networkStatusChange
+    );
+
+    /*
+     * ---------------------------------------------------------
+     * Inicialización
+     * ---------------------------------------------------------
+     */
+
+    initSession();
+
+    return {
+      app,
+    };
+  },
+});
 </script>
 
 <style>
 @font-face {
   font-family: "PTSans";
-  src: local("PTSans"),
+  src:
+    local("PTSans"),
     url(./cdn/fonts/ptsansnarrow-regular.ttf) format("truetype");
 }
 </style>
+
 <style scoped>
 ion-menu ion-content {
-  --background: var(--ion-item-background, var(--ion-background-color, #fff));
+  --background: var(--ion-item-background,
+      var(--ion-background-color, #fff));
 }
 
 ion-menu.md ion-content {
@@ -212,23 +328,20 @@ ion-menu.md ion-note {
 }
 
 ion-menu.md ion-list#inbox-list {
-  border-bottom: 1px solid var(--ion-background-color-step-150, #d7d8da);
+  border-bottom: 1px solid var(--ion-background-color-step-150,
+      #d7d8da);
 }
 
 ion-menu.md ion-list#inbox-list ion-list-header {
   font-size: 22px;
   font-weight: 600;
-
   min-height: 20px;
 }
 
 ion-menu.md ion-list#labels-list ion-list-header {
   font-size: 16px;
-
   margin-bottom: 18px;
-
   color: #757575;
-
   min-height: 26px;
 }
 
@@ -239,7 +352,8 @@ ion-menu.md ion-item {
 }
 
 ion-menu.md ion-item.selected {
-  --background: rgba(var(--ion-color-primary-rgb), 0.14);
+  --background: rgba(var(--ion-color-primary-rgb),
+      0.14);
 }
 
 ion-menu.md ion-item.selected ion-icon {
@@ -299,7 +413,6 @@ ion-menu.ios ion-note {
 ion-note {
   display: inline-block;
   font-size: 16px;
-
   color: var(--ion-color-medium-shade);
 }
 

@@ -2,60 +2,64 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-function createAxiosProxy(baseUrl: string) {
-    return async function proxy(config: any): Promise<[number, any]> {
-        const url = new URL(
-            config.url?.replace(/^\/api/, '') || '',
-            baseUrl
-        ).toString()
-
-        const token = axios.defaults.headers.common['Authorization']
-
-        try {
-            const res = await axios({
-                method: config.method,
-                url,
-                data: config.data,
-                params: config.params,
-                headers: {
-                    ...config.headers,
-                    Authorization: token
-                }
-            })
-
-            return [res.status, res.data]
-        } catch (err: any) {
-            return [
-                err.response?.status || 500,
-                err.response?.data || { message: err.message }
-            ]
-        }
-    }
-}
-
 export async function setupAxiosMock() {
 
-    const session = localStorage.getItem('session');
-
-    if (!session) {
-        delete axios.defaults.headers.common['Authorization']
-        const { data } = await axios.post('api/auth',
-            {
-                username: import.meta.env.VITE_USERNAME,
-                password: import.meta.env.VITE_PASSWORD,
-                captchaId: import.meta.env.VITE_CAPTCHA_ID,
-                captcha: import.meta.env.VITE_CAPTCHA,
-            }
-        )
-        localStorage.setItem('session', JSON.stringify(data))
-        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-    }
-    return;
-
     const mock = new MockAdapter(axios, {
-        delayResponse: 1000,
         onNoMatch: 'passthrough'
     })
+    console.log('refreshando!');
+    mock.onPost(/\/api\/auth\/refresh$/).reply(async () => {
+
+        console.log('DEV: mock /api/auth/refresh')
+
+        /*
+         * Usamos otra instancia para que esta llamada
+         * no sea interceptada por el propio mock.
+         */
+        const authAxios = axios.create()
+
+        try {
+            const { data } = await authAxios.post(
+                '/api/auth',
+                {
+                    username: import.meta.env.VITE_USERNAME,
+                    password: import.meta.env.VITE_PASSWORD,
+                    captchaId: import.meta.env.VITE_CAPTCHA_ID,
+                    captcha: import.meta.env.VITE_CAPTCHA,
+                }
+            )
+
+            return [
+                200,
+                {
+                    token: data.token,
+                    user_nicename: data.user_nicename,
+                    perms: data.perms,
+                }
+            ]
+
+        } catch (e: any) {
+            console.error(
+                'DEV: automatic login failed',
+                e
+            )
+
+            return [
+                e.response?.status || 500,
+                e.response?.data || {
+                    message: e.message
+                }
+            ]
+        }
+    })
+
+    console.log('DEV: Axios mock initialized')
+    return;
+
+    /*const mock = new MockAdapter(axios, {
+        delayResponse: 1000,
+        onNoMatch: 'passthrough'
+    })*/
 
     mock.onPost('/api/auth').reply(config => {
         const { username } = JSON.parse(config.data)
