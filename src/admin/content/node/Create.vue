@@ -53,12 +53,9 @@ overflow: auto;padding-bottom: 80px;
                 <label>Contenido:</label>
 
                 <div v-if="editor" class="editor-wrapper">
-    <component
-        :is="'style'"
-        v-if="embeddedCss"
-    >
-        {{ embeddedCss }}
-    </component>
+                    <component :is="'style'" v-if="embeddedCss">
+                        {{ embeddedCss }}
+                    </component>
 
                     <div class="editor-toolbar">
 
@@ -126,8 +123,8 @@ overflow: auto;padding-bottom: 80px;
                     </div>
 
                     <!-- Modo HTML -->
-                    <textarea v-if="htmlMode" v-model="htmlSource" class="html-source view-editor scroll-area" style="flex:1;overflow:auto"
-                        spellcheck="false"></textarea>
+                    <textarea v-if="htmlMode" v-model="htmlSource" class="html-source view-editor scroll-area"
+                        style="flex:1;overflow:auto" spellcheck="false"></textarea>
 
                     <EditorContent v-else :editor="editor" class="view-editor scroll-area" />
 
