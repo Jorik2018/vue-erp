@@ -209,7 +209,6 @@ export default ui({
             if (!Array.isArray(items)) {
                 items = [items];
             }
-
             Promise.all(
                 items.map(item =>
                     axios.delete('/api/content/file/' + encodePath(item.path))
