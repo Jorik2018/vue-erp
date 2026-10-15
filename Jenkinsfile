@@ -173,12 +173,25 @@ pipeline {
                     echo ===== Install =====
                     echo ==========================
 
+                    echo Installing dependencies...
                     call pnpm install --no-frozen-lockfile
 
                     if errorlevel 1 (
                         echo ERROR: pnpm install failed
                         exit /b 1
                     )
+
+                    echo.
+                    echo Updating isobit-ui to latest...
+                    call pnpm add isobit-ui@latest
+
+                    if errorlevel 1 (
+                        echo ERROR: isobit-ui installation failed
+                        exit /b 1
+                    )
+
+                    echo.
+                    echo Install OK
                 '''
             }
         }
