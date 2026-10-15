@@ -17,6 +17,7 @@ pipeline {
 
         // Si tu vite.config/router usa una variable para el base path.
         VITE_BASE_URL = ''
+        VITE_LOGIN_PATH = '/api/auth'
     }
 
     stages {
@@ -150,6 +151,7 @@ pipeline {
                     echo VITE_API_URL=%VITE_API_URL%
                     echo VITE_BASE_URL=%VITE_BASE_URL%
                     echo DEPLOY_DIR=%DEPLOY_DIR%
+                    echo VITE_LOGIN_PATH=%VITE_LOGIN_PATH%
 
                     if not exist package.json (
                         echo ERROR: package.json not found
