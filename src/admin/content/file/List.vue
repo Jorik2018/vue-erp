@@ -175,13 +175,13 @@ export default ui({
 
         const send = (item) => {
             if (item.type === 'D') {
-                ax.post('/api/file', { current: item.path }).then(({ data }) => {
+                ax.post('/api/content/file', { current: item.path }).then(({ data }) => {
                     o.value.files = data.data;
                     o.value.parents = data.parents;
                     o.value.current = item.path;
                 });
             } else {
-                axios.post('/api/file/download',
+                axios.post('/api/content/file/download',
                     { folder: item.path },
                     { responseType: 'blob' }
                 ).then(({ data }) => {
@@ -212,7 +212,7 @@ export default ui({
 
             Promise.all(
                 items.map(item =>
-                    axios.delete('/api/file/' + encodePath(item.path))
+                    axios.delete('/api/content/file/' + encodePath(item.path))
                 )
             ).then(() => {
                 selected.value = [];
