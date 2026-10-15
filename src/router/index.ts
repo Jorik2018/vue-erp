@@ -874,7 +874,7 @@ router.beforeEach(async (to, from, next) => {
         e.response?.status === 403
       ) {
         window.location.replace(
-          `/login?destiny=${encodeURIComponent(to.fullPath)}`,
+          `/login?destiny=/${to.fullPath}`,
         );
 
         return;
