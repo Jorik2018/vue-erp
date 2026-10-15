@@ -7,7 +7,6 @@ export async function setupAxiosMock() {
     const mock = new MockAdapter(axios, {
         onNoMatch: 'passthrough'
     })
-    console.log('refreshando!');
     mock.onPost(/\/api\/auth\/refresh$/).reply(async () => {
 
         console.log('DEV: mock /api/auth/refresh')
@@ -85,20 +84,7 @@ export async function setupAxiosMock() {
         }]
     })
 
-    if (!session) {
-        delete axios.defaults.headers.common['Authorization']
-        const { data } = await axios.post('api/auth',
-            {
-                username: import.meta.env.VITE_USERNAME,
-                password: import.meta.env.VITE_PASSWORD,
-                captchaId: import.meta.env.VITE_CAPTCHA_ID,
-                captcha: import.meta.env.VITE_CAPTCHA,
-            }
-        )
-        localStorage.setItem('session', JSON.stringify(data))
-        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-    }
-    return;
+
 
 
     //mock.onAny(/^\/api\/file(\/.*)?$/).reply(createAxiosProxy(import.meta.env.VITE_BASE_URL_GRA))
