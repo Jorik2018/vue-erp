@@ -2,7 +2,9 @@
 	<v-page header="PAD" action="/admin/bpm/run">
 		<v-table :selectable="true" @loaded="tableLoaded"
 			row-style-class="row.activity.id?(row.activity.progress>100?'':(row.activity.progress>70?'':'')):'gray'"
-			:scrollable="true" :pagination="20" :filters="filters" src="/api/bpm/run">
+			:scrollable="true" :pagination="20" 
+			:filters="filters" 
+			src="/api/bpm/run">
 			<template v-slot:header="">
 				<v-button value="Crear" icon="fa-plus" class="on" @click.prevent="openPopup('Create')"></v-button>
 				<v-button value="Atender" @click.prevent="attend(getSelected()[0])" icon="fa-pen"
@@ -96,42 +98,16 @@
 				</td>
 			</template>
 		</v-table>
-		<Teleport to="body">
-			<div v-if="open" class="popup-overlay" @click.self="open = false">
-				<div class="popup" :style="{width:width}">
-					<button class="popup-close" @click="open = false">✕</button>
-					<component :is="currentView" :id="o?.id" :callback="callback" />
-				</div>
-			</div>
-		</Teleport>
+		<v-popup/>
 	</v-page>
 </template>
 <script>
 import { ui } from 'isobit-ui'
-import { ref, shallowRef, defineAsyncComponent } from 'vue'
+import { ref } from 'vue'
 export default ui({
 	setup() {
-		const open = ref(false)
-		const currentView = shallowRef(null)
 		const oRef = ref({})
-		const width = ref({})
-		const openPopup = (view, o) => {
-			oRef.value = o;
-			currentView.value = defineAsyncComponent(() =>
-				import(`./${view}.vue`)
-			)
-			open.value = true
-		}
-		const view = (o) => {
-			openPopup('View', o)
-		}
-		const attend = (o) => {
-			openPopup('Create', o)
-		}
-		const callback = (s) => {
-			openPopup(s, oRef.value)
-		}
-		return { open, openPopup, currentView, view, attend, o: oRef, callback ,width};
+		return { o: oRef };
 	},
 	data() {
 		return {
