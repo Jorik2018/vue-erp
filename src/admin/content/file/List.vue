@@ -39,7 +39,7 @@
                         <i class="fa fa-trash"></i>
                     </button>
 
-                    <v-uploader :dst="o.current" onlyicon="false" icon="fa-upload" @input="onUploaded" />
+                    <v-uploader :dst="o.current" action="/api/content/file/upload" onlyicon="false" icon="fa-upload" @input="onUploaded" />
                 </div>
 
             </div>
