@@ -19,7 +19,7 @@
                         \
                         <a style="display:inline-block;padding: 5px;cursor: pointer;" :title="item"
                             v-on:click="send({ path: item.path, type: 'D' })">
-                            {{ item.name }}x
+                            {{ item.name }}
                         </a>
                     </span>
                 </template>
