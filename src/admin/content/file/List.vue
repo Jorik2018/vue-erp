@@ -19,7 +19,7 @@
                         \
                         <a style="display:inline-block;padding: 5px;cursor: pointer;" :title="item"
                             v-on:click="send({ path: item.path, type: 'D' })">
-                            {{ item.name }}
+                            {{ item.name }}x
                         </a>
                     </span>
                 </template>
@@ -39,7 +39,8 @@
                         <i class="fa fa-trash"></i>
                     </button>
 
-                    <v-uploader :dst="o.current" action="/api/content/file/upload" onlyicon="false" icon="fa-upload" @input="onUploaded" />
+                    <v-uploader :dst="o.current" 
+                    action="/api/content/file/upload" onlyicon="false" icon="fa-upload" @input="onUploaded" />
                 </div>
 
             </div>
