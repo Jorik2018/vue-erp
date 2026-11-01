@@ -53,7 +53,8 @@
         </v-item>
         <v-item v-if="perms.DESARROLLO_SOCIAL_ADULTO_MAYOR_READ || 1" icon="fa-table"
           href="/admin/desarrollo-social/adulto-mayor" label="CMS">
-          <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/node" label="Paginas"></v-item>
+          <v-item v-if="perms.ACCESS_USERS" icon="fa-table" href="/admin/content/user" label="Usuarios"></v-item>
+          <v-item v-if="perms.ACCESS_USERS || 1" icon="fa-table" href="/admin/content/node" label="Paginas"></v-item>
           <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/block" label="Bloques"></v-item>
           <v-item v-if="perms.OBRESEC || 1" icon="fa-table" href="/admin/content/file" label="Archivos"></v-item>
         </v-item>

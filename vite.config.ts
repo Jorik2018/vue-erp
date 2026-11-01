@@ -81,19 +81,33 @@ export default ({ mode }: any) => {
       proxy: {
         // 🔐 AUTH API (tu caso principal)
         '/api/auth': {
-          target: env.VITE_BASE_URL_AUTH_API,
+          target: env.VITE_REMOTE_PATH,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/auth/, '')
         },
         '/api/file': {
           target: env.VITE_BASE_URL_FILE_API,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/file/, '/file')
         },
-        '/api/content': {
-          target: env.VITE_BASE_URL_FILE_API,
+        '/admin/directory': {
+          target: env.VITE_REMOTE_PATH,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/content/, '')
+          //rewrite: (path) => path.replace(/^\/api\/content/, '')
+        },
+        '/admin/configuration': {
+          target: env.VITE_REMOTE_PATH,
+          changeOrigin: true,
+          //rewrite: (path) => path.replace(/^\/api\/content/, '')
+        },
+        '/api/content': {
+          target: env.VITE_REMOTE_PATH,
+          changeOrigin: true,
+          //rewrite: (path) => path.replace(/^\/api\/content/, '')
+        },
+        '/api/admin': {
+          target: env.VITE_REMOTE_PATH,
+          changeOrigin: true,
+          //rewrite: (path) => path.replace(/^\/api\/content/, '')
         },
         '/api/treasury': {
           target: env.VITE_BASE_URL_TREASURY_API,
@@ -101,10 +115,15 @@ export default ({ mode }: any) => {
           rewrite: (path) => path.replace(/^\/api\/treasury/, '')
         },
         '/api/uti': {
-          target: env.VITE_BASE_URL_UTI_API,
+          target: env.VITE_REMOTE_PATH,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/uti/, '')
+          //rewrite: (path) => path.replace(/^\/api\/uti/, '')
         },
+        '/api/ipscan': {
+          target: env.VITE_REMOTE_PATH,
+          changeOrigin: true,
+        },
+  
         '/api/obresec': {
           target: env.VITE_BASE_URL_OBRESEC_API,
           changeOrigin: true,

@@ -125,6 +125,28 @@ const routes: Array<RouteRecordRaw> = [
             /* webpackChunkName: "inventory" */ "../admin/inventory/Create.vue"
           ),
       },
+            {
+        path: "content/user",
+        component: () =>
+          import(
+            /* webpackChunkName: "content" */ "../admin/content/user/List.vue"
+          ),
+      },
+      {
+        path: "content/user/create",
+        component: () =>
+          import(
+            /* webpackChunkName: "content" */ "../admin/content/user/Create.vue"
+          ),
+      },
+      {
+        path: "content/user/:id/edit",
+        props: true,
+        component: () =>
+          import(
+            /* webpackChunkName: "content" */ "../admin/content/user/Create.vue"
+          ),
+      },
       {
         path: "content/node",
         component: () =>

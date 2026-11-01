@@ -39,8 +39,8 @@
                         <i class="fa fa-trash"></i>
                     </button>
 
-                    <v-uploader :dst="o.current" 
-                    action="/api/content/file/upload" onlyicon="false" icon="fa-upload" @input="onUploaded" />
+                    <v-uploader :dst="o.current" action="/api/content/file/upload" onlyicon="false" icon="fa-upload"
+                        @input="onUploaded" />
                 </div>
 
             </div>
@@ -116,9 +116,10 @@ import { ref, computed, onMounted, onBeforeMount, getCurrentInstance } from 'vue
 let ax;
 export default ui({
     setup({ app }) {
-        const { appContext } = getCurrentInstance();
-        console.log(appContext);
+
         const ax = app.axios;
+
+        const selected = ref([])
 
         const o = ref({ current: 'C:\\wildfly-18.0.1.Final\\standalone', id: null, files: [], parents: [] });
         const image = ref(0);
@@ -177,6 +178,7 @@ export default ui({
         const send = (item) => {
             if (item.type === 'D') {
                 ax.post('/api/content/file', { current: item.path }).then(({ data }) => {
+                    selected.value=[];
                     o.value.files = data.data;
                     o.value.parents = data.parents;
                     o.value.current = item.path;
@@ -236,7 +238,6 @@ export default ui({
             }
         });
 
-
         const formatSize = (bytes) => {
             if (bytes === null || bytes === undefined) {
                 return '';
@@ -259,8 +260,6 @@ export default ui({
         onMounted(() => {
             send({ path: o.value.current, type: 'D' });
         });
-
-        const selected = ref([])
 
         const deleteSelected = () => {
             console.log('Eliminar:', selected.value)

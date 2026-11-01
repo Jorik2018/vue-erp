@@ -23,21 +23,20 @@
                 <v-button icon="fa-book" @click.prevent="open($refs.report)" value="Descargar Reporte" />
 
                 <v-button icon="fa-star" @click.prevent="open($refs.scanner)" value="Scanner IP" />
-
             </template>
 
             <template v-slot="{ row, index }">
-                <td class="center" header="#" width="28">
+                <td class="center" header="#" width="42">
                     {{ pad(index + 1, 3) }}
                 </td>
                 <td width="220" sort="category" class="center" header="Categoría">
                     <v-filter>
                         <v-select multiple="true" v-model="filters.category">
-                            <!--v-options src="/api3/uti/ip/category" value-field="id">
+                            <v-options src="/api/uti/ip/category" value-field="id">
                                 <template v-slot="{ item }">
                                     {{ item.id }}
                                 </template>
-</v-options-->
+                            </v-options>
                         </v-select>
                     </v-filter>
 
@@ -290,7 +289,7 @@
                 <div class="v-form v-panel">
                     <center>
                         <v-button icon="fa-download" value="Descargar"
-                            click.prevent="saveAs('/admin/uti/api/ip/download',{})" />
+                            @click.prevent="saveAs('/api/uti/ip/download')" />
                         <v-button icon="fa-ban" value="Cancelar" click.prevent="report.close()" />
                     </center>
                 </div>
@@ -298,23 +297,23 @@
         </v-popup>
         <v-popup ref="scanner">
             <v-panel header="Scanner IP">
-                <v-table :selectable="true" :scrollable="true" :data="scanResult">
+                <v-table :selectable="true" :scrollable="true" :value="scanResult">
                     <template v-slot:header="">
-                        <input v-model="queryIP" style="width: calc(100% - 140px)" />
-                        <v-button value="Escanear" icon="fa-sync" class="on" click.prevent="scan" />
+                        <div style="display: flex;">
+                            <input v-model="queryIP" class="center" style="flex:1" />
+                            <v-button value="Escanear" icon="fa-sync" class="on" @click.prevent="scan" />
+                        </div>
                     </template>
                     <template v-slot="{ row, index }">
-                        <td class="center" header="#" width="28">
+                        <td class="center" header="#" width="42">
                             {{ pad(index + 1, 3) }}
                         </td>
-
-
                         <td width="100" sort="code" header="Code" class="center" remote="true">
                             <v-filter>
-                                <input v-model="filters.code" />
+                                <input v-model="filters.ip" />
                             </v-filter>
 
-                            {{ row.code }}
+                            {{ row.ip }}
                         </td>
                         <td width="220" sort="name" header="Nombre">
                             <v-filter>
@@ -322,6 +321,40 @@
                             </v-filter>
 
                             {{ row.name }}
+                        </td>
+                        <td width="180" sort="name" header="NetBIOSGroup" class="center">
+                            <v-filter>
+                                <input v-model="filters.netBIOSGroup" />
+                            </v-filter>
+                            {{ row.netBIOSGroup }}
+                        </td>
+                        <td width="180" sort="name" header="MacAddress" class="center">
+                            <v-filter>
+                                <input v-model="filters.macAddress" />
+                            </v-filter>
+
+                            {{ row.macAddress }}
+                        </td>
+                        <td width="220" sort="name" header="Manufacturer">
+                            <v-filter>
+                                <input v-model="filters.manufacturer" />
+                            </v-filter>
+
+                            {{ row.manufacturer }}
+                        </td>
+                        <td width="300" sort="name" header="More">
+                            <v-filter>
+                                <input v-model="filters.services" />
+                            </v-filter>
+
+                            <ul>
+                                <li v-for="(service, index) in row.services" :key="index">
+                                    <strong>{{ service.service }}</strong>
+                                    <span v-if="service.description">
+                                        - {{ service.description }}
+                                    </span>
+                                </li>
+                            </ul>
                         </td>
                     </template>
                 </v-table>
@@ -332,11 +365,13 @@
 
 <script>
 
+import { ref } from 'vue'
 import { ui } from 'isobit-ui'
 
 export default ui({
     setup({ app, refresh, edit }) {
-
+        const queryIP = ref('')
+        const scanResult = ref([])
         const disable = (selected) => {
             app.axios.post(
                 '/api/uti/ip/disable',
@@ -356,23 +391,29 @@ export default ui({
         }
 
         const scan = () => {
+            const range = queryIP.value?.trim()
 
-            const q = this.queryIP
+            if (!range) {
+                scanResult.value = []
+                return
+            }
 
-            this.app.axios.get('/api/ipscan/' +(
-                    q
-                        ? '?q=' + encodeURIComponent(q)
-                        : ''
-                )
-            ).then(r => {
-                    this.scanResult = r.data
+            app.axios.post('/api/ipscan/scan', {
+                range: range
+            })
+                .then(r => {
+                    scanResult.value = r.data
 
                     localStorage.setItem(
                         'scanResult',
-                        JSON.stringify(this.scanResult)
+                        JSON.stringify(scanResult.value)
                     )
                 })
+                .catch(error => {
+                    console.error('Error ejecutando IP Scan:', error)
 
+                    scanResult.value = []
+                })
         }
 
         const dblclick = (e) => {
@@ -380,6 +421,8 @@ export default ui({
         }
 
         return {
+            queryIP,
+            scanResult,
             dblclick,
             disable,
             clear,
