@@ -36,13 +36,13 @@
                 <div class="v-c-6">
                     <label>Contraseña:</label>
 
-                    <input type="password" v-model="o.ext.clave" required/>
+                    <input type="password" v-model="o.ext.clave" :required="!o.uid"  />
                 </div>
 
                 <div class="v-c-6">
                     <label>Confirmar:</label>
 
-                    <input type="password" v-model="o.ext.confirm" required />
+                    <input type="password" v-model="o.ext.confirm" :required="!o.uid" />
                 </div>
 
             </div>
@@ -57,26 +57,12 @@
 
                 <v-radio label="ACTIVO" :value="1" />
             </v-radio-group>
-
-
-            <!-- Roles -->
-
             <v-fieldset legend="Roles">
-
-                <div v-if="loadingRoles" class="roles-loading">
-                    Cargando roles...
-                </div>
-
-                <v-checkbox-group v-else class="roles" v-model="o.roleCollection">
+                <v-checkbox-group class="roles" v-model="o.roleCollection">
                     <v-checkbox v-for="role in roles" :key="role.rid" :label="role.name" :title="role.rid"
                         :value="role.rid" />
                 </v-checkbox-group>
-
             </v-fieldset>
-
-
-            <!-- Notificación -->
-
             <v-checkbox label="Notificar al Usuario" v-model="o.notify" />
 
         </div>
@@ -92,316 +78,122 @@
 
     </v-form>
 </template>
-
-
 <script>
 import { ui } from 'isobit-ui'
-
 import {
     ref,
 } from 'vue'
 
-
 export default ui({
-
     props: [
-        'uid',
+        'id',
         'callback',
     ],
-
-
     setup({
         app,
-        uid,
+        id,
         callback,
     }) {
-
         const { axios } = app
-
-
-        /*
-         * ============================================================
-         * STATE
-         * ============================================================
-         */
-
         const peopleAutocomplete = ref(null)
-
         const roles = ref([])
-
-        const loadingRoles = ref(false)
-
         const oRef = ref({
-            ext:{notify: true},
+            ext: { notify: true },
             status: 1,
             roleCollection: []
         })
 
         const loadRoles = async () => {
-            loadingRoles.value = true
-            try {
-                const { data } = await axios.get(
-                    '/api/admin/role/0/0'
-                )
-                const list = Array.isArray(data)
-                    ? data
-                    : data?.data || []
-
-                roles.value = list.sort(
-                    (a, b) =>
-                        (a.name || '').localeCompare(
-                            b.name || '',
-                        ),
-                )
-
-            } catch (error) {
-
-                console.error(
-                    'Error cargando roles:',
-                    error.response?.data || error,
-                )
-
-                roles.value = []
-
-            } finally {
-
-                loadingRoles.value = false
-            }
+            const { data } = await axios.get(
+                '/api/admin/role/0/0'
+            )
+            roles.value = Array.isArray(data)
+                ? data
+                : data?.data || []
         }
-
-
-        /*
-         * ============================================================
-         * LOAD USER
-         * ============================================================
-         */
 
         const find = async (id) => {
-
-            if (!id) {
-                return
-            }
-
-            try {
-
-                const { data } = await axios.get(
-                    `/api/content/user/${id}`,
-                )
-
-
-                /*
-                 * Roles del backend:
-                 *
-                 * [
-                 *   { rid: 1 },
-                 *   { rid: 2 }
-                 * ]
-                 *
-                 * ↓
-                 *
-                 * [1, 2]
-                 */
-
-                const roleCollection =
-                    (data.roleCollection || [])
-                        .map(role => {
-
-                            if (
-                                typeof role === 'number'
-                                || typeof role === 'string'
-                            ) {
-                                return role
-                            }
-
-                            return role.rid
-                        })
-
-
-                oRef.value = {
-                    ...oRef.value,
-                    ...data,
-
-                    /*
-                     * No reutilizamos password/hash
-                     * recibido desde backend.
-                     */
-                    pass: undefined,
-
-                    clave: '',
-                    confirm: '',
-
-                    notify: true,
-
-                    roleCollection,
-
-                    people:
-                        data.people
-                        || null,
-                }
-
-            } catch (error) {
-
-                console.error(
-                    'Error cargando usuario:',
-                    error.response?.data || error,
-                )
+            const { data } = await axios.get(
+                `/admin/configuration/api/user/${id}`,
+            )
+            const roleCollection =
+                (data.roleCollection || [])
+                    .map(role => {
+                        if (
+                            typeof role === 'number'
+                            || typeof role === 'string'
+                        ) {
+                            return role
+                        }
+                        return role.rid
+                    })
+            oRef.value = {
+                ...oRef.value,
+                ...data,
+                pass: undefined,
+                clave: '',
+                confirm: '',
+                notify: true,
+                roleCollection,
+                people:
+                    data.ext?.people
+                    || null,
+                ext:{...data.ext}
             }
         }
 
-
-        /*
-         * ============================================================
-         * PEOPLE
-         * ============================================================
-         */
-
         const peopleInput = (people) => {
-
             console.log(people);
-            return;
             const o = oRef.value
-
             if (!people) {
-
                 o.idDir = null
                 o.people = null
-
                 return
             }
-
             o.idDir = people.id
-
             o.people = people
-
-            /*
-             * Igual que el sistema anterior:
-             * al elegir una persona proponemos automáticamente
-             * correo y código como usuario.
-             */
-
             if (people.mail) {
                 o.mail = people.mail
             }
-
             if (people.code) {
                 o.name = people.code
             }
         }
 
-
-        /*
-         * ============================================================
-         * PROCESS BEFORE SAVE
-         * ============================================================
-         */
-
         const process = (source) => {
-
             const o = {
                 ...source,
             }
+            if ((o.clave || o.confirm) && o.clave !== o.confirm) {
+                throw new Error(
+                    'Las contraseñas no coinciden',
+                )
 
-
-            /*
-             * Validación de contraseña.
-             *
-             * En edición puede quedar vacía para indicar
-             * que no se modifica.
-             */
-
-            if (o.clave || o.confirm) {
-
-                if (o.clave !== o.confirm) {
-
-                    throw new Error(
-                        'Las contraseñas no coinciden',
-                    )
-                }
             }
-
-
-            /*
-             * El objeto People se usa solamente en frontend.
-             * El backend recibe idDir.
-             */
-
             delete o.people
-
-
-            /*
-             * Convertimos:
-             *
-             * [1, 2, 3]
-             *
-             * a:
-             *
-             * [
-             *   { rid: 1 },
-             *   { rid: 2 },
-             *   { rid: 3 }
-             * ]
-             */
-
             o.roleCollection =
                 (o.roleCollection || [])
                     .map(rid => ({
                         rid,
                     }))
-
-
-            /*
-             * Confirm es exclusivamente frontend.
-             */
-
             delete o.confirm
-
-
-            return o
+            console.log(o)
+            return false;
         }
 
-
-        /*
-         * ============================================================
-         * INITIALIZATION
-         * ============================================================
-         */
-
         const init = async () => {
-
-            /*
-             * Primero cargamos los roles.
-             *
-             * Después cargamos el usuario para evitar la dependencia
-             * asíncrona que tenía la implementación antigua.
-             */
-
             await loadRoles()
-
-            if (uid) {
-                await find(uid)
+            if (id) {
+                await find(id)
             }
         }
 
-
         init()
-
-
-        /*
-         * ============================================================
-         * EXPOSE
-         * ============================================================
-         */
-
         return {
             o: oRef,
-
             roles,
-            loadingRoles,
-
             peopleAutocomplete,
-
             peopleInput,
-
             process,
         }
     },
